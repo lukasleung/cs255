@@ -1,0 +1,398 @@
+% Use this template to write your solutions to COS 423 problem sets
+
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amsfonts, amsthm, amssymb, algorithm, graphicx, mathtools, xfrac}
+\usepackage[noend]{algpseudocode}
+\usepackage{fancyhdr, lastpage}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage[vmargin=1.20in,hmargin=1.25in,centering,letterpaper]{geometry}
+\setlength{\headsep}{.50in}
+\setlength{\headheight}{15pt}
+
+% Landau notation
+\DeclareMathOperator{\BigOm}{\mathcal{O}}
+\newcommand{\BigOh}[1]{\BigOm\left({#1}\right)}
+\DeclareMathOperator{\BigTm}{\Theta}
+\newcommand{\BigTheta}[1]{\BigTm\left({#1}\right)}
+\DeclareMathOperator{\BigWm}{\Omega}
+\newcommand{\BigOmega}[1]{\BigWm\left({#1}\right)}
+\DeclareMathOperator{\LittleOm}{\mathrm{o}}
+\newcommand{\LittleOh}[1]{\LittleOm\left({#1}\right)}
+\DeclareMathOperator{\LittleWm}{\omega}
+\newcommand{\LittleOmega}[1]{\LittleWm\left({#1}\right)}
+
+% argmin and argmax
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Exp}{\mathbb{E}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\sign}{\mathrm{sign\ }}
+\newcommand{\abs}{\mathrm{abs\ }}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\zo}{\{0, 1\}}
+\newcommand{\SAT}{\mathit{SAT}}
+\renewcommand{\P}{\mathbf{P}}
+\newcommand{\NP}{\mathbf{NP}}
+\newcommand{\coNP}{\co{NP}}
+\newcommand{\co}[1]{\mathbf{co#1}}
+\renewcommand{\Pr}{\mathop{\mathrm{Pr}}}
+
+% theorems, lemmas, invariants, etc.
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{invariant}[theorem]{Invariant}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{property}[theorem]{Property}
+\newtheorem{proposition}[theorem]{Proposition}
+
+% piecewise functions
+\newenvironment{piecewise}{\left \{\begin{array}{l@{,\ }l}}
+{\end{array}\right.}
+
+% paired delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\len}{|}{|}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+
+\makeatletter
+\@addtoreset{equation}{section}
+\makeatother
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+
+% algorithms
+\algnewcommand\algorithmicinput{\textbf{INPUT:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\algorithmicoutput{\textbf{OUTPUT:}}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+% Formating Macros
+
+\pagestyle{fancy}
+\lhead{\sc \hmwkClass\ $\; \;\cdot \; \;$ \hmwkSemester\ $\; \;\cdot \; \;$
+Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{\sc Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{}
+\rhead{\em \hmwkAuthorName\ $($\hmwkAuthorID$)$\/}
+\cfoot{}
+\lfoot{}
+\rfoot{\sc Page\ \thepage\ of\ \protect\pageref{LastPage}}
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\fancypagestyle{fancycollab}
+{
+    \lfoot{\textit{Collaborators: \hmwkCollaborators}}
+}
+
+\fancypagestyle{problemstatement}
+{
+    \rhead{}
+    \lfoot{}
+}
+
+%%%%%% Begin document with header and title %%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%% Header Information %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Shouldn't need to change these
+\newcommand{\hmwkClass}{CSCI 255}
+\newcommand{\hmwkSemester}{Spring 2016}
+
+%%% Your name, in standard First Last format
+\newcommand{\hmwkAuthorName}{Annamalis \& Lukas}
+%%% Your NetID
+\newcommand{\hmwkAuthorID}{asharp,lleung}
+
+%%% The problem set number (just the number)
+\newcommand{\hmwkAssignmentNum}{1}
+
+%%% The problem number (just the number)
+\newcommand{\hmwkProblemNum}{2}
+
+%%% A list of your collaborators' NetIDs, separated by ", ".
+%%% You can use a new line ("\\") in the middle to prevent a long
+%%% list from overflowing.
+\newcommand{\hmwkCollaborators}{}
+%%% Sets the collaborator list to appear on the first page
+\thispagestyle{fancycollab}
+
+%%%%%%% begin Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\noindent
+{\em This document contains test reports of all fellow classmates and explanations
+of motivations behind each test. Tests will be for correctness, memory usage and
+timing when applicable.}
+
+%%%%%%% begin Anagrams Testing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Anagrams}
+\subsection{Correctness:}
+To test for correctness we had seven test cases:
+\begin{table}[H]
+	\centering
+	\begin{tabular}{cc}
+		\toprule
+		Case & String \\
+		\midrule
+		1 & \texttt{``a''} \\
+		2 & \texttt{``abc''} \\
+		3 & \texttt{``aaa''} \\
+		4 & \texttt{``cabcab''} \\
+		5 & \texttt{``annamalis''} \\
+		6 & \texttt{``aaaaaaaabb''} \\
+		7 & \texttt{``qwertyuiop''} \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+\noindent \underline{The reasoning behind each case is as follows:} \\
+\em{Note: For the last 3 cases, we know that the java HeapSpace = 2,097,152 bytes and that $10!$ = 3,628,800
+    where as $9!$ = 362,880.}
+\begin{enumerate}
+\item Base case to see if the algorithm will print out just a single string.
+\item Just a simple input meant to easily check for correctness and to see if the
+algorithm is overkill when it comes to time complexity and/or space usage.
+\item This is meant to test and see if the student's code can handle a string of all
+the same character, yet still be an easy case.
+\item Tests students ability to handle unsorted and longer strings with repeating letters.
+\item We use ''annamalis'' so as to test the 9 character correctness aspect. If the students
+were to use all of the space and store repeats, it would not time out in the system, but it
+would show up in our space analysis section where as if they did not store the extra
+strings, it would also show in the space analysis.
+\item If students ignore all of the repetitions, they would pass this case since it would only be $\frac{10!}{8!\cdot 2!}$ = 45 strings being stored.
+\item Expect any algorithm which requires storage of all of the numbers to fail this case.
+\end{enumerate}
+
+
+\underline{The results were:}
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{cccccccc}
+		\toprule
+		Group name        & Case 1 & Case 2 & Case 3 & Case 4 & Case 5 & Case 6 & Case 7 \\
+		\midrule
+		Lyle \& Derek     & Passed & Passed & Passed & Passed & Passed & Passed & Passed? \\
+		Viet \& Christ    & Passed & Passed & Passed & Passed & Passed & Passed & \textbf{Failed} \\
+		Jon \& Trung      & Passed & Passed & Passed & Passed & Passed & Passed & Passed? \\
+		Colin \& Rafael   & Passed & Passed & Passed & Passed & Passed & Passed & \textbf{Failed}  \\
+		Jiri \& Ronak     & Passed & Passed & Passed & Passed & Passed & Passed & \textbf{Failed}  \\
+		Josh \& Parker    & Passed & Passed & Passed & Passed & Passed & Passed & Passed? \\
+		Brenda \& Brendan & \textbf{Failed} & Passed & Passed & Passed & Passed & Passed & \textbf{Failed} \\
+		Lukas \& Sharp    & Passed & Passed & Passed & Passed & Passed & Passed & \textbf{Failed} \\
+		\bottomrule
+	\end{tabular}}
+\end{table}
+The reason why we put ''Passed?'' for case 7 is because our program was unable to generate a
+complete list to check for correctness, however when compared to eachouther's output, we found
+them all to be the same. For everyone else who failed this case, it was because they had an
+Out of Memory error caused by exceeding the heap space allotted for the program.
+% TIMING
+\subsection{Timing:}
+\underline{The results were (seconds):}
+\begin{table}[H]
+    \centering
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{cccccccc}
+        \toprule
+        Group name        & Case 1 & Case 2 & Case 3 & Case 4 & Case 5 & Case 6 & Case 7 \\
+        \midrule
+        Lyle \& Derek     & \textbf{0.002} & \textbf{0.008} & \textbf{0.007} & \textbf{0.016} & \textbf{0.956} & \textbf{0.014} & \textbf{87.732} \\
+        Viet \& Christ    & 0.308 & 0.196 & 0.088 & 0.133 & 1.384 & 0.080 & ---- \\
+        Jon \& Trung      & 0.164 & 0.063 & 0.089 & 0.106 & 225.2 & 5.987 & 119.6 \\
+        Colin \& Rafael   & 0.128 & 0.074 & 0.098 & 0.085 & 1.136 & 0.081 & ---- \\
+        Jiri \& Ronak     & 0.189 & 0.097 & 0.091 & 0.119 & 1.920 & 0.124 & ---- \\
+        Josh \& Parker    & 0.060 & 0.057 & 0.055 & 0.075 & 1.225 & 0.088 & 108.1 \\
+        Brenda \& Brendan & 0.111 & 0.084 & 0.083 & 0.109 & 1.171 & 0.118 & ---- \\
+        Lukas \& Sharp    & 0.076 & 0.080 & 0.080 & 0.124 & 2.152 & 0.091 & ---- \\
+        \bottomrule
+    \end{tabular}}
+\end{table}
+For this Section, Lyle and Derek had the most optimized code for Timing due to the fact that
+they printed straight out onto the command line. Apart from this everyone else had very similar
+run time with the exception of Jon and Trung's code. This was mostly due to the fact that they
+consistently did checks for different cases whenever they encountered a new enumeration of the
+word i.e. if every character is the same.
+
+\newpage
+% MEMORY
+\subsection{Memory:}
+\underline{The results were (percent used of total memory):}
+\begin{table}[H]
+    \centering
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{cccccccc}
+        \toprule
+        Group name        & Case 1 & Case 2 & Case 3 & Case 4 & Case 5 & Case 6 & Case 7 \\
+        \midrule
+        Lyle \& Derek     & \textbf{3.4\%} & \textbf{3.5\%} & \textbf{3.4\%} & \textbf{4.0\%} & \textbf{16.9\%} & \textbf{4.0\%} & \textbf{19.2\%} \\
+        Viet \& Christ    & 5.0\% & 5.1\% & 5.0\% & 5.6\% & 39.0\% & 5.6\% & ---- \\
+        Jon \& Trung      & 5.1\% & 5.1\% & 5.1\% & 6.2\% & 23.2\% & 24.2\% & 25.3\% \\
+        Colin \& Rafael   & 5.1\% & 5.0\% & 5.1\% & 5.6\% & 40.6\% & 5.6\% & ---- \\
+        Jiri \& Ronak     & 5.9\% & 5.9\% & 5.9\% & 7.0\% & 78.8\% & 7.0\% & ---- \\
+        Josh \& Parker    & 5.1\% & 5.1\% & 5.1\% & 5.6\% & 24.2\% & 5.6\% & 25.3\% \\
+        Brenda \& Brendan & 5.5\% & 5.5\% & 5.5\% & 6.1\% & 38.9\% & 6.1\% & ---- \\
+        Lukas \& Sharp    & 5.2\% & 5.2\% & 5.2\% & 5.6\% & 40.5\% & 5.8\% & ---- \\
+        \bottomrule
+    \end{tabular}}
+\end{table}
+For this Section, Lyle and Derek had the most optimized code again for Memory due to the fact that
+they printed straight out onto the command line. Apart from this everyone else had very similar
+space usage with the exception of Jon and Trung's code when it came to case 6. We had expected to see a similar drop
+in memory usage for case 6, but because their code stored extra information for each word Jon and Trung's
+algorithm did significantly worse than all other groups.
+\subsection{Summary:}
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{cccccccc}
+		\toprule
+		Group name        & Case 1 & Case 2 & Case 3 & Case 4 & Case 5 & Case 6 & Case 7 \\
+		\midrule
+		Lyle \& Derek     & Passed & Passed & Passed & Passed & Passed & Passed & Passed \\
+		Viet \& Christ    & Passed & Passed & Passed & Passed & Passed & Passed & \textbf{Failed} \\
+		Jon \& Trung      & Passed & Passed & Passed & Passed & \textbf{Failed} & \textbf{Failed} & Passed \\
+		Colin \& Rafael   & Passed & Passed & Passed & Passed & Passed & Passed & \textbf{Failed}  \\
+		Jiri \& Ronak     & Passed & Passed & Passed & Passed & Passed & Passed & \textbf{Failed}  \\
+		Josh \& Parker    & Passed & Passed & Passed & Passed & Passed & Passed & Passed \\
+		Brenda \& Brendan & \textbf{Failed} & Passed & Passed & Passed & Passed & Passed & \textbf{Failed} \\
+		Lukas \& Sharp    & Passed & Passed & Passed & Passed & Passed & Passed & \textbf{Failed} \\
+		\bottomrule
+	\end{tabular}}
+\end{table}
+The only groups to pass all cases were Lyle \& Derek and Josh \& Parker.
+\newpage
+
+
+
+%%%%%%% begin Tokenizer Testing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Turtle Tokenizer}
+\subsection{Correctness:}
+To test for correctness we had seven test cases:
+\begin{table}[H]
+	\centering
+	\begin{tabular}{cc}
+		\toprule
+		Number & Token Input \\
+		\midrule
+		1 & \texttt{``f10 R120''} \\
+		2 & \texttt{``g10''} \\
+		3 & \texttt{``x2\{f60x30\{10R60L10f\}g16\}''} \\
+		4 & \texttt{``f60x30\{10R60L10f\}g16''} \\
+		5 & \texttt{``10R60L10f''} \\
+		6 & \texttt{``yolo''} \\
+		7 & \texttt{``x2\{f60x30\{10R60L10f\}g16''} \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+\noindent \underline{The reasoning behind each case is as follows:}
+\begin{enumerate}
+\item Base case to see if the algorithm will correctly parse two basic commands with camel case
+\item An invalid entry which has numbers still to see if the program will output anything
+\item Tests if the student's code can correctly return a multiplyer command with its
+corresponding braces, with nested braces.
+\item Tests the student's code ability to return multiple commands with a multiplyer and an
+invalid entry
+\item Tests if the code identifies a missing letter at the beginning and the precense of a
+stand alone valid entry
+\item Tests to see if students ignore invalid single letters but can pick up on valid single
+letter entries
+\item Tests to see if the students code is able to catch an illegal entry (missmatched brackets)
+and throw the correct exception
+\end{enumerate}
+\newpage
+\underline{The results were:}
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{cccccccc}
+		\toprule
+		Group name        & Case 1 & Case 2 & Case 3 & Case 4 & Case 5 & Case 6 & Case 7 \\
+		\midrule
+		Lyle \& Derek     & \textbf{Failed} & \textbf{Failed} & \textbf{Failed} & \textbf{Failed} & \textbf{Failed} & \textbf{Failed} & \textbf{Failed} \\
+		Viet \& Christ    & Passed & \textbf{Failed} & Passed & \textbf{Failed} & Passed & Passed & \textbf{Failed} \\
+		Jon \& Trung      & Passed & \textbf{Failed} & \textbf{Failed} & \textbf{Failed} & \textbf{Failed} & \textbf{Failed} & Passed \\
+		Colin \& Rafael   & Passed & Passed & Passed & Passed & \textbf{Failed} & Passed & \textbf{Failed}  \\
+		Jiri \& Ronak     & Passed & \textbf{Failed} & Passed & \textbf{Failed} & \textbf{Failed} & \textbf{Failed} & \textbf{Failed}  \\
+		Josh \& Parker    & Passed & \textbf{Failed} & \textbf{Failed} & \textbf{Failed} & \textbf{Failed} & \textbf{Failed} & \textbf{Failed} \\
+		Brenda \& Brendan & Passed & \textbf{Failed} & Passed & \textbf{Failed} & \textbf{Failed} & \textbf{Failed} & \textbf{Failed} \\
+		Lukas \& Sharp    & Passed & Passed & Passed & Passed & Passed & Passed & Passed \\
+		\bottomrule
+	\end{tabular}}
+\end{table}
+Lyle \& Derek print everything out two times due to a print statement within their code; if
+commented out they would pass cases 1 and 3. They fail other cases because they return invalid
+tokens and do not throw the correct exception when mismatched brackets are inputed.
+$\Diamond$ Viet \& Christ fail because they return invalid tokens and do not throw the correct exception
+when mismatched brackets are inputed.
+$\Diamond$ Jon \& Trung fail because they are unable to handle invalid inputs and go into infinite loops
+$\Diamond$ Colin \& Rafael fail case 5 because they could not seperate two tokens and failed the last case
+becasue they do not throw the correct exception when mismatched brackets are inputed.
+$\Diamond$ Jiri \& Ronak fail because they return invalid token tokens and do not throw the corrext exception
+when mismatched brackets are inputed.
+$\Diamond$ Josh \& Parker fail because they have Invalid Character Input Exception and String Index Out of
+Bounds exceptions when there are invalid inputs.
+$\Diamond$ Brenda \& Brendan fail because they return invalid tokens and do not throw the correct exception
+when mismatched brackets are inputed.
+
+% TIMING and MEMORY
+\subsection{Timing \& Memory:}
+For this file, there was little to no difference in run time or memory usage as all had around
+0.001 seconds to run each case and took ~2.6\% memory
+\newpage
+
+%%%%%%% begin Graphics Testing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Turtle Graphics}
+\subsection{Correctness:}
+To test for correctness we had seven test cases:
+\begin{table}[H]
+	\centering
+	\begin{tabular}{cc}
+		\toprule
+		Number & String \\
+		\midrule
+		1 & \texttt{``F3 -> F10''} \\
+		2 & \texttt{``F1 -> X3\{F1\{R2L3\}\}''} \\
+		3 & \texttt{``F1 F2''} \\
+		4 & \texttt{``F -> ABC''} \\
+		5 & \texttt{``F -> X''} \\
+		6 & \texttt{``L -> R, R -> L''} \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+\noindent \underline{We began by running the program with the order-3 Snowflake:} \\
+X3 \{F3 R60 F3 L120 F3 R60 F3 R60 F3 R60 F3 L120 F3
+R60 F3 L120 F3 R60 F3 L120 F3 R60 F3 R60 F3 R60 F3
+L120 F3 R60 F3 R60 F3 R60 F3 L120 F3 R60 F3 R60 F3
+R60 F3 L120 F3 R60 F3 L120 F3 R60 F3 L120 F3 R60 F3
+R60 F3 R60 F3 L120 F3 R60 F3 L120 F3 R60 F3 L120 F3
+R60 F3 R60 F3 R60 F3 L120 F3 R60 F3 L120 F3 R60 F3
+L120 F3 R60 F3 R60 F3 R60 F3 L120 F3 R60 F3 R60 F3
+R60 F3 L120 F3 R60 F3 R60 F3 R60 F3 L120 F3 R60 F3
+L120 F3 R60 F3 L120 F3 R60 F3 R60 F3 R60 F3 L120 F3 R60 F3 L120\} \\
+\underline{Then we did the above tests for the following reasos:}
+\begin{enumerate}
+\item Base case for basic correctness
+\item Check for multiple tokens
+\item Check for missing "-$\textgreater$" error
+\item Check for swapping invalid tokens
+\item check for "Missing command block" error when running
+\item Check for swapping two tokens
+\end{enumerate}
+
+\noindent \textbf{Every team was able to pass every test.}
+
+% TIMING and MEMORY
+\subsection{Timing \& Memory:}
+There was no way to accurately test for timing or memory usage.
+
+\end{document}

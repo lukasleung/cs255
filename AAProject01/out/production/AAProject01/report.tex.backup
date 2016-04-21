@@ -1,0 +1,337 @@
+% Use this template to write your solutions to COS 423 problem sets
+
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amsfonts, amsthm, amssymb, algorithm, graphicx, mathtools,xfrac}
+\usepackage[noend]{algpseudocode}
+\usepackage{fancyhdr, lastpage}
+\usepackage[vmargin=1.20in,hmargin=1.25in,centering,letterpaper]{geometry}
+\setlength{\headsep}{.50in}
+\setlength{\headheight}{15pt}
+
+% Landau notation
+\DeclareMathOperator{\BigOm}{\mathcal{O}}
+\newcommand{\BigOh}[1]{\BigOm\left({#1}\right)}
+\DeclareMathOperator{\BigTm}{\Theta}
+\newcommand{\BigTheta}[1]{\BigTm\left({#1}\right)}
+\DeclareMathOperator{\BigWm}{\Omega}
+\newcommand{\BigOmega}[1]{\BigWm\left({#1}\right)}
+\DeclareMathOperator{\LittleOm}{\mathrm{o}}
+\newcommand{\LittleOh}[1]{\LittleOm\left({#1}\right)}
+\DeclareMathOperator{\LittleWm}{\omega}
+\newcommand{\LittleOmega}[1]{\LittleWm\left({#1}\right)}
+
+% argmin and argmax
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Exp}{\mathbb{E}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\sign}{\mathrm{sign\ }}
+\newcommand{\abs}{\mathrm{abs\ }}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\zo}{\{0, 1\}}
+\newcommand{\SAT}{\mathit{SAT}}
+\renewcommand{\P}{\mathbf{P}}
+\newcommand{\NP}{\mathbf{NP}}
+\newcommand{\coNP}{\co{NP}}
+\newcommand{\co}[1]{\mathbf{co#1}}
+\renewcommand{\Pr}{\mathop{\mathrm{Pr}}}
+
+% theorems, lemmas, invariants, etc.
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{invariant}[theorem]{Invariant}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{property}[theorem]{Property}
+\newtheorem{proposition}[theorem]{Proposition}
+
+% piecewise functions
+\newenvironment{piecewise}{\left\{\begin{array}{l@{,\ }l}}
+{\end{array}\right.}
+
+% paired delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\len}{|}{|}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+
+\makeatletter
+\@addtoreset{equation}{section}
+\makeatother
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+
+% algorithms
+\algnewcommand\algorithmicinput{\textbf{INPUT:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\algorithmicoutput{\textbf{OUTPUT:}}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+% Formating Macros
+
+\pagestyle{fancy}
+\lhead{\sc \hmwkClass $\;\;\cdot \;\;$ \hmwkSemester $\;\;\cdot\;\;$
+Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{\sc Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{}
+\rhead{\em \hmwkAuthorName\ $($\hmwkAuthorID$)$}
+\cfoot{}
+\lfoot{}
+\rfoot{\sc Page\ \thepage\ of\ \protect\pageref{LastPage}}
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\fancypagestyle{fancycollab}
+{
+    \lfoot{\em Collaborators: \hmwkCollaborators}
+}
+
+\fancypagestyle{problemstatement}
+{
+    \rhead{}
+    \lfoot{}
+}
+
+%%%%%% Begin document with header and title %%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%% Header Information %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Shouldn't need to change these
+\newcommand{\hmwkClass}{COS 423}
+\newcommand{\hmwkSemester}{Spring 2013}
+
+%%% Your name, in standard First Last format
+\newcommand{\hmwkAuthorName}{Kevin Wayne}
+%%% Your NetID
+\newcommand{\hmwkAuthorID}{wayne}
+
+%%% The problem set number (just the number)
+\newcommand{\hmwkAssignmentNum}{0}
+
+%%% The problem number (just the number)
+\newcommand{\hmwkProblemNum}{1}
+
+%%% A list of your collaborators' NetIDs, separated by ", ".
+%%% You can use a new line ("\\") in the middle to prevent a long
+%%% list from overflowing.
+\newcommand{\hmwkCollaborators}{dhlarkin, sachinr}
+%%% Sets the collaborator list to appear on the first page
+\thispagestyle{fancycollab}
+
+%%%%%%% begin Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% begin Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\noindent
+{\em This document contains a sample problem and solution. Use it as a template
+for how to write and format a solution in \LaTeX. }
+
+\section{Celebrity Identification Problem}
+Rita, a columnist for the {\em Daily Princetonian}, is covering a party.
+Rita's job is to identify a celebrity, if one exists.
+A {\em celebrity} is person that is known
+by every other person, but doesn't know any of them.
+Rita asks questions to the guests of the following form:
+{\em Excuse me. Do you know the person over there?}
+Assume that all of the guests at the party are polite
+(even the celebrity) and answer any question with
+the correct answer.
+Explain how Rita can identify the celebrity using as
+few questions as possible.
+
+\bigskip
+
+\noindent
+{\em Before looking at the solution, think about the problem
+on your own.}
+
+\bigskip
+
+\noindent
+{\em Grader's note: there is no need to include a copy of the
+problem statement when you submit your problem set. We include it here so that
+this document is self contained.}
+
+%%%%%%% end Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
+\section{Mathematical Formulation}
+We model the relationships among the guests using a digraph $G = (V,E)$
+as follows: There is a vertex
+for each of the $n$ guests and an edge from $u$ to $v$ if guest
+$u$ knows guest $v$.
+We define a {\em sink} of a digraph to be a vertex with indegree $n-1$
+and outdegree 0.
+A {\em celebrity} corresponds to a sink of the digraph.
+We note that a digraph can have at most one sink.
+We also note that the edges $E$ are given to us implicitly---we
+have an oracle {\sc HasEdge}$(u, v)$ that tells us whether there
+is an edge from $u$ to $v$ and we seek to identify a sink (if one
+exists) using as few calls to {\sc HasEdge}$(u, v)$ as possible.
+
+
+\vspace{1em} \noindent {\em Grader's note:
+If the problem has already been stated
+explicitly in mathematical terms, skip this section.}
+
+\section{Brute-Force Solution}
+We compute the digraph $G$ explicitly by
+calling {\sc HasEdge}$(u, v)$ for each potential edge.
+At this point, we can check whether a vertex $v$ is a sink by
+computing its indegree and its outdegree.
+The digraph has at most $n(n-1)$ edges, so the algorithms makes
+$\BigTheta{n^2}$ calls to {\sc HasEdge}$()$ to build the digraph.
+It yields little, if any, new insight into the problem.
+Below, we show how to do it with at most $3(n-1)$ calls to {\sc HasEdge}$()$.
+
+\vspace{1em} \noindent {\em Grader's note: Very little partial credit
+for a correct, but grossly, inefficient solution. Moreover, while the solution
+is concise, it is missing both a formal statement and proof of correctness
+and  a formal statement and analysis of its efficiency. }
+
+\section{An Efficient Solution}
+
+Our algorithm for finding a sink
+consists of two phases: in the {\em elimination
+phase}, we eliminate all but one vertex $s$ as a possible sink;
+in the {\em verification phase} we check whether $s$ is a sink.
+
+The elimination phase maintains a list of possible sinks.
+Initially it contains all $n$ vertices.
+In each iteration, we remove one vertex.
+We exploit the following key observation:
+{\em if there is an edge from $u$ to $v$, then $u$ is not the sink;
+if there is not an edge from $u$ to $v$, then $v$ is not the sink.}
+Thus, by calling {\sc HasEdge}$(u, v)$ we
+can eliminate either $u$ or $v$ from the list of possible sinks.
+We use this idea repeatedly to eliminate all vertices 
+but one, say $s$.
+
+\begin{algorithm}[H]
+\caption{Eliminating non-sinks.}
+\begin{algorithmic}
+    \Procedure{Eliminate}{$V,E$}
+        \State $L \gets$ \Call{MakeList}{}
+        \For{$v \in V$}
+            \State \Call{add}{$L, v$}
+        \EndFor
+        \While{$L$ contains at least two elements}
+            \State $u \gets$ \Call{Remove}{$L$}
+            \State $v \gets$ \Call{Remove}{$L$}
+            \If{\Call{HasEdge}{$u,v$}}
+                \State \Call{Insert}{$L, v$}
+            \Else
+                \State \Call{Insert}{$L, u$}
+            \EndIf
+        \EndWhile
+        \State $s \gets$ \Call{Remove}{$L$}
+        \State \Return $s$
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+We now verify by brute force whether $s$ is a sink:
+for every other vertex $v$, we call both
+{\sc HasEdge}$(s, v)$ and {\sc HasEdge}$(v, s)$.
+If the former always returns {\sc false}
+and the latter always returns {\sc true},
+then we declare $s$ to be the sink. Otherwise, we
+conclude there is no sink.
+
+\begin{algorithm}[H]
+\caption{Verifying a potential sink.}
+\begin{algorithmic}
+    \Procedure{Verify}{$V, s$}
+        \For{$v \in V \setminus \{s\}$}
+            \If{\Call{HasEdge}{$s,v$} or $\neg$ \Call{HasEdge}{$v,s$}}
+                \State \Return false
+            \EndIf
+        \EndFor
+        \State \Return true
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+
+\section{Correctness}
+
+\begin{proposition}
+The eliminate-and-verify algorithm either outputs the sink
+(if one exists) or reports that there is none.
+\end{proposition}
+
+\begin{proof}
+During the elimination phase, we maintain the invariant
+that if there exists a sink, then the sink
+is in the list. We omit the trivial proof by induction on the
+number of iterations. Thus, when the elimination phase ends,
+either $s$ is a sink or there is no sink.  This is
+determined by brute force during verification.
+\end{proof}
+
+\section{Analysis}
+
+\begin{proposition}
+\label{numq}
+The eliminate-and-verify algorithm makes between $n$ and $3(n-1)$ calls
+to {\sc HasEdge}$()$.
+\end{proposition}
+
+\begin{proof}
+The elimination phase requires exactly $n-1$ calls to {\sc HasEdge}$()$
+since each call decreases the size of the list by one.
+In the verification phase, we call {\sc HasEdge}$()$
+between 1 and $2(n-1)$ times, depending on whether $s$ is a sink.
+\end{proof}
+
+
+\section{A Slight Improvement}
+
+We note that
+it is possible to save an additional $\lfloor \log_2 n \rfloor$
+calls in the verification phase by not repeating any
+call we already asked during the elimination phase.
+By maintaining the list of vertices in a {\em FIFO queue}, the sink is
+involved in at least $\lfloor \log_2 n \rfloor$ questions
+during the elimination phase.
+
+Also, it is not hard to see that {\em any} algorithm must make
+at least $2(n-1)$ calls if there exists a sink because
+we must verify that the sink points to no vertices and
+that every other vertex points to the sink.
+
+\vspace{1em} \noindent {\em Grader's note: Some bonus points for a
+better-than-expected solution.}
+
+\vspace{1em} \noindent {\em Grader's note: Typically there won't be a simple
+observation like this that can be tacked onto the end, and a
+bonus-worthy solution will be a modification to the core of the
+algorithm or analysis.}
+
+\section{Appendix}
+
+A typical solution to a problem will contain a mathematical formulation and any
+notation you are introducing (if needed),
+a description of your algorithm, a proof of correctness, and an analysis of efficiency.
+Feel free to use sections and subsections to help clarify your answer, but
+don't go {\em too} crazy with them or we will not be able to follow your
+argument. 
+
+It is worth noting that this sample solution contains two independent
+solutions, one of which has a full analysis as well as an improvement.
+In most cases, you should submit only one solution and analysis.
+If you submit two solutions, we will use the worst one when assigning your score.
+
+
+%%%%%%% end Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

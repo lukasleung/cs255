@@ -1,0 +1,857 @@
+% java -cp /home/lukas/IdeaProjects/AAProject01/src/:/home/lukas/packages/algs4.jar:/home/lukas/packages/stdlib.jar:/home/lukas/packages/acm.jar:/home/lukas/packages/turtle.jar TurtleGraphics
+% Use this template to write your solutions to COS 423 problem sets
+% pdflatex filename.tex
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amsfonts, amsthm, amssymb, algorithm, graphicx, mathtools,xfrac}
+\usepackage[noend]{algpseudocode}
+\usepackage{fancyhdr, lastpage}
+\usepackage[vmargin=1.20in,hmargin=1.25in,centering,letterpaper]{geometry}
+\setlength{\headsep}{.50in}
+\setlength{\headheight}{15pt}
+
+% Landau notation
+\DeclareMathOperator{\BigOm}{\mathcal{O}}
+\newcommand{\BigOh}[1]{\BigOm\left({#1}\right)}
+\DeclareMathOperator{\BigTm}{\Theta}
+\newcommand{\BigTheta}[1]{\BigTm\left({#1}\right)}
+\DeclareMathOperator{\BigWm}{\Omega}
+\newcommand{\BigOmega}[1]{\BigWm\left({#1}\right)}
+\DeclareMathOperator{\LittleOm}{\mathrm{o}}
+\newcommand{\LittleOh}[1]{\LittleOm\left({#1}\right)}
+\DeclareMathOperator{\LittleWm}{\omega}
+\newcommand{\LittleOmega}[1]{\LittleWm\left({#1}\right)}
+
+% argmin and argmax
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Exp}{\mathbb{E}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\sign}{\mathrm{sign\ }}
+\newcommand{\abs}{\mathrm{abs\ }}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\zo}{\{0, 1\}}
+\newcommand{\SAT}{\mathit{SAT}}
+\renewcommand{\P}{\mathbf{P}}
+\newcommand{\NP}{\mathbf{NP}}
+\newcommand{\coNP}{\co{NP}}
+\newcommand{\co}[1]{\mathbf{co#1}}
+\renewcommand{\Pr}{\mathop{\mathrm{Pr}}}
+
+% theorems, lemmas, invariants, etc.
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{invariant}[theorem]{Invariant}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{property}[theorem]{Property}
+\newtheorem{proposition}[theorem]{Proposition}
+
+% piecewise functions
+\newenvironment{piecewise}{\left\{\begin{array}{l@{,\ }l}}
+{\end{array}\right.}
+
+% paired delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\len}{|}{|}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+
+\makeatletter
+\@addtoreset{equation}{section}
+\makeatother
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+
+% algorithms
+\algnewcommand\algorithmicinput{\textbf{INPUT:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\algorithmicoutput{\textbf{OUTPUT:}}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+% Formating Macros
+
+\pagestyle{fancy}
+\lhead{\sc \hmwkClass $\;\;\cdot \;\;$ \hmwkSemester $\;\;\cdot\;\;$
+Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{\sc Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{}
+\rhead{\em \hmwkAuthorName\ $($\hmwkAuthorID$)$}
+\cfoot{}
+\lfoot{}
+\rfoot{\sc Page\ \thepage\ of\ \protect\pageref{LastPage}}
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\fancypagestyle{fancycollab}
+{
+    \lfoot{\em Collaborators: \hmwkCollaborators}
+}
+
+\fancypagestyle{problemstatement}
+{
+    \rhead{}
+    \lfoot{}
+}
+
+%%%%%% Begin document with header and title %%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%% Header Information %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Shouldn't need to change these
+\newcommand{\hmwkClass}{COS 255}
+\newcommand{\hmwkSemester}{Spring 2016}
+
+%%% Your name, in standard First Last format
+\newcommand{\hmwkAuthorName}{Annamalis \& Lukas}
+%%% Your NetID
+\newcommand{\hmwkAuthorID}{asharp \& lleung}
+
+%%% The problem set number (just the number)
+\newcommand{\hmwkAssignmentNum}{0}
+
+%%% The problem number (just the number)
+\newcommand{\hmwkProblemNum}{1}
+
+%%% A list of your collaborators' NetIDs, separated by ", ".
+%%% You can use a new line ("\\") in the middle to prevent a long
+%%% list from overflowing.
+\newcommand{\hmwkCollaborators}{asharp}
+%%% Sets the collaborator list to appear on the first page
+\thispagestyle{fancycollab}
+
+%%%%%%% begin Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\noindent
+{\em This document contains an explaination of algorithmic design and solutions to two problems.
+ First will be the statement of the question followed by the mathematical formulation, the
+ Brute-Force solution, our solution, proof of correctness for our solution and any slight
+ improvements we could do.}
+
+%%%%%%% begin Turtle Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Turtle Graphics Problem}
+Our program will allow the user to program a virtual turtle to move around the graphics window, drawing
+pictures as it goes. The  virtual  turtle  in  this application can move forward, turn left, and turn
+right. Each of these operations takes a parameter that indicates either how far the turtle should move
+or how many degrees it should turn. The turtle also comes equipped with a virtual pen in its belly
+that it can use to draw a line on the graphics window.
+
+%%%%%%% end Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
+%%%%%%% Mathematical Formulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Mathematical Formulation}
+In the TurtleTokenizer algorithms we will be taking in a String of length $N$ and removing all
+white-spaces so that the resulting string is of length $N^{*}$ were $N^{*}\ \leq\ N$. We say
+that this string can be composed as $n_0n_1...n_k\ =\ N^{*}$ where $k$ is the number of tokens.
+Let $M$ then represent the longest $n_i$. $(Note\ that\ each\ token\ does\ not\ need\ to\ be\
+valid)$
+
+%%%%%%% Algorithm %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Solution}
+We approach the problem by first determining how to split up tokens.  We do this using our
+Tokenizer algorithm which will take a string and, upon request give the next token (action)
+that will be executed by TurtleGraphics. \\
+\indent Within the Tokenizer, we begin by initializing our tokens to be a string with no spaces and
+all letters being uppercase as well as keeping track of our current place within the string
+at all times. \textit{(Note: The string is also checked for miss-matching backets, so that this
+is a valid input in that sense)}
+
+\begin{algorithm}[H]
+\caption{Tokenizer I}
+\begin{algorithmic}
+    \Procedure{Initialize}{$command$}
+        \State $command \gets$ remove white-spaces and make all uppercase
+        \State $command$.\Call{assertValidity}{ } // check to make sure that \{\}'s match up
+        \State (String) $tokens \gets$ $commands$
+        \State $currentIndex \gets$ 0
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+Whenever the user calls nextToken, a stringbuilder is initialized which will
+be returned at the end. We then have a defense for whether or not there is an invalid command
+entered \textit{(i.e. 10 by itself)} by using the fact that a \textbf{valid} token must begin
+with one of the characters \{F,R,L,X,D,U,'\{'\}. If it is not one of these, Tokenizer will
+skip over the character and continue. If one of the letters is found, it will append the letter
+to the stringbuilder and check for proceeding numbers. If a number is found it will be appended.
+The current token is complete, and the string is returned. If the next char is '\{', Tokenizer keeps
+track of how many open and closed brackets are seen and builds the next token from the characters within
+the braces if there are an equal number of open and closed brackets. The reason for the counter
+is to ensure that all nested brackets are also accounted for. Once this (possibly mega) token has
+been built, it is returned.
+
+\begin{algorithm}[H]
+\caption{Tokenizer II}
+\begin{algorithmic}
+    \Procedure{nextToken}{ }
+        \State $token \gets$ String
+        \While {$currentIndex$ \textless tokens.\Call{length}{ }}
+            \If{tokens.\Call{charAt}{currentIndex} $\in \{F,R,L,X,D,U\}$ }
+                \State $token.\Call{append}{letter}$
+                \While{nextLetterIsANumber}
+                     \State $token.\Call{append}{number}$
+                \EndWhile
+                \State \Call{return}{$token$}
+            \ElsIf{tokens.\Call{charAt}{currentIndex} == "\{"}
+                \State $numOpen = 1$
+                \While{thereAreMoreChars \&\& numOpen \textgreater\ 0}
+                    \State $token.\Call{append}{char}$
+                    \If{nextchar is \{}
+                        \State $numOpen++$
+                    \ElsIf{nextChar is \}}
+                        \State $numOpen--$
+                        \If{numOpen == 0}
+                            \State $token.\Call{append}{\}}$
+                        \EndIf
+                    \EndIf
+                \EndWhile
+                \State \Call{return}{$token$}
+            \Else
+                \State $currentIndex++$
+            \EndIf
+        \EndWhile
+        \State \Call{return}{$token$}
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+TurtleGraphics takes the given token and uses the $execute$ method to scan it for one of the
+command characters \{F, R, L, X, D, U\}. If the command is F, R, or L, TurtleGraphics moves
+the Turtle the specified amount or default distance if proceeding number is given. If the
+token contains U or D, the Turtle raises or lowers its pen to draw. If a token containing
+X is given, the Turtle will be executing a token, separated by \{\}, repeated a specified
+number of times. $execute$ gets the number proceeding X and the token contained within the
+brackets. Then the $execute$ is called the specified number of times on the bracketed token.
+
+\begin{algorithm}[H]
+\caption{Turtle Graphics I}
+\begin{algorithmic}
+    \Procedure{execute}{$command$}
+        \State $tokenizer \gets$ TurtleTokenizer($string$)
+        \While{tokenizer.\Call{hasMoreTokens}{ }}
+            \If{nextToken = 'F'}
+                \If{nextToken only 'F'}
+                    \State turtle.\Call{forward}{50}
+                \Else
+                    \State turtle.\Call{forward}{trailingNumbers}
+                \EndIf
+            \ElsIf{nextToken = 'L'}
+                \If{nextToken only 'L'}
+                    \State turtle.\Call{left}{90}
+                \Else
+                    \State turtle.\Call{left}{trailingNumbers}
+                \EndIf
+            \ElsIf{nextToken = 'R'}
+                \If{nextToken only 'R'}
+                    \State turtle.\Call{right}{90}
+                \Else
+                    \State turtle.\Call{right}{trailingNumbers}
+                \EndIf
+            \ElsIf{nextToken = 'U'}
+                \State turtle.\Call{penUp}{ }
+            \ElsIf{nextToken = 'D'}
+                \State turtle.\Call{penDown}{ }
+            \ElsIf{nextToken = 'X'}
+                \State $numRepeats \gets$ trailingNumbers
+                \State $repeatable \gets$ nextToken
+                \For{numRepeats}
+                    \State \Call{execute}{repeatable}
+                \EndFor
+            \EndIf
+        \EndWhile
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+ReplaceAction begins by getting the replacement field string from the user interface.
+For the length of the string, our program looks through the first half up to the -
+symbol of the -\textgreater and appends each character to a StringBuilder original.
+ Next the program builds the replacement commend from the latter half of the replacement field.
+ ReplaceAction then calls the helper method replaceAll to replace all instances of the original
+ command and return the new token to the user interface.
+
+\begin{algorithm}[H]
+\caption{Turtle Graphics II}
+\begin{algorithmic}
+    \Procedure{replaceAction}{ }
+        \State $replacement \gets$ ui.\Call{getReplacementField}{ }
+        \State $replacement \gets$ remove white-spaces, make all uppercase and assert validity
+        \State hasArrow = false
+        \For{replacement.\Call{length}{ }}
+            \If{there is a "-\textgreater"}
+                \State hasArrow = true
+            \EndIf
+        \EndFor
+        \If{!hasArrow}
+            \State{Throw Exception}
+        \EndIf
+        \State $original \gets$ StringBuilder
+        \For{replacement.\Call{length}{ }}
+            \If{$current\_char =\ '-'$}
+                \State \Call{break}{ }
+            \Else
+                \State $original.\Call{append}{current\_char}$
+            \EndIf
+        \EndFor
+        \State $replaceWith \gets$ StringBuilder
+        \For{from (original.\Call{length}{ } + 1) to replacement.\Call{length}{ }}
+            \State $replaceWith.\Call{append}{current\_char}$
+        \EndFor
+        \State $oldProgramText \gets$ ui.\Call{getProgramText}{ }
+        \State $newProgramText \gets$ \Call{replaceAll}{$replacement,\ original,\ replaceWith$}
+        \State ui.\Call{setProgramText}{$newProgramText$}
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+ReplaceAll scans the original token given for the original command to be replaced with the
+replacement command. Scanning each character of the token, ReplaceAll checks for the first
+character of the original command. If the character is not the same as the original command,
+it is appended to the new token. If the same character is seen, ReplaceAll looks ahead to
+check if the commands are the same. If they are, the original command is replaced by the
+replacement comment. If not, ReplaceAll continues appending characters. Once the end of
+token is reached, the newly built token with all original commands replaced is returned.
+
+\begin{algorithm}[H]
+\caption{Turtle Graphics III}
+\begin{algorithmic}
+    \Procedure{replaceAll}{$token, original, replacement$}
+        \State $result \gets$ StringBuilder
+        \State currentIndex = 0
+        \While{$currentIndex\ \textless\ token.\Call{length}{ }$}
+            \If{$currentChar\ =\ original.firstChar$}
+                \For{$original.\Call{length}{ }$}
+                    \If{chars are not equal}
+                        \State \Call{break}{}
+                    \EndIf
+                \EndFor
+                \If{Found original}
+                    \State $result.\Call{append}{replacement}$
+                \Else
+                    \State $result.\Call{append}{stringFrom\_currentIndex}$
+                \EndIf
+                \State update $currentIndex$
+            \Else
+                \State result.\Call{append}{$currentChar$}
+                \State $currentIndex++$
+            \EndIf
+        \EndWhile
+        \State \Call{return}{$result$}
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+%%%%%%% Correctness %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Correctness}
+
+\begin{proposition}
+The TurtleTokenizer algorithm either outputs the next valid token while ignoring invalid tokens.
+\end{proposition}
+
+\begin{proof}
+Our Tokenizer algorithm will "clean" the inputed string so that if it has invalid brackets, an
+exception is thrown and all of the spaces are removed to allow for accurate pointers to keep
+track of the current position. This cleaned version is stored as well as the pointer as instance
+variables allowing for the user to easily ask for the $nextToken()$, returning the next valid
+token. The validity of the token is assertained by the if-statements, if not a valid letter or
+not a '\{', the program will skip this portion of the string. The program will also determine if
+a multiplier is followed by a '\{', and if not will throw the appropriate exception.
+\end{proof}
+
+\begin{proposition}
+The $execute()$ algorithm will interpret the user inputted string and carry out the
+corresponding commands
+\end{proposition}
+
+\begin{proof}
+This is more of a trivial proof as it is largely dependent on the success of the aforementioned
+tokenizer algorithm, however when it gets a valid token (determined to be so by the tokenizer),
+it will execute the command with the starting letter. If the token is a multiplyer, it will
+parse the number of repetitions from it, and use a for-loop to execute the subsequent command
+block, calling $execute$ recursively.
+\end{proof}
+
+\begin{proposition}
+The $replaceAction()$ algorithm will replace all occurances of a given command with a user specified
+command and throw an exception if the command called with and invalid replacement statement.
+\end{proposition}
+
+\begin{proof}
+The $replaceAction()$ first checkes that the replacement statement is valid through linearly searching
+for the "-\textgreater" symbol, if not found will end. Otherwise it will get the original command to
+be replaced and the command to replace it. It will then linearly search through the tokens again and
+look for every instance where the original is. If found, the program will replace it. Otherwise it will
+keep appending the original commands.
+\end{proof}
+%%%%%%% Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Analysis}
+
+\begin{proposition}
+\label{numq}
+The $nextToken()$ algorithm will have time and space complexity in respect to $M$, the length of
+the longest token.
+\end{proposition}
+
+\begin{proof}
+Since TurtleTokenizer is a linear process that moves through each index of the token, the average
+time complexity is \textbf{O(M)} where $M$ is the length of the longest token.
+
+\begin{center}
+    Giving us an overarching \textbf{O(M)} complexity.
+\end{center}
+
+\end{proof}
+
+\begin{proposition}
+\label{numq}
+The $execute$ algorithm will have time and space complexity in respect to $N^{\dagger}$, the longest
+expanded string of commands
+\end{proposition}
+
+\begin{proof}
+Given an input of length $N$, if it is expanded to its maximum length where all loops are expanded
+and written out, it can be represented as $N^{\dagger}$, where $N^{\dagger}\ \geq\ N^{*}$, the
+length of the cleaned-up strings. Since from this expansion, the $execute$ algorithm simply linearly
+goes through the string and executes all valid tokens.
+
+\begin{center}
+    This gives us an overarching \textbf{O(N$^{\dagger}$)} complexity.
+\end{center}
+
+\end{proof}
+
+\begin{proposition}
+\label{numq}
+The $replaceAction()$ algorithm will have time and space complexity of \textbf{O(N + (N$^{\ddagger}$+k+m))}
+where:
+\begin{itemize}
+ \item \textbf{N:} ~ The length of the original string of tokens
+ \item \textbf{N$^{\star}$:} ~ The length of the original string of tokens without spaces, $N^{*}\ \leq\ N$
+ \item \textbf{n:} ~ The length of the token to be replaced
+ \item \textbf{k:} ~ The number of occurences of the above token
+ \item \textbf{m:} ~ The length of the tokens that will be doing the replacing
+ \item \textbf{N$^{\ddagger}$:} ~ $N^{\star}\ -\ k*n$
+\end{itemize}
+\end{proposition}
+
+\begin{proof}
+This is the case since we will first go through the original to remove spaces, \textbf{O(N)}, making $N^{\star}$ the
+linear search then we go throug and replace all of the occurances of the tokens to be replaced with the tokens to be
+replacing. Note that if the tokens to be replaced are the longer ones, will not exceed \textbf{O(N$^{\star}$)}.
+Otherwise the we have a string of length$N^{\ddagger}+k+m$ to build which is also a linear process, \textbf{O(N$^{\ddagger}$+k+m)}
+
+\begin{center}
+    Giving us an overarching \textbf{O(N + (N$^{\ddagger}$+k+m))} complexity.
+\end{center}
+
+\end{proof}
+
+
+%%%%%%% Example %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{An Example}
+We first note that only an example of the TurtleGraphics working is sufficient to
+show that TurtleTokenizer works. For this example we entered the string:
+ X3 \{F81 L120\}, this produces a triangle of side length 81. We then used the
+ replace functionality with the command F81 -\textgreater\ F27 R60 F27 L120 F27 R60 F27
+ to produce: X3 \{F27 R60 F27 L120 F27 R60 F27 L120\}. This produces a Koch snowflake
+ of order 1.  We then employed the following replace commands to create a 4th order Koch
+ snowflake:
+ \begin{itemize}
+   \item \textbf{2nd Order:} F27 -\textgreater\ F9 R60 F9 L120 F9 R60 F9
+   \item \textbf{3rd Order:} F9 -\textgreater\ F3 R60 F3 L120 F3 R60 F3
+   \item \textbf{4th Order:} F3 -\textgreater\ F1 R60 F1 L120 F1 R60 F1
+ \end{itemize}
+ \textbf{\underline{Resulting in:}} \\
+ X3 \{F1 R60 F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60 F1
+ L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60 F1
+ L120 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60
+ F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60
+ F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60
+ F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60
+ F1 L120 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60
+ F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60
+ F1 L120 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60
+ F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60
+ F1 L120 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60
+ F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60
+ F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60
+ F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60
+ F1 L120 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60
+ F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60
+ F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60
+ F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60 F1
+ L120 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60 F1
+ L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60 F1
+ L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 L120 F1 R60 F1
+ L120 F1 R60 F1 R60 F1 R60 F1 L120 F1 R60 F1 L120\}
+ \\ \\
+ This is sufficient to show that the Turtle algorithms all work since when we press run
+ on the ui, it will execute the given code correctly, meaning that the execute code is
+ functioning correctly and therefore also the Tokenizer class.
+
+
+%%%%%%% end Turtle Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%% begin Anagrams Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Anagrams Problem}
+Two strings are anagrams of each other if they contain the same characters with the
+same frequencies: “stops” and “psost” are anagrams, while “stops” and “stoop”
+are not. (It’s not necessary that the permuted strings be English words.)
+
+Your program will read a text file, with its name specified as a command line argument,
+that contains one string of characters per line. For each line of the file, your program must
+print all anagrams of the string in alphabetical order to standard output, with any repetitions
+removed. The output from different lines should be separated by a blank line.
+
+
+\bigskip
+
+
+\bigskip
+
+\noindent
+
+%%%%%%% end Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
+%%%%%%% Mathematical Formulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Mathematical Formulation}
+In this problem, we will be given a word of length $N$ consisting of $k$ unique letters.
+We will find $M$ anagrams of this word, $M$ can be represented in terms of $N$ as:
+  $\frac{N!}{n_0!\cdot n_1!\cdot ...\cdot n_k!}$ where $n_i$ = number of repetitions
+  for each letter s.t. $n_0+n_1+...+n_k$ = {\em N} \\ $(Note\ that\ n_i\ may\ =\ 1)$
+
+%%%%%%% Algorithm %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Solution}
+
+Our algorithm for finding all anagrams in a list of words is accomplished
+through several steps. We look at one word at a time, checking its length, $N$.
+If $N$ \textgreater\ 1, this is the trivial case, if not we begin to enumerate
+the Anagrams.
+
+\begin{algorithm}[H]
+\caption{Initialization Step.}
+\begin{algorithmic}
+    \Procedure{Anagrams}{$fileName$}
+        \While{$fileName$ contains at least 1 word}
+            \State $word \gets$ $fileName$
+            \If{$word$.length \textless 2}
+                \State print (word)
+            \Else
+                \State $anagrams$ = Initialize $HashSet$
+                \State \Call{findAnagrams}{$word$}
+            \EndIf
+        \EndWhile
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+Begin by sorting the word and enumerating the anagrams via a $swap$ method.
+$Note: We\ do\ not\ enumerate\ these\ in\ lexiographical\ order,\ see\ below\ for\ details$.
+Once all of the anagrams have been found, we move onto the next phase which would be to take
+all of the anagrams and sort them so that they are in alphabetical order.
+
+\begin{algorithm}[H]
+\caption{Finding Anagrams}
+\begin{algorithmic}
+    \Procedure{findAnagrams}{$word$}
+        \State sort and input \big($word$\big)  into $hashset$
+        \For{$c_0 \in word$}
+            \For{$c_1 \in word \setminus \{previous characters\}$}
+                \If{$c_0\ equals\ c_1$}
+                    \State CONTINUE
+                \Else
+                    \State \Call{swap}{$word, c_0, c_1$}
+                \EndIf
+            \EndFor
+        \EndFor
+        \State \Call{sort}{$anagrams$}
+        \State \Call{print}{$anagrams$}
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+{\em Swap} makes recursive calls checking to see if the permutation of
+the word has already been found via a hashset, inserting them if they
+are not contained within the set.
+
+\begin{algorithm}[H]
+\caption{Swaping Characters}
+\begin{algorithmic}
+    \Procedure{swap}{$word, c_0, c_1$}
+        \State $newWord \gets$ Switch characters $c_0$ and $c_1$ within $word$
+        \If{$newWord \notin anagrams$}
+            \State anagrams.\Call{insert}{$newWord$}
+        \EndIf
+        \State \Call{increment}{$c_0\ and\ c_1$}
+        \For{$c_0 \in newWord$}
+            \For{$c_1 \in newWord \setminus \{previous characters\}$}
+                \If{$c_0\ equals\ c_1$}
+                    \State CONTINUE
+                \Else
+                    \State \Call{swap}{$newWord, c_0, c_1$}
+                \EndIf
+            \EndFor
+        \EndFor
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+%%%%%%% Correctness %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Correctness}
+
+\begin{proposition}
+This algorithm with effectively find and print out all of the $M$ Anagrams of a word of length $N$ consisting
+of $k$ unique letters, the frequency of each can be represented as $n_i$ s.t. $n_0+n_1+...+n_k$ = $N$.
+\end{proposition}
+
+\begin{proof}
+We do this proof inductively. \\ \\
+\textbf{\underline{Base Cases:}} \\
+For $N$ = 1, (i.e. word is "a"), this is trivial, so look instead at $N$ = 2. Here we have 2 cases:
+\begin{enumerate}
+ \item \textbf{k = 2}, word = "ab"
+ \item \textbf{k = 1}, word = "aa"
+\end{enumerate}
+In \textbf{case 1}, the algorithm would sort first to "\textbf{ab}" and store that, then swap the first letter, 'a', with the next
+distinct letter, 'b', producing "\textbf{ba}". This would end the program as there are no other swaps to be made.
+In \textbf{case 2}, the algorithm would sort first to "\textbf{aa}" and store that, then see that the two characters are the
+same so it would end the program as there are no other swaps to be made.
+
+The next step would be $N$ = 3 where we have the following cases:
+\begin{enumerate}
+  \item \textbf{k = 3}, word = "abc"
+  \item \textbf{k = 2}, word = "aab"
+  \item \textbf{k = 1}, word = "aaa"
+\end{enumerate}
+In \textbf{case 1}, the algorithm would sort first to "\textbf{abc}" and store that, then swap the first
+letter with the next distinct letter, 'b', producing "\textbf{bac}". Now 'b' is an anchor and so we will look to
+enumerate all anagrams of the remainder, putting 'b' in front. Note that the remainder is like that of
+\textbf{case 1} when $N=2$ so the resulting product would be "\textbf{bca}" since "\textbf{bac}" was found already.
+Now we return to  the original sorted string "\textbf{abc}" and swap 'a' with the next unique letter, 'c', producing
+"\textbf{cba}". Now 'c' is the anchor and for the same reasoning as previous, we see that the string "\textbf{cab}"
+is generated so we now return to the original sorted string and attempt to swap 'a' with the next unique letter.
+Since there are no more, we anchor 'a' and now attempt to swap 'b' with its next unique letter, 'c'. This produces
+"\textbf{acb}" and would end this portion of the algorithm as there are no other swaps to be made. Now that all of
+the possible combinations have been found, the program will sort all of the found strings and print them out. \\
+    \indent In \textbf{case 2}, the algorithm would sort first to "\textbf{aab}" and store that, then swap the first
+letter with the next distinct letter, 'b', producing "\textbf{baa}". Now 'b' is an anchor and so we will look to
+enumerate all anagrams of the remainder, putting a 'b' in front. Note that the remainder is like that of
+\textbf{case 2} when $N=2$ so there are no more strings to enumerate so we return to the original sorted string,
+"\textbf{aab}". Now the program will swap the next letter, 'a', with the next distinct letter, 'b'.  This produces
+the string "\textbf{aba}".  Since now 'b' is the anchor and the second 'a' has no proceeding letters, the process
+ends as all of the possible combinations have been found, the program will sort all of the found strings and
+print them out. \\
+    \indent In \textbf{case 3}, the algorithm would sort first to "\textbf{aaa}" and recognize this to be a trivial
+case so it will print out the found string.  \\
+
+\noindent \textbf{\underline{Assumption:}} \\
+Let us have a word (when sorted) be $n_{1_1}$$n_{1_2}$...$n_{1_i}$$n_{2_1}$$n_{2_2}$...$n_{j_1}$...$n_{k_1}$$n_{k_2}$..$n_{k_p}$
+s.t. $n_{l_1} + ... + n_{l_m}$ = $n_1$ and $n_1+...+n_k$ = $N$ for $i,j,k,l,m \in \mathbb{N}$. We assume that
+we can find every anagram for this form of word. \\
+
+\noindent \textbf{\underline{{\em k+1} Step:}} \\
+Now we use the same logic as we did in the cases of the $N=3$ stage when we had "anchor" substrings so that way we
+enumerate first all of the strings that begin with $n_{2_1}$, then $n_{2_2}$, ..., then finally $n_{{k+1}_1}$ and
+$n_{1_1}$. Therefore the algorithm will progress anchoring also the next term, up until there are only have 3 terms not
+anchored which we saw from the base cases will be fully enumerated. Therefore the algorithm continues swapping in
+letters until all cases have been found.
+
+
+
+
+
+\end{proof}
+
+%%%%%%% Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Analysis}
+
+\begin{proposition}
+\label{numq}
+Our algorithm will have time and space complexity in respect to the number of anagrams $M$ that can be derived
+from a word of length $N$ with $k$ unique letters such that $n_0+n_1+...+n_k$ = $N$.
+(Recall: $M$ = $\frac{N!}{n_0!\cdot n_1!\cdot ...\cdot n_k!}$). We say that this
+algorithm has: \begin{center}\textbf{O(M$\cdot$ log(M))} complexity.\end{center}
+\end{proposition}
+
+\begin{proof}
+We begin this proof by stating that it is impossible to get better than O($M$) since every possible enumeration
+must be explored and worst case is that there are no repeating letters so this would be $N$! outcomes so an $N$!
+algorithm must be used. This being said, our algorithm will only enumerate each possible outcome once and due
+to fact that the senario where two of the same letters are swapped which would lead to an anagram that has already been
+found has been eliminated, our algorithm performs at the afformentioned $M$ complexity for finding the anagrams. After
+we have found all of the anagrams, we now must put them in alphabetic order, which we do through linearly
+copying them into an array, followed by sorting them, and finally printing them. Therefore we can list the
+complexities as such:
+\begin{enumerate}
+    \item \textbf{Finding Anagrams:} O($M$) ~ Enumerating all possible $M$ anagrams
+    \item \textbf{Copying:} O($M$)
+    \item \textbf{Sorting:} O($M\cdot log(M)$) ~ Sorting all $M$ found anagrams
+    \item \textbf{Printing:} O($M$)
+\end{enumerate}
+
+\begin{center}
+    Giving us an overarching \textbf{O(M$\cdot$ log(M))} complexity.
+\end{center}
+
+\end{proof}
+
+
+
+
+%%%%%%% Example %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{An Example}
+Say that we input the simple word \textbf{jeep}. Before beginning tracing, let us first observe that this word has
+$N$ = 4 letters, which implies that it has $M$ = $\frac{4!}{1!\cdot 2!\cdot 1!}$ = 12 anagrams. to solve, first the
+algorithm would initialize our HashSet with the sorted form of the word \textbf{eejp}:
+
+\begin{center}
+\begin{tabular}{ |c|c| }
+    \hline
+    \multicolumn{2}{|c|}{HashSet} \\
+    \hline
+    \textbf{Stage-Found} & \textbf{Anagram} \\
+    \hline
+    $sorted$ & eejp \\
+    \hline
+\end{tabular}
+\end{center}
+
+Now the \textbf{FindAnagrams} portion beings, pointers $i_0$ and $j_0$ = 0 and 1 respectively
+so that they are pointing to \textbf{e} and \textbf{e}. Since they are equal, $j$ increments
+so that $i_0 = 0,\ j_0 = 2$ \\ \indent i.e. $i_0$ = first \textbf{e} and $j_0$ = \textbf{j} \\ These two
+letters are not the same so we call $swap$ \\
+\indent Within $S_1$ = $swap$($eejp$, 0, 2); we swap \textbf{e} and \textbf{j} to get \textbf{jeep}, since
+this is not in the HashSet, we add it.
+
+\begin{center}
+\begin{tabular}{ |c|c| }
+    \hline
+    \multicolumn{2}{|c|}{HashSet} \\
+    \hline
+    \textbf{Stage-Found} & \textbf{Anagram} \\
+    \hline
+    $sorted$ & eejp \\
+    \hline
+    $S_1$ & jeep \\
+    \hline
+\end{tabular}
+\end{center}
+
+Now we will attempt to recursively call swap, setting $i_1$ = 1 and $j_1$ = 2. since our word now is \textbf{jeep},
+we see that the letters are again both $i_1$ and $j_1$ points to \textbf{e} so increment $j_1$ = 3 now.  Our next
+call of $swap$ therefore will be $S_2$ =  $swap$($jeep$, 1, 3); resulting in the word \textbf{jpee}, since not in the
+HashSet, we add it.
+
+\begin{center}
+\begin{tabular}{ |c|c| }
+    \hline
+    \multicolumn{2}{|c|}{HashSet} \\
+    \hline
+    \textbf{Stage-Found} & \textbf{Anagram} \\
+    \hline
+    $sorted$ & eejp \\
+    \hline
+    $S_1$ & jeep \\
+    \hline
+    $S_2$ & jpee \\
+    \hline
+\end{tabular}
+\end{center}
+
+Now will attempt to recursively call swap again, setting $i_2$ and $j_2$ to 2, and 3 respectively, seeing again that
+both $i_1$ and $j_1$ points to \textbf{e} but since we have reached the end of the for loop, $S_2$ call will end.
+
+Returning to $S_1$ (recall that the word is \textbf{jeep}, $i_1$ = 1 and $j_1$ = 3). We continue in the loop
+such that now  $i_1$ = 2, $j_1$ = 3. Therefore $i_2$ points to the second \textbf{e} and $j_0$ to \textbf{p}. Swapping
+them through calling: $S_3$ = $swap$($jeep$, 2, 3); results in the word \textbf{jepe}, not in the HashMap so we add it. \\
+\indent \textit{Note: the for loop will not be able to execute here so $S_3$ terminates here.}
+
+\begin{center}
+\begin{tabular}{ |c|c| }
+    \hline
+    \multicolumn{2}{|c|}{HashSet} \\
+    \hline
+    \textbf{Stage-Found} & \textbf{Anagram} \\
+    \hline
+    $sorted$ & eejp \\
+    \hline
+    $S_1$ & jeep \\
+    \hline
+    $S_2$ & jpee \\
+    \hline
+    $S_3$ & jepe \\
+    \hline
+\end{tabular}
+\end{center}
+
+Returning to $S_1$ (recall that the word is \textbf{jeep}, $i_1$ = 2 and $j_1$ = 3) we have ended the for loop now so
+terminate $S_1$ returning to the original $sorted$ state.
+\\ \indent \textit{\underline{Note}: we have successfully found all anagrams of \textbf{jeep} beginning with \textbf{j}!}
+\\ Recall  the word now is \textbf{eejp} and $i_0 = 0,\ j_0 = 2$, continuing in the for loop we get,
+$i_0 = 0,\ j_0 = 3$, so we call $S_4$ =  $swap$($eejp$, 0, 3); resulting in the word \textbf{peje}. From
+here much like before, we shall find all anagrams of \textbf{jeep} beginning with \textbf{p} this time, finally followed
+by all anagrams beginning with \textbf{e} so our HashSet will look like:
+
+\begin{center}
+\begin{tabular}{ |c|c| }
+    \hline
+    \multicolumn{2}{|c|}{HashSet} \\
+    \hline
+    \textbf{Stage-Found} & \textbf{Anagram} \\
+    \hline
+    $sorted$ & eejp \\
+    \hline
+    $S_1$ & jeep \\
+    \hline
+    $S_2$ & jpee \\
+    \hline
+    $S_3$ & jepe \\
+    \hline
+    $S_4$ & peje \\
+    \hline
+    $S_5$ & pjee \\
+    \hline
+    $S_6$ & peej \\
+    \hline
+    $S_7$ & ejep \\
+    \hline
+    $S_8$ & ejpe \\
+    \hline
+    $S_9$ & epje \\
+    \hline
+    $S_{10}$ & epej \\
+    \hline
+    $S_{11}$ & eepj \\
+    \hline
+\end{tabular}
+\end{center}
+
+Now that we have reached the end of the enumerating stage, we come to sorting the above HashSet and printing all of
+them out.
+
+%%%%%%% end Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
