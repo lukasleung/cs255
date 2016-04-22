@@ -1,0 +1,353 @@
+% Use this template to write your solutions to COS 423 problem sets
+
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amsfonts, amsthm, amssymb, algorithm, graphicx, mathtools, xfrac}
+\usepackage[noend]{algpseudocode}
+\usepackage{fancyhdr, lastpage}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage[vmargin=1.20in,hmargin=1.25in,centering,letterpaper]{geometry}
+\setlength{\headsep}{.50in}
+\setlength{\headheight}{15pt}
+
+% Landau notation
+\DeclareMathOperator{\BigOm}{\mathcal{O}}
+\newcommand{\BigOh}[1]{\BigOm\left({#1}\right)}
+\DeclareMathOperator{\BigTm}{\Theta}
+\newcommand{\BigTheta}[1]{\BigTm\left({#1}\right)}
+\DeclareMathOperator{\BigWm}{\Omega}
+\newcommand{\BigOmega}[1]{\BigWm\left({#1}\right)}
+\DeclareMathOperator{\LittleOm}{\mathrm{o}}
+\newcommand{\LittleOh}[1]{\LittleOm\left({#1}\right)}
+\DeclareMathOperator{\LittleWm}{\omega}
+\newcommand{\LittleOmega}[1]{\LittleWm\left({#1}\right)}
+
+% argmin and argmax
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Exp}{\mathbb{E}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\sign}{\mathrm{sign\ }}
+\newcommand{\abs}{\mathrm{abs\ }}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\zo}{\{0, 1\}}
+\newcommand{\SAT}{\mathit{SAT}}
+\renewcommand{\P}{\mathbf{P}}
+\newcommand{\NP}{\mathbf{NP}}
+\newcommand{\coNP}{\co{NP}}
+\newcommand{\co}[1]{\mathbf{co#1}}
+\renewcommand{\Pr}{\mathop{\mathrm{Pr}}}
+
+% theorems, lemmas, invariants, etc.
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{invariant}[theorem]{Invariant}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{property}[theorem]{Property}
+\newtheorem{proposition}[theorem]{Proposition}
+
+% piecewise functions
+\newenvironment{piecewise}{\left \{\begin{array}{l@{,\ }l}}
+{\end{array}\right.}
+
+% paired delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\len}{|}{|}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+
+\makeatletter
+\@addtoreset{equation}{section}
+\makeatother
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+
+% algorithms
+\algnewcommand\algorithmicinput{\textbf{INPUT:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\algorithmicoutput{\textbf{OUTPUT:}}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+% Formating Macros
+
+\pagestyle{fancy}
+\lhead{\sc \hmwkClass\ $\; \;\cdot \; \;$ \hmwkSemester\ $\; \;\cdot \; \;$
+Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{\sc Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{}
+\rhead{\em \hmwkAuthorName\ $($\hmwkAuthorID$)$\/}
+\cfoot{}
+\lfoot{}
+\rfoot{\sc Page\ \thepage\ of\ \protect\pageref{LastPage}}
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\fancypagestyle{fancycollab}
+{
+    \lfoot{\textit{Collaborators: \hmwkCollaborators}}
+}
+
+\fancypagestyle{problemstatement}
+{
+    \rhead{}
+    \lfoot{}
+}
+
+%%%%%% Begin document with header and title %%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%% Header Information %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Shouldn't need to change these
+\newcommand{\hmwkClass}{COS 255}
+\newcommand{\hmwkSemester}{Spring 2016}
+
+%%% Your name, in standard First Last format
+\newcommand{\hmwkAuthorName}{Lukas Leung}
+%%% Your NetID
+\newcommand{\hmwkAuthorID}{lleung}
+
+%%% The problem set number (just the number)
+\newcommand{\hmwkAssignmentNum}{4}
+
+%%% The problem number (just the number)
+\newcommand{\hmwkProblemNum}{0}
+
+%%% A list of your collaborators' NetIDs, separated by ", ".
+%%% You can use a new line ("\\") in the middle to prevent a long
+%%% list from overflowing.
+\newcommand{\hmwkCollaborators}{}
+%%% Sets the collaborator list to appear on the first page
+\thispagestyle{fancycollab}
+
+%%%%%%% begin Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% start Bank Cards %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{UVA Problem 10561: Ferry Loading}
+\textbf{Background} \\
+~\indent Before bridges were common, ferries were used to transport cars across rivers. River ferries, unlike their
+larger cousins, run on a guide line and are powered by the river's current. Two lanes of cars drive onto
+the ferry from one end, the ferry crosses the river, and the cars exit from the other end of the ferry. \\
+\indent The cars waiting to board the ferry form a single queue, and the operator directs each car in turn
+to drive onto the port (left) or starboard (right) lane of the ferry so as to balance the load. Each car in
+the queue has a different length, which the operator estimates by inspecting the queue. Based on this
+inspection, the operator decides which side of the ferry each car should board, and boards as many cars
+as possible from the queue, subject to the length limit of the ferry. Your job is to write a program that
+will tell the operator which car to load on which side so as to maximize the number of cars loaded. \\
+\textbf{Input} \\
+~\indent The input begins with a single positive integer on a line by itself indicating the number of the cases
+following, each of them as described below. This line is followed by a blank line, and there is also a
+blank line between two consecutive inputs. \\
+\indent The first line of input contains a single integer between 1 and 100: the length of the ferry (in metres).
+For each car in the queue there is an additional line of input specifying the length of the car (in cm, an
+integer between 100 and 3000 inclusive). A  nal line of input contains the integer 0. The cars must be
+loaded in order, subject to the constraint that the total length of cars on either side does not exceed
+the length of the ferry. Subject to this constraint as many cars should be loaded as possible, starting
+with the  rst car in the queue and loading cars in order until no more can be loaded. \\
+\textbf{Output} \\
+~\indent For each test case, the output must follow the description below. The outputs of two consecutive cases
+will be separated by a blank line. \\
+\indent The first line of outuput should give the number of cars that can be loaded onto the ferry. For each
+car that can be loaded onto the ferry, in the order the cars appear in the input, output a line containing
+"port" if the car is to be directed to the port side and "starboard" if the car is to be directed to the
+starboard side. If several arrangements of the cars meet the criteria above, any one will do.
+
+
+
+%%%%%%% end Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
+%%%%%%% Mathematical Formulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Mathematical Formulation}
+We are given an input of $L$ for length of ferry, followed by an input of N cars in the
+form $l_1, l_2, ... , l_N$ of which $n, 1 \leq n \leq N$ will fit onto the ferry if optimally placed.
+The algorithm will decide what the number $n$ is as well as whether each of these $n$ cars
+should go to port or starboard in the order seen.
+%%%%%%% Algorithm %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Solution}
+Important Confusing Data Structures:
+\begin{itemize}
+    \item boolean[2][LENGT+1] \textbf{lastUsed} : ~ keeps track of the last seen possible car lengths
+    \item boolean[202][LENGT+1] \textbf{solutions} : ~ yes
+    \item int[202] \textbf{carLen} : ~ Keeps track of the car lengths that have been seen thus far. carLength[1] = $l_1$
+\end{itemize}
+
+We treat this problem as the classic napsack dynamic programming problem except,
+instead of having one napsack we have two. Therefore the relationship we will
+be doing is for each open state and given a new value $v_i$:
+\[
+state(i, v_1, v_2) =
+    \begin{cases}
+        state(i+1, v_1 + v_i, v_2),\ if\ v_1\ +\ v_i\ \leq\ L \\
+        state(i+1, v_1, v_2 + v_i),\ if\ v_2\ +\ v_i\ \leq\ L
+    \end{cases}
+\]
+If we use this exsact model we will have to use data structures for storage in the $3^{rd}$
+degree, so as a trick to stay on a 2-Dimentional grid we use a trick. Since we know
+that $|v_1| + |v_2| + |v_i| = \ell_i$ when item $v_i$ has been added where $\ell_i = \sum\limits_{i=1}^{k} l_i$ and $k \leq n$. This
+fact is useful because then we just have to keep track of two things: $\ell_i$ and either
+$|v_1|\ or\ |v_2|$. For this specific problem, $v_1 = port$ and $v_2 = starbord$ we can have the
+following:
+\[
+state(i, v_2) =
+    \begin{cases}
+        state(i+1, v_2 + v_i),\ if\ |v_2|\ +\ |v_i|\ \leq\ L \implies starboard\\
+        state(i+1, v_2),\ if\ \ell_i\ -\ |v_2|\ \leq\ L \implies port
+    \end{cases}
+\]
+This way we only need to know $v_2$ length of starboard side, $v_i$ length of current car,
+and $\ell$ length of total cars seen thusfar. This is only to build the table which we will
+in turn backtrack to determine for each car wheather to go to starboard or port.
+
+\begin{algorithm}[H]
+\caption{Main and Build}
+\begin{algorithmic}
+    \Procedure{build}{}
+        \For{numberOfCases}
+            \State $LENGTH \gets$ Integer.parseInt(line) * 100
+            \State $lastUsed, solutions, carLen \gets$ initialized (see above)
+            \State $boolean done \gets$ true
+            \State $curRow, invRow, curCar, n, sumLen, lastLen \gets$ initialized to 0
+            \While{true}
+                \State $currentLen \gets$ Integer.parseInt(in.nextLine)
+                \If{currentLen == 0}
+                    \State break
+                \EndIf
+                \If{done}
+                    \State continue
+                \EndIf
+                \State $invRow \gets$ curRow
+                \State $curRow \gets$ (curRow + 1) \% 2
+                \State curCar++
+                \State $carLen[curCar] \gets$ currentLen
+                \State sumLen += currentLen
+                \State Arrays.fill(lastUsed[curRow], false)
+                \State $boolean\ canLoad \gets$ false;
+                \For{$len \in 0..LENGTH$}
+                    \If{!lastUsed[invRow][len]}
+                        \State continue
+                    \EndIf
+                    \State $int pos \gets$ len + currentLen
+                    \If{$pos \leq LENGTH$} // Starboard
+                        \State lastUsed[curRow][pos] = true
+                        \State lastLen = pos
+                        \State canLoad = true
+                    \EndIf
+                    \If{$sumLen - len \leq LENGTH$} // Port
+                        \State lastUsed[curRow][len] = true
+                        \State solutions[curCar][len] = true
+                        \State lastLen = len
+                        \State canLoad = true
+                    \EndIf
+                \EndFor
+                \If{!canLoad}
+                    \State done = true
+                \Else
+                    \State n++
+                \EndIf
+            \EndWhile
+            \State \Call{backTrack}{n, lastLen, carLen, solutions}
+        \EndFor
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\newpage
+The next and final step then is to bakctrack through the built solutions 2-D array and
+determine (from the last element) whether each car should go to starboard or port
+side. Now from the build phase we note that we have only been marking down
+true on the solutions array if the specified car can go to port. Another thing that we
+keep in mind is that we break out of the search once we have found the max number
+of cars we can place on the ferry, we will simply traceback through the algorithm
+starting with our last seen option.
+\begin{algorithm}[H]
+\caption{Backtrack and Print}
+\begin{algorithmic}
+    \Procedure{backTrack}{int n, int lastLen, int[ ] carLen, boolean[ ][ ] solutions}
+        \State $backtrack \gets$ new boolean[n+1]
+        \For{i = n..1}
+            \If{!solutions[i][lastLen]}
+                \State lastLen -= carLen[i]
+                \State backtrack[i] = false
+            \Else
+                \State backtrack[i] = true
+            \EndIf
+        \EndFor
+        \State \Call{print}{n}
+        \For{i = 1..n}
+            \If{!backtrack[i]}
+                \State \Call{print}{starboard}
+            \Else
+                \State \Call{print}{port}
+            \EndIf
+        \EndFor
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+%%%%%%% Correctness %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Correctness}
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+~ \\ \indent propose
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent Using the fact that 
+\end{proof}
+
+
+%%%%%%% Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Analysis}
+For the following analysis, we will say that..
+
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The \underline{space complexity} of this algorithm is \textbf{O(..)}
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent This is due to the fact that all of our data is stored in data structures:
+\begin{itemize}
+    \item \underline{cause}: reason $\implies complexity$
+\end{itemize}
+\begin{center}
+    Giving us a space complexity of \textbf{O(..)}
+\end{center}
+\end{proof}
+
+%%%%%%% PROPOSITION 2 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The \underline{time complexity} of this algorithm is \textbf{O(..)}
+\end{proposition}
+
+\begin{proof}
+This is the case because our algorithm...
+\begin{center}
+    Giving us a time complexity of \textbf{O(..)}
+\end{center}
+\end{proof}
+
+%%%%%%% Example %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{An Example}
+
+%%%%%%% end Bank Cards %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%% end Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

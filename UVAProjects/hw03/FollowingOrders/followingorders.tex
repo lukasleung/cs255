@@ -1,0 +1,340 @@
+% java BurrowsWheeler - < inputs\dickens.txt | java MoveToFront - | java Huffman - > inputs\dickens_compressed.txt
+% du -b dickens.txt | awk '{ print $1, "* 8" }' | bc
+% Use this template to write your solutions to COS 423 problem sets
+
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amsfonts, amsthm, amssymb, algorithm, graphicx, mathtools, xfrac}
+\usepackage[noend]{algpseudocode}
+\usepackage{fancyhdr, lastpage}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage[vmargin=1.20in,hmargin=1.25in,centering,letterpaper]{geometry}
+\setlength{\headsep}{.50in}
+\setlength{\headheight}{15pt}
+
+% Landau notation
+\DeclareMathOperator{\BigOm}{\mathcal{O}}
+\newcommand{\BigOh}[1]{\BigOm\left({#1}\right)}
+\DeclareMathOperator{\BigTm}{\Theta}
+\newcommand{\BigTheta}[1]{\BigTm\left({#1}\right)}
+\DeclareMathOperator{\BigWm}{\Omega}
+\newcommand{\BigOmega}[1]{\BigWm\left({#1}\right)}
+\DeclareMathOperator{\LittleOm}{\mathrm{o}}
+\newcommand{\LittleOh}[1]{\LittleOm\left({#1}\right)}
+\DeclareMathOperator{\LittleWm}{\omega}
+\newcommand{\LittleOmega}[1]{\LittleWm\left({#1}\right)}
+
+% argmin and argmax
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Exp}{\mathbb{E}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\sign}{\mathrm{sign\ }}
+\newcommand{\abs}{\mathrm{abs\ }}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\zo}{\{0, 1\}}
+\newcommand{\SAT}{\mathit{SAT}}
+\renewcommand{\P}{\mathbf{P}}
+\newcommand{\NP}{\mathbf{NP}}
+\newcommand{\coNP}{\co{NP}}
+\newcommand{\co}[1]{\mathbf{co#1}}
+\renewcommand{\Pr}{\mathop{\mathrm{Pr}}}
+
+% theorems, lemmas, invariants, etc.
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{invariant}[theorem]{Invariant}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{property}[theorem]{Property}
+\newtheorem{proposition}[theorem]{Proposition}
+
+% piecewise functions
+\newenvironment{piecewise}{\left \{\begin{array}{l@{,\ }l}}
+{\end{array}\right.}
+
+% paired delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\len}{|}{|}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+
+\makeatletter
+\@addtoreset{equation}{section}
+\makeatother
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+
+% algorithms
+\algnewcommand\algorithmicinput{\textbf{INPUT:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\algorithmicoutput{\textbf{OUTPUT:}}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+% Formating Macros
+
+\pagestyle{fancy}
+\lhead{\sc \hmwkClass\ $\; \;\cdot \; \;$ \hmwkSemester\ $\; \;\cdot \; \;$
+Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{\sc Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{}
+\rhead{\em \hmwkAuthorName\ $($\hmwkAuthorID$)$\/}
+\cfoot{}
+\lfoot{}
+\rfoot{\sc Page\ \thepage\ of\ \protect\pageref{LastPage}}
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\fancypagestyle{fancycollab}
+{
+    \lfoot{\textit{Collaborators: \hmwkCollaborators}}
+}
+
+\fancypagestyle{problemstatement}
+{
+    \rhead{}
+    \lfoot{}
+}
+
+%%%%%% Begin document with header and title %%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%% Header Information %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Shouldn't need to change these
+\newcommand{\hmwkClass}{COS 255}
+\newcommand{\hmwkSemester}{Spring 2016}
+
+%%% Your name, in standard First Last format
+\newcommand{\hmwkAuthorName}{Lukas Leung}
+%%% Your NetID
+\newcommand{\hmwkAuthorID}{lleung}
+
+%%% The problem set number (just the number)
+\newcommand{\hmwkAssignmentNum}{3}
+
+%%% The problem number (just the number)
+\newcommand{\hmwkProblemNum}{1}
+
+%%% A list of your collaborators' NetIDs, separated by ", ".
+%%% You can use a new line ("\\") in the middle to prevent a long
+%%% list from overflowing.
+\newcommand{\hmwkCollaborators}{}
+%%% Sets the collaborator list to appear on the first page
+\thispagestyle{fancycollab}
+
+%%%%%%% begin Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%% begin GrapeVine Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{UVA Problem 124: Following Orders}
+\textbf{Background} \\
+~\indent Order is an important concept in mathematics and in computer science. For example, Zorn's Lemma
+states: "a partially ordered set in which every chain has an upper bound contains a maximal element."
+Order is also important in reasoning about the x-point semantics of programs.
+This problem involves neither Zorn's Lemma nor x-point semantics, but does involve order. \\
+\textbf{The Problem} \\
+~\indent Given a list of variable constraints of the form x \textless y , you are to write a program that prints all orderings
+of the variables that are consistent with the constraints.
+For example, given the constraints x \textless y and x \textless z there are two orderings of the variables x, y,
+and z that are consistent with these constraints: x y z and x z y . \\
+\textbf{The Input} \\
+~\indent The input consists of a sequence of constraint specifications. A specification consists of two lines: a list
+of variables on one line followed by a list of contraints on the next line. A constraint is given by a pair
+of variables, where x y indicates that x \textless\ y.
+All variables are single character, lower-case letters. There will be at least two variables, and no
+more than 20 variables in a speci cation. There will be at least one constraint, and no more than 50
+constraints in a speci cation. There will be at least one, and no more than 300 orderings consistent with
+the contraints in a speci cation.
+Input is terminated by end-of- le. \\
+\textbf{The Output} \\
+~\indent  For each constraint speci cation, all orderings consistent with the constraints should be printed. Order-
+ings are printed in lexicographical (alphabetical) order, one per line. Characters on a line are separated
+by whitespace.  \\
+Output for different constraint specifications is separated by a blank line
+%%%%%%% end Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
+%%%%%%% Mathematical Formulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Mathematical Formulation}
+Given an input of $N$ distinct letters (2 $\leq$ N $\leq$ 26) and a set of $R$ rules (1 $\leq$ R $\leq$ 50). The algorithm will
+enumerate all $M$ anagrams of the letters adhearing to the rules. $Note:\ worst\ case\ M \simeq N!$
+
+%%%%%%% Algorithm %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Solution}
+Important Confusing Data Structures:
+\begin{itemize}
+    \item LinkedList\textless Integer\textgreater [n] \textbf{G} : ~ Each array slot corresponds to the symbol that appears in
+        that index in the sorted version of the input. Each slot holds a linked list of the symbols that must appear
+        after the given symbol according to the user inputted rules.
+    \item int[n] \textbf{inDegree} : ~ This is an array that stores (at each recursive step) the number of symbols that must come
+        before it. If the index is -1 $\implies$ that this was seen already in the recursion and has already been recorded
+        within this branch of recursion.
+    \item char[n] \textbf{result} : ~ This is an array storing the symbols being used so far in the recursive step. It is being
+        used throughout all of the different branches and never copied.
+\end{itemize}
+In the first algorithm, the program initializes all of the data structures that will be used, filling in the pertainant
+information. Once the structures have been properly formed, the program will then call it's recursive method which will
+enumerate the valid strings in alphabetic order. If there is another case, it will reinitialize everything appropriately
+and repeat, otherwise it will terminate.
+
+\begin{algorithm}[H]
+\caption{FollowingOrders main}
+\begin{algorithmic}
+    \Procedure{main}{ }
+        \State $map \gets$ new int[26] // to store the index of each letter
+        \While{inFile.\Call{hasNext}{ }}    // each case
+            \State $symbols \gets$ sorted char[n] of the symbols
+            \State $comparisons \gets$ char[2*r] of all the rules, each pair is a rule
+            \State $inverseMap \gets$ char[n]
+            \For{($i \in symbols.length$}
+                \State Fill in map and inverseMap using symbols
+            \EndFor
+            \State $G \gets$ LinkedList\textless Integer\textgreater [n] all of the rules for each letter
+            \State $inDegree \gets$ int[n] // stores indegree for each symbol
+            \State // Fill in G and inDegree
+            \For{$i \in comparisons.length$}
+                \State $less \gets$ map[comparisons[i]]
+                \State $greater \gets$ map[comparisons[i+1]]
+                \State G[less].\Call{add}{greater}
+                \State inDegree[greater]++
+            \EndFor
+            \State $results \gets$ char[n] // to store the results thusfar in recursion
+            \State \Call{dfsHash}{n, inverseMap, inDegree, G, result)} // See Below
+        \EndWhile
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+The main functionality of dfsHash is to do a depth first search recursively on the valid strings in alphabetic order.
+It accomplishes this through using the combination of the data structures explained above, inDegree and G. The way
+that they work is that, the algorithm will look through inDegree for the first occurance of a 0 $\implies$ the first
+letter that can go first (unimpeeded by rules) and record it in the first index of result. Then the algorithm will
+look at all of the letters that must come after it (found in G). For each of these letters, their inDegree will be
+decrimented by 1 soas to suggest that one of the letters coming before it has been written down. Then a recursive
+call is made, attempting to find the second letter in the same manner...etc. Once the first word has been found (all
+given symbols have been used up) the algorithm will back track and (from the second to last letter) look for the next
+occuring 0 in the array. This will be the second word. If there is none, it will kill this branch and return back to the
+previous step. $Note:\ The\ recursive\ call\ will\ re-increment\ all\ decrimented\ indicies\ within\ inDegree$
+
+\begin{algorithm}[H]
+\caption{FollowingOrders Recursive Method}
+\begin{algorithmic}
+    \Procedure{dfsHash}{left,inverseMap[],inDegree[],G,result[]}
+        \State // base case, this means we have all n letters in result
+        \If{left == 0}
+            \State print(result)
+        \EndIf
+        \For{$i \in results.length$}
+            \If{inDegree[i] == 0}
+                \State $inDegree[i] \gets$ -1
+                \State $results[results.length - left] \gets$ inverseMap[i]
+                \For{letter $l \in G[i]$}
+                    \State inDegree[letter]-
+                \EndFor
+                dfsHash(left-1, im, inDegree, G, result)
+                \For{letter $l \in G[i]$}
+                    \State inDegree[letter]++
+                \EndFor
+                \State $inDegree[i] \gets$ -1
+            \EndIf
+        \EndFor
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+%%%%%%% Correctness %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Correctness}
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+~ \\ \indent One call of the $dfsHash$ method will be able to explore all possible anagrams from this position in
+alphabetical order while adhearing to the rules.
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent Using the fact that the inDegree array corresponds to how many non-used
+letters are valid at this stage; we will exhibit this by saying that an entry can be denoted as $d_0,d_1,...d_k$ for $(k+1)$
+distinct letters and $d_i \textless 0 \implies already\ used,\ d_i = 0 \implies valid\ letter\ and\ d_i = j \textgreater
+0 \implies j\ non-used\ letters\ must\ come\ before\ it$. Since inDegree is the representation of all of the letters
+in alphabetic order $\implies$ the first 0, is the first valid letter, the next 0 is the next valid letter and so on and
+so forth. $\therefore$ we see that we will do all of the first possible ones first and then (starting from the last letter)
+we will work our way back up continuing our depth first search.  This will do an in-order traversal of all the valid anagrams
+that can be produced.
+\end{proof}
+
+
+%%%%%%% Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Analysis}
+For the following analysis, we will say that Given an input of $N$ distinct letters (2 $\leq$ N $\leq$ 26) and a set of
+$R$ rules (1 $\leq$ R $\leq$ 50). The algorithm will enumerate all $M$ anagrams of the letters adhearing to the rules.
+$Note:\ worst\ case\ M \simeq N!$
+
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The \underline{space complexity} of this algorithm is \textbf{O(N + R)}
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent This is due to the fact that all of our data is stored in 7 data structures:
+\begin{itemize}
+    \item \underline{map}: int array of size 26 (worst case for $N$)
+    \item \underline{inverseMap}: char array of size $N$
+    \item \underline{symbols}: char array of size $N$
+    \item \underline{comparisons}: char array of size $2\cdot R$
+    \item \underline{G}: Integer Linked List Array which has size $N$ and $R$ Nodes
+    \item \underline{inDegree}: int array of size $N$
+    \item \underline{results}: char array of size $N$
+\end{itemize}
+The only points of contension here have to do with our recursive calls on inverseMap, G, inDegree, and results. If a
+new copy were made each call, we would have at most $N$ of each of these, however since we are passing the object
+as a parameter, we are only using the same pointer, pointing to a single object for each so the same one is being
+accessed and modified each time. This allows for the algorithm to use only one object for each. Therefore, summing
+all of these up, we have a space complexity of S($N + N + N + 2\cdot R + N + R + N + N$) = S($6\cdot N + 3\cdot R$)
+\begin{center}
+    Giving us a space complexity of \textbf{O(N + R)}
+\end{center}
+\end{proof}
+
+%%%%%%% PROPOSITION 2 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The \underline{time complexity} of this algorithm is \textbf{O(M)}
+\end{proposition}
+
+\begin{proof}
+This is the case because our algorithm reads in all of the input in linear time O(N + R) which are both trivially small.
+Then, for every recursive call, we search through the list of symbols (N) once. So we look at the case now that we are
+enumerating a word which is $c_0 c_1 c_2 ... c_n$ (W.L.O.G.)lets assume the only rule is that $c_0 \textless c_k$ which
+would be the largest amount of anagrams possible. We can say that anagrams starting with $c_0$ number roughly $(k-1)!$
+and for each letter, we will only do $k^2$ k's. $\implies$ going through all of the letters we would only go through $k$
+$k^3$ times $\implies$ $k^4$, replacing $k$ with $N$ we have $N^4$ yeilding a complexity of $M + N^4 + N + R$
+\begin{center}
+    Giving us a time complexity of \textbf{O(M)}
+\end{center}
+\end{proof}
+
+%%%%%%% Example %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{An Example}
+I did not have enough time to finish this section. However I have the correct output for the given example by the UVA site.
+
+
+%%%%%%% end Grape Vine %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% end Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

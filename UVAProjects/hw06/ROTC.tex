@@ -1,0 +1,277 @@
+% Use this template to write your solutions to COS 423 problem sets
+
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amsfonts, amsthm, amssymb, algorithm, graphicx, mathtools, xfrac}
+\usepackage[noend]{algpseudocode}
+\usepackage{fancyhdr, lastpage}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage[vmargin=1.20in,hmargin=1.25in,centering,letterpaper]{geometry}
+\setlength{\headsep}{.50in}
+\setlength{\headheight}{15pt}
+
+% Landau notation
+\DeclareMathOperator{\BigOm}{\mathcal{O}}
+\newcommand{\BigOh}[1]{\BigOm\left({#1}\right)}
+\DeclareMathOperator{\BigTm}{\Theta}
+\newcommand{\BigTheta}[1]{\BigTm\left({#1}\right)}
+\DeclareMathOperator{\BigWm}{\Omega}
+\newcommand{\BigOmega}[1]{\BigWm\left({#1}\right)}
+\DeclareMathOperator{\LittleOm}{\mathrm{o}}
+\newcommand{\LittleOh}[1]{\LittleOm\left({#1}\right)}
+\DeclareMathOperator{\LittleWm}{\omega}
+\newcommand{\LittleOmega}[1]{\LittleWm\left({#1}\right)}
+
+% argmin and argmax
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Exp}{\mathbb{E}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\sign}{\mathrm{sign\ }}
+\newcommand{\abs}{\mathrm{abs\ }}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\zo}{\{0, 1\}}
+\newcommand{\SAT}{\mathit{SAT}}
+\renewcommand{\P}{\mathbf{P}}
+\newcommand{\NP}{\mathbf{NP}}
+\newcommand{\coNP}{\co{NP}}
+\newcommand{\co}[1]{\mathbf{co#1}}
+\renewcommand{\Pr}{\mathop{\mathrm{Pr}}}
+
+% theorems, lemmas, invariants, etc.
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{invariant}[theorem]{Invariant}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{property}[theorem]{Property}
+\newtheorem{proposition}[theorem]{Proposition}
+
+% piecewise functions
+\newenvironment{piecewise}{\left \{\begin{array}{l@{,\ }l}}
+{\end{array}\right.}
+
+% paired delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\len}{|}{|}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+
+\makeatletter
+\@addtoreset{equation}{section}
+\makeatother
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+
+% algorithms
+\algnewcommand\algorithmicinput{\textbf{INPUT:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\algorithmicoutput{\textbf{OUTPUT:}}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+% Formating Macros
+
+\pagestyle{fancy}
+\lhead{\sc \hmwkClass\ $\; \;\cdot \; \;$ \hmwkSemester\ $\; \;\cdot \; \;$
+Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{\sc Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{}
+\rhead{\em \hmwkAuthorName\ $($\hmwkAuthorID$)$\/}
+\cfoot{}
+\lfoot{}
+\rfoot{\sc Page\ \thepage\ of\ \protect\pageref{LastPage}}
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\fancypagestyle{fancycollab}
+{
+    \lfoot{\textit{Collaborators: \hmwkCollaborators}}
+}
+
+\fancypagestyle{problemstatement}
+{
+    \rhead{}
+    \lfoot{}
+}
+
+%%%%%% Begin document with header and title %%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%% Header Information %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Shouldn't need to change these
+\newcommand{\hmwkClass}{COS 255}
+\newcommand{\hmwkSemester}{Spring 2016}
+
+%%% Your name, in standard First Last format
+\newcommand{\hmwkAuthorName}{Lukas Leung}
+%%% Your NetID
+\newcommand{\hmwkAuthorID}{lleung}
+
+%%% The problem set number (just the number)
+\newcommand{\hmwkAssignmentNum}{6}
+
+%%% The problem number (just the number)
+\newcommand{\hmwkProblemNum}{3}
+
+%%% A list of your collaborators' NetIDs, separated by ", ".
+%%% You can use a new line ("\\") in the middle to prevent a long
+%%% list from overflowing.
+\newcommand{\hmwkCollaborators}{}
+%%% Sets the collaborator list to appear on the first page
+\thispagestyle{fancycollab}
+
+%%%%%%% begin Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% start ROTC %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Book 6.16: ROTC}
+\textbf{Background} \\
+~\indent There are many sunny days in Ithaca, New York; but this year, as it happens, the
+spring ROTC picnic at Cornell has fallen on a rainy day. The ranking officer decides
+to postpone the picnic and must notify everyone by phone. Here is the mechanism
+she uses to do this. \\
+~\indent Each ROTC person on campus except the ranking officer reports to a unique
+$superior\ officer$. Thus the reporting hierarchy can be described by a tree $T$, rooted
+at the ranking officer, in which each other node $v$ has a parent node $u$ equal to his or
+her superior officer. Conversely, we will call $v$ a $direct\ subordinate$ of $u$. \\
+~\indent To notify everyone of the postponement, the ranking officer first calls each of her
+direct subordinates, one at a time. As soon as each subordinate gets the phone call,
+he or she must notify each of his or her direct subordinates, one at a time. The
+process continues this way until everyone has been notified. Note that each person in
+this process can only call direct subordinates on the phone. \\
+~\indent We can picture this process as being divided into rounds. In one round, each
+person who has already learned of the postponement can call one of his or her direct
+subordinates on the phone. The number of rounds it takes for everyone to be notified
+depends on the sequence in which each person calls their direct subordinates. \\
+~\indent Give an efficient algorithm that determines the minimum number of rounds needed
+for everyone to be notified, and outputs a sequence of phone calls that achieves this
+minimum number of rounds.
+
+%%%%%%% end Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
+%%%%%%% Mathematical Formulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Mathematical Formulation}
+Given an input of the tree T with $n$ nodes in total and depth of $d$. Let the most
+number of direct subordinates (children) any one officer (parent) has be expressed as
+$c$. We will determine least number of calls needed to reach every node of the tree as
+well as the order in which to acheive this.
+
+%%%%%%% Algorithm %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Solution}
+This algorithm begin by doing a by-level bottom up traversal. As it traverses, it will
+assign values to each node based off its children. The way it does this is first sorting
+all of its children from highest value to lowest and such that $v_0 \geq v_1 \geq ... \geq v_{n-1}$ for
+a node with $n$ children, then saying:
+\[ value =
+\begin{cases}
+    0\ if\ no\ children \\
+    max_{i \in 0..(n-1)}\ (child_{i}value + 1 + i)\ else
+\end{cases}
+\]
+With this we will develope our values and when we reach the top level ($n$), its value
+will be the least number of calls needed to be made. Our path to take then is to call
+the open value node from each seen node.
+
+\begin{algorithm}[H]
+\caption{Fill out Tree and get num Calls}
+\begin{algorithmic}
+    \Procedure{getNumCalls}{Tree T}
+        \For{$level \in 1..d$}
+            \For{$node \in T.level(level)$}
+                \State int value = 0
+                \If{node.hasChildren}
+                    \State children.inverseSort
+                    \State int i = 0
+                    \For{$child \in children$}
+                        \State childV = child.value + 1 + (i++)
+                        \State value = max(value, childV)
+                    \EndFor
+                \EndIf
+                \State node.\Call{setValue}{value}
+            \EndFor
+        \EndFor
+        \State print(root.value)  // least num calls
+        \State \Call{traverse}{T} // T has all values filled out and inverse sorted
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+%%%%%%% Correctness %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsection{Correctness}
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+~ \\ \indent This algorithm will determine the correct minimum number of calls.
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent We do this by construction. We observe that doing a bottom up traversal we can
+see that as long as the children have the correct value, then the parent will be able to
+calculate the correct value. When I say value of a node I am referring to the number
+of calls required to fully reach the subtree rooted at this node, assuming the node has
+already been reached. $\implies$ if the node is a leaf, its value = 0. Therefore when we have
+a node with a single leaf as a child, $\implies$ will take the number of calls that the
+leaf will make, 0, + 1 because it has to call the leaf. Now if there are multiple children,
+k of them, and all of them are leaves we will note that we cannot call multiple leaves at
+the same time, therefore the number of calls that this node will have to make is $n$ and
+its value will also be n since each of the nodes must make 0 calls. \\
+\indent Now lets change it such that each of the children have thier own value $v_1,...,v_n$
+we note that it will always be most efficient to call the children with more calls to make
+first, therefore let us inverse-sort them based off of their values s.t. $v_1\geq...\geq v_n$
+Now we can create a $value$ variable and set it equal to cost of calling $c_1$ which is
+$v_1 + 1$ beacause we have to call the node itself. We will then check to see if the cost of calling
+$c_2$ exceeds that of $c_1$ as in is cost of calling $c_2$ second $\textgreater$ cost of calling
+$c_1$ first? i.e. $value = max(value, v_2 + 1 + 1)$ since it cost 0 to call first, 1
+to call second , 2 to call third, etc. We will then continue with this letting
+$value = max_{i \in 1..(n)}\ (child_{i}value + 1 + (i-1))$ \\
+\indent After we have done this for every node (building from bottom $\rightarrow$ up), we
+just ask for the value of the root which will give us the minimum number of calls we
+have to make to reach everyone.
+\end{proof}
+
+
+%%%%%%% Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Analysis}
+
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The \underline{space complexity} of this algorithm is \textbf{O(size(T))}
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent This is due to the fact that all of our data is stored in the tree itself:
+\end{proof}
+
+%%%%%%% PROPOSITION 2 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The \underline{time complexity} of this algorithm is \textbf{O(N$\cdot$n$^{\ast}\cdot$log(n$^{\ast}$))}
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent Let us define the average number of children every node has as $n^{\ast} \implies$ the
+cost to sort will be $n^{\ast}\cdot log(n^{\ast})$ now since we have to sort for each node, N times
+$\implies N\cdot n^{\ast}\cdot log(n^{\ast})$ Note here though that $n^{\ast}$ is likely to be a low
+number when compared to $N$.
+\end{proof}
+
+
+%%%%%%% end ROTC %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%% end Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

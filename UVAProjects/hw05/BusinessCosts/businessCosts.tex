@@ -1,0 +1,441 @@
+% Use this template to write your solutions to COS 423 problem sets
+
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amsfonts, amsthm, amssymb, algorithm, graphicx, mathtools, xfrac}
+\usepackage[noend]{algpseudocode}
+\usepackage{fancyhdr, lastpage}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage[vmargin=1.20in,hmargin=1.25in,centering,letterpaper]{geometry}
+\setlength{\headsep}{.50in}
+\setlength{\headheight}{15pt}
+
+% Landau notation
+\DeclareMathOperator{\BigOm}{\mathcal{O}}
+\newcommand{\BigOh}[1]{\BigOm\left({#1}\right)}
+\DeclareMathOperator{\BigTm}{\Theta}
+\newcommand{\BigTheta}[1]{\BigTm\left({#1}\right)}
+\DeclareMathOperator{\BigWm}{\Omega}
+\newcommand{\BigOmega}[1]{\BigWm\left({#1}\right)}
+\DeclareMathOperator{\LittleOm}{\mathrm{o}}
+\newcommand{\LittleOh}[1]{\LittleOm\left({#1}\right)}
+\DeclareMathOperator{\LittleWm}{\omega}
+\newcommand{\LittleOmega}[1]{\LittleWm\left({#1}\right)}
+
+% argmin and argmax
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Exp}{\mathbb{E}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\sign}{\mathrm{sign\ }}
+\newcommand{\abs}{\mathrm{abs\ }}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\zo}{\{0, 1\}}
+\newcommand{\SAT}{\mathit{SAT}}
+\renewcommand{\P}{\mathbf{P}}
+\newcommand{\NP}{\mathbf{NP}}
+\newcommand{\coNP}{\co{NP}}
+\newcommand{\co}[1]{\mathbf{co#1}}
+\renewcommand{\Pr}{\mathop{\mathrm{Pr}}}
+
+% theorems, lemmas, invariants, etc.
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{invariant}[theorem]{Invariant}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{property}[theorem]{Property}
+\newtheorem{proposition}[theorem]{Proposition}
+
+% piecewise functions
+\newenvironment{piecewise}{\left \{\begin{array}{l@{,\ }l}}
+{\end{array}\right.}
+
+% paired delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\len}{|}{|}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+
+\makeatletter
+\@addtoreset{equation}{section}
+\makeatother
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+
+% algorithms
+\algnewcommand\algorithmicinput{\textbf{INPUT:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\algorithmicoutput{\textbf{OUTPUT:}}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+% Formating Macros
+
+\pagestyle{fancy}
+\lhead{\sc \hmwkClass\ $\; \;\cdot \; \;$ \hmwkSemester\ $\; \;\cdot \; \;$
+Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{\sc Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{}
+\rhead{\em \hmwkAuthorName\ $($\hmwkAuthorID$)$\/}
+\cfoot{}
+\lfoot{}
+\rfoot{\sc Page\ \thepage\ of\ \protect\pageref{LastPage}}
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\fancypagestyle{fancycollab}
+{
+    \lfoot{\textit{Collaborators: \hmwkCollaborators}}
+}
+
+\fancypagestyle{problemstatement}
+{
+    \rhead{}
+    \lfoot{}
+}
+
+%%%%%% Begin document with header and title %%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%% Header Information %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Shouldn't need to change these
+\newcommand{\hmwkClass}{COS 255}
+\newcommand{\hmwkSemester}{Spring 2016}
+
+%%% Your name, in standard First Last format
+\newcommand{\hmwkAuthorName}{Lukas Leung}
+%%% Your NetID
+\newcommand{\hmwkAuthorID}{lleung}
+
+%%% The problem set number (just the number)
+\newcommand{\hmwkAssignmentNum}{5}
+
+%%% The problem number (just the number)
+\newcommand{\hmwkProblemNum}{4}
+
+%%% A list of your collaborators' NetIDs, separated by ", ".
+%%% You can use a new line ("\\") in the middle to prevent a long
+%%% list from overflowing.
+\newcommand{\hmwkCollaborators}{}
+%%% Sets the collaborator list to appear on the first page
+\thispagestyle{fancycollab}
+
+%%%%%%% begin Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% start Bank Cards %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Book 6.4: Business Costs (East vs West)}
+\textbf{Background} \\
+~\indent Suppose you're running a lightweight consulting business -- just you, two associates, and some
+rented equipment. Your clients are distributed between the East COast and the West Coast, and this leads
+to the following question. \\
+\indent Each month, you can either run your business from an office in New York (NY) or from an office
+in San Francisco (SF). In month $i$, you'll incure anoperating cost of $N_i$ if you run the business out
+of NY; you'll incur an operating cost of $S_i$ if you run the business out of SF. (It depends on the
+distribution of client demands for that month.) \\
+\indent However, if you run the business out of one city in month $i$, and then out of the other city in
+month $i + 1$, then you incure a fixed moving cost of $M$ to switch base offices. \\
+\indent Given a sequence of $n$ months, a plan is a sequence of $n$ locations -- each one equal to either
+NY or SF -- such that the $i^{th}$ location indicates the city in which you will be based in the $i^{th}$
+month. THe cost of a plan is the sum of the operating costs for each of the $n$ months. plus a moving
+cost of $M$ for each time you switch cities. The plan can begin in either city.
+%%%%%%% end Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+%%%%%%% part A %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Part A}
+Show that the following algorithm does not correctly solve this problem by giving an instance on which
+it does not return the correct answer.
+
+\begin{algorithm}[H]
+\caption{Given From Part A}
+\begin{algorithmic}
+    \Procedure{main}{}
+        \For{i = 1 to n}
+            \If {$N_i \textless S_i$}
+                \State Output "NY in Month i"
+            \Else
+                \State Output "SF in Month i"
+            \EndIf
+        \EndFor
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\subsection*{Solution}
+Take the example:  with $n=4$ and $M=10$
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|cccc}
+		\toprule
+		Loaction      & Month 1 & Month 2 & Month 3 & Month 4  \\
+		\midrule
+		New York      & 1       & 3       & 1       & 3 \\
+        San Francisco & 3       & 1       & 4       & 1 \\
+        \bottomrule
+	\end{tabular}}
+\end{table}
+Following Algorithm A we would get NY, SF, NY, SF = 1 + (10 + 1) + (10 + 1) + (10 + 1) = 34, however
+the correct answer is NY, NY, NY, NY = 1 + 3 + 1 + 3 = 8 and 5 \textless 34 $\implies$ Algorithm
+A does not give us the correct answer.
+
+%%%%%%% part B %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Part B}
+Give an example of an instance in which every optimal plan must move (i.e., change locations) at least
+three times. Provide a brief explanation, saying why your example has this property.
+\subsection*{Solution}
+Let us use the example from above except instead of $M=10,$ let $M=1$ $\therefore$ the cheapest route
+would be NY, SF, NY, SF = 1 + (1 + 1) + (1 + 1) + (1 + 1) = 7. This is the least expensive since it
+costs less to work in these cities with the added travel cost at each stage than any other possible path.
+
+\newpage
+%%%%%%% part C %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Part C}
+Give an efficient algorithm that takes values for $n,M,$ and sequences of operating costs $N_1,...,N_n$
+and $S_1,...,S_n$, and returns the cost of an optimal plan.
+
+\subsection*{Solution}
+%%%%%%% Mathematical Formulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Mathematical Formulation}
+Given a value for the moving cost $M$, and sequences of operating costs over $n$ months as $N_1,...,N_n$
+and $S_1,...,S_n$, find the minimal cost for a plan of length $n$.
+
+%%%%%%% Algorithm %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Algorithm}
+Important Confusing Data Structures:
+\begin{itemize}
+    \item int[n] \textbf{optNY} : ~ Keeps track of the minimum cost of plan terminating in New York on month i
+    \item int[n] \textbf{optSF} : ~ Keeps track of the minimum cost of plan terminating in San Francisco on month i
+\end{itemize}
+We will implement the below rules in our algorithm to produce the solution wehere cNY and cSF are the
+respective costs of operating in New York and Sanfrancisco in month i.
+\[ optNY(i) = min
+    \begin{cases}
+        optNY(i-1) + cNY(i)     \\
+        optSF(i-1) + cNY(i) + M
+    \end{cases}
+\]
+\[ optSF(i) = min
+    \begin{cases}
+        optNY(i-1) + cSF(i) + M  \\
+        optSF(i-1) + cSF(i)
+    \end{cases}
+\]
+\indent What this means is that the minimal total cost to operate in NY at month $i$ will always be the cost
+of operating in New York at month $i$ plus the either the total cost of operating in either NY or SF in
+month $i-1$. The way we determine which to pick is to ask wheather the previous total cost in NY is less
+than the previous total cost in SF with the additional travel fee added in. Likewise, the same calculation
+can be made for the minimal total cost to operate in SF at month $i$. \\
+\indent Once we have figured these out, we know that any path we take will end in either NY or SF at month
+$n$ so we just have to take the minimal of these to get our result. i.e. choose min( optNY(n), optSF(n) )
+
+
+\begin{algorithm}[H]
+\caption{True Solution}
+\begin{algorithmic}
+    \Procedure{main}{cNY, cSf, M , n}
+        \State $optNY, optSF \gets$ initialized where $optNY(0) \gets$ cNY(0); $optSF(0) \gets$ cSF(0)
+        \For{$i \in [1,(n-1)]$}
+            \State $vNY \gets$ cNY(i) + optNY(i-1) // value coming from NY
+            \State $vSF \gets$ cNY(i) + optSF(i-1) // value coming from SF
+            \If{vNY $\leq$ vSF + M}
+                \State $optNY(i) \gets$ vNY
+            \Else
+                \State $optNY(i) \gets$ vSF + M
+            \EndIf
+            \State vNY, vSF += SF(i) - NY(i) // switch to chosing for SF
+            \If{vSF $\leq$ vNY + M}
+                \State $optSF(i) \gets$ vSF
+            \Else
+                \State $optSF(i) \gets$ vNY + M
+            \EndIf
+        \EndFor
+        \State \Call{print}{min(optNY(n-1), optSF(n-1))}
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+%%%%%%% Correctness %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Correctness}
+For the following proofs, please note that the information $n:$ number of test cases, $M:$ cost for
+relocation, $cNY(x), 1 \leq x \leq n :$ the cost to run a business in New York in month $x$, and
+$cSF(y), 1 \leq y \leq n :$ the cost to run a business in San Francisco in month $y$.
+
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+~ \\ \indent The relationships below will give us the lowest total costs to work in New York or San Francisco
+in month $i$. \textit{Note: optNY(1) = cNY(1) and optSF(1) = cSF(1)}
+\[  optNY(i) = min
+    \begin{cases}
+        optNY(i-1) + cNY(i)     \\
+        optSF(i-1) + cNY(i) + M
+    \end{cases}
+\]
+\[  optSF(i) = min
+    \begin{cases}
+      optNY(i-1) + cSF(i) + M  \\
+      optSF(i-1) + cSF(i)
+    \end{cases}
+\]
+
+
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent One thing to keep in mind here is determining wheather coming from New York or San Francisco
+is not dependent on the cost of what it costs to work in the city during the current month $i$. i.e.
+(W.L.O.G) optNY(i-1) + cNY(i) \textless optSF(i-1) + cNY(i) + M $\implies$ optNY(i-1) $\textless$
+optSF(i-1) + M \\
+\indent For this proof we will use induction. We start with \underline{i = 2}: at this point we have
+only two options and that is to originate from optNY(2-1 = 1) = cNY(1) or optSF(2-1 = 1) = cSF(1); for
+optNY(2) then we have to consider staying in the same city (cNY(1)) or relocate (cSF(1) + M), so naturally
+we pick the smaller $\implies$ optNY(2) = min( cNY(1), [cSF(1) + M] ); similarly we will have optSF(2) =
+min( cSF(1), [cNY(1) + M] ). We see that both of these hold. \\
+\indent Now lets assume that \textit{i = k} holds so we have optNY(k) and optSF(k) for some $k, 1 \textless
+k \textless n$. Therefore we now will extend and check \underline{i = k + 1} we see that our only options
+for optNY(k+1) is originating from either New York or San Francisco in month k. Since optNY(k) represents
+the cheapest way to end working in New York in month k [mirrored for optSF(k)], we simply have to compare
+the prices and consider staying in the same city (cNY(k)) or relocate (cSF(k) + M), so naturally we pick
+the smaller $\implies$ optNY(k+1) = min( cNY(k), [cSF(k) + M] ); similarly we will have optSF(k+1) =
+min( cSF(k), [cNY(k) + M] ). We see  that letting k = i-1 this is the exact relationship.
+\end{proof}
+
+\begin{corollary}
+~ \\ \indent The cost of the cheapest (optimal) plan is min( optNY(n), optSF(n) ).
+\end{corollary}
+
+\begin{proof}
+~ \\ \indent Since proposition 1 holds we see that we can build the tables optNY() and optSF(). Therefore since the
+cheapest option must terminate in the $n^{th}$ and there are only two options of working in either New
+York or San Francisco during this month, and by the above we have the cheapest total costs to a plan
+which ends working in New York and San Francisco in month $n$. If we take the least one then we will
+have the minimal plan.
+\end{proof}
+
+%%%%%%% Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Analysis}
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The \underline{space complexity} of this algorithm is \textbf{O(N)}
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent This is due to the fact that all of our data is stored in data structures:
+\begin{itemize}
+    \item \underline{cNY}: cost to run business in New York in month $i$ $\implies size(N)$
+    \item \underline{cSF}: cost to run business in San Francisco in month $i$ $\implies size(N)$
+    \item \underline{optNY}: storing minimal cost to run in New York in month $i$ taking the past into
+    consideration $\implies size(N)$
+    \item \underline{optSF}: storing minimal cost to run in San Francisco in month $i$  taking the past
+    into consideration $\implies size(N)$
+\end{itemize}
+Summing yeilds $4\cdot N$
+\begin{center}
+    Giving us a space complexity of \textbf{O(N)}
+\end{center}
+\end{proof}
+
+\newpage
+%%%%%%% PROPOSITION 2 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The \underline{time complexity} of this algorithm is \textbf{O(N)}
+\end{proposition}
+
+\begin{proof}
+This is the case because our algorithm simply will linearly look through the given data of size $N$
+once, at each stage looking at the previous entry O(1) four times.
+\begin{center}
+    Giving us a time complexity of \textbf{O(N)}
+\end{center}
+\end{proof}
+
+%%%%%%% Example %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{An Example}
+Let $n=4$ and $M=1$ and
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|cccc}
+		\toprule
+		         & Month 1 & Month 2 & Month 3 & Month 4  \\
+		\midrule
+		cNY      & 1       & 3       & 1       & 3 \\
+        cSF      & 3       & 1       & 4       & 1 \\
+        \bottomrule
+	\end{tabular}}
+\end{table}
+We will initialize the tables optNY and optSF then as such
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|cccc}
+		\toprule
+		         & Month 1 & Month 2 & Month 3 & Month 4  \\
+		\midrule
+		optNY    & 1       & -       & -       & - \\
+        optSF    & 3       & -       & -       & - \\
+        \bottomrule
+	\end{tabular}}
+\end{table}
+Now we will emplore our relationships and we see the table fills out as follows for the i = 2
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|cccc}
+		\toprule
+		         & Month 1 & Month 2                   & Month 3 & Month 4  \\
+		\midrule
+		optNY    & 1       & min(1 + 3, 3 + 3 + 1) = 4 & -       & - \\
+        optSF    & 3       & min(3 + 1, 1 + 1 + 1) = 3 & -       & - \\
+        \bottomrule
+	\end{tabular}}
+\end{table}
+Then for i = 3
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|cccc}
+		\toprule
+		         & Month 1 & Month 2 & Month 3                   & Month 4  \\
+		\midrule
+		optNY    & 1       & 4       & min(4 + 1, 3 + 1 + 1) = 5 & - \\
+        optSF    & 3       & 3       & min(3 + 4, 4 + 4 + 1) = 7 & - \\
+        \bottomrule
+	\end{tabular}}
+\end{table}
+And for i = 4 = $n$
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|cccc}
+		\toprule
+		         & Month 1 & Month 2 & Month 3 & Month 4  \\
+		\midrule
+		optNY    & 1       & 4       & 5       & min(5 + 3, 7 + 3 + 1) = 8 \\
+        optSF    & 3       & 3       & 7       & min(7 + 1, 5 + 1 + 1) = 7 \\
+        \bottomrule
+	\end{tabular}}
+\end{table}
+So now that we have filled out the tables completely, to determine the optimal cost for our plan we
+take the min(optNY(n),optSF(n)) $\implies$ min(8,7) = 7
+%%%%%%% end Bank Cards %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%% end Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
