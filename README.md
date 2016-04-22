@@ -27,6 +27,10 @@ ___
 
 ##### 6. Book 6.16, UVA [544](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=485), and UVA [11506](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2501)
 
-##### 7.
+##### 7. Book 7.28, 8.4, and UVA [10937](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1878)
 
-##### 8.
+##### 8. As a class do 4 of ACM/ICPC [2013](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=821) World Finals Problems
+
+##### 9. Individually do ACM/ICPC [2015](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=865) World Finals Problems
+
+The book that I refer to is _Algorithm Design_ by Jon Kleinberg and Eva Tardos 
