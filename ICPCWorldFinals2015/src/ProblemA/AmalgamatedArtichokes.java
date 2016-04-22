@@ -1,7 +1,7 @@
 import java.util.Scanner;
 /**
  * UVA 1709 ICPC Problem A 2015 World Finals Timelimit = 5.000 seconds
- * Completed testing in: 0. seconds on
+ * Completed testing in: 4.410 seconds on 2016-04-22 19:22:25
  * To Run type:
  *      javac AmalgamatedArtichokes.java
  *      java AmalgamatedArtichokes < pathTo/input.txt > printToThis.txt
@@ -24,7 +24,7 @@ public class AmalgamatedArtichokes {
                     h = val,
                     l = val,
                     diff = 0;
-            for (int x = 2; x < n; x++) {
+            for (int x = 2; x <= n; x++) {
                 val = f(x);
                 if (val > h) { // higher than highest, reset
                     h = val;
