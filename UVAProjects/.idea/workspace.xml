@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a510cd61-d845-4e19-9805-14b24573b129" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/hw07/BlackBeard/UD.txt" afterPath="$PROJECT_DIR$/hw07/BlackBeard/inputs/UD.txt" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/hw07/BlackBeard/example.txt" afterPath="$PROJECT_DIR$/hw07/BlackBeard/inputs/example.txt" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/hw07/BlackBeard/input.txt" afterPath="$PROJECT_DIR$/hw07/BlackBeard/inputs/input.txt" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/hw07/BlackBeard/inputUD.txt" afterPath="$PROJECT_DIR$/hw07/BlackBeard/inputs/inputUD.txt" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/hw07/BlackBeard/resUD.txt" afterPath="$PROJECT_DIR$/hw07/BlackBeard/inputs/resUD.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../README.md" afterPath="$PROJECT_DIR$/../README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hw06/AngryProgrammer/AngryProgrammer.java" afterPath="$PROJECT_DIR$/hw06/AngryProgrammer/AngryProgrammer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hw07/BlackBeard/BlackBeard.java" afterPath="$PROJECT_DIR$/hw07/BlackBeard/BlackBeard.java" />
-    </list>
+    <list default="true" id="a510cd61-d845-4e19-9805-14b24573b129" name="Default" comment="" />
     <ignored path="UVAProjects.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
