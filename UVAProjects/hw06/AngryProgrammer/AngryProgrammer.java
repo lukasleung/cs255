@@ -1,4 +1,3 @@
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -105,7 +104,7 @@ public class AngryProgrammer {
         edgeTo = new FlowEdge[numV];
         boolean[] marked = new boolean[numV];
         // bfs
-        Queue<Integer> queue = new Queue<>();
+        Queue<Integer> queue = new Queue();
         queue.enqueue(m);
         marked[0] = true;
         marked[m] = true;
@@ -155,9 +154,9 @@ public class AngryProgrammer {
     }
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        int round = 0;
+//        int round = 0;
         while (true) {
-            round++;
+//            round++;
             String[] line = in.nextLine().split("\\s+");
             int W = Integer.parseInt(line[1]);  // num Connections
             m = Integer.parseInt(line[0]);  // num machines
@@ -183,40 +182,25 @@ public class AngryProgrammer {
                 int i = Integer.parseInt(line[0])-1,  // index of machine
                     c = Integer.parseInt(line[1]);  // cost of destroying machine
                 FlowEdge e1 = new FlowEdge(i, i+m, c);
-//                System.out.println(i + " " + c);
-//                System.out.println("  " + (i-1) + " to " + (i+m) +
-//                        " w/ cap = " + c);
                 adj[i].add(e1);
             }
-//            System.out.println("connections: ");
             // record each connection
             for (int c_i = 0; c_i < W; c_i++) {
                 line = in.nextLine().split("\\s+");
                 int a = Integer.parseInt(line[0]),  // node 1
                     b = Integer.parseInt(line[1]),  // node 2
                     c = Integer.parseInt(line[2]);  // cost
-//                System.out.println(a + " to " + b + " w/ cap = " + c);
                 int outA = detIndex(a, true),
                      inA = detIndex(a, false),
                     outB = detIndex(b, true),
                      inB = detIndex(b, false);
                 // create edges (2-way)
-//                System.out.println("  " + outA + " to " + inB + " w/ cap = " + c);
-//                System.out.println("  " + outB + " to " + inA + " w/ cap = " + c);
                 FlowEdge e1 = new FlowEdge(outA, inB, c),
                          e2 = new FlowEdge(outB, inA, c);
                 // connect a - b w/ cost c
                 adj[outA].add(e1);
                 adj[outB].add(e2);
             }
-            // show stuff
-//            for (int i = 0; i < numV; i++) {
-//                System.out.println(i);
-//                for (FlowEdge adjNode : adj[i]) {
-//                    System.out.println(" $\\rightarrow$ " + adjNode.to() + " with cap = " + adjNode.capacity());
-//                }
-//                // System.out.println();
-//            }
             // calculate the min cut
             calcMinCut();
         }

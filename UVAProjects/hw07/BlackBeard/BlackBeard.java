@@ -125,7 +125,7 @@ public class BlackBeard {
     }
     // fill treasure location and
     private boolean locateTreasures() {
-        index = new HashMap<>(numTreasures);
+        index = new HashMap(numTreasures);
         boolean start = false; // ensure there is a start
         int count = 0; // ensure still have all treasures
         tresLoc = new int[numTreasures+1][2];
