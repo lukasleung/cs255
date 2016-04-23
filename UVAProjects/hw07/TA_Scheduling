@@ -1,0 +1,226 @@
+% Use this template to write your solutions to COS 423 problem sets
+
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amsfonts, amsthm, amssymb, algorithm, graphicx, mathtools, xfrac}
+\usepackage[noend]{algpseudocode}
+\usepackage{fancyhdr, lastpage}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage[vmargin=1.20in,hmargin=1.25in,centering,letterpaper]{geometry}
+\setlength{\headsep}{.50in}
+\setlength{\headheight}{15pt}
+
+% Landau notation
+\DeclareMathOperator{\BigOm}{\mathcal{O}}
+\newcommand{\BigOh}[1]{\BigOm\left({#1}\right)}
+\DeclareMathOperator{\BigTm}{\Theta}
+\newcommand{\BigTheta}[1]{\BigTm\left({#1}\right)}
+\DeclareMathOperator{\BigWm}{\Omega}
+\newcommand{\BigOmega}[1]{\BigWm\left({#1}\right)}
+\DeclareMathOperator{\LittleOm}{\mathrm{o}}
+\newcommand{\LittleOh}[1]{\LittleOm\left({#1}\right)}
+\DeclareMathOperator{\LittleWm}{\omega}
+\newcommand{\LittleOmega}[1]{\LittleWm\left({#1}\right)}
+
+% argmin and argmax
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Exp}{\mathbb{E}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\sign}{\mathrm{sign\ }}
+\newcommand{\abs}{\mathrm{abs\ }}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\zo}{\{0, 1\}}
+\newcommand{\SAT}{\mathit{SAT}}
+\renewcommand{\P}{\mathbf{P}}
+\newcommand{\NP}{\mathbf{NP}}
+\newcommand{\coNP}{\co{NP}}
+\newcommand{\co}[1]{\mathbf{co#1}}
+\renewcommand{\Pr}{\mathop{\mathrm{Pr}}}
+
+% theorems, lemmas, invariants, etc.
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{invariant}[theorem]{Invariant}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{property}[theorem]{Property}
+\newtheorem{proposition}[theorem]{Proposition}
+
+% piecewise functions
+\newenvironment{piecewise}{\left \{\begin{array}{l@{,\ }l}}
+{\end{array}\right.}
+
+% paired delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\len}{|}{|}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+
+\makeatletter
+\@addtoreset{equation}{section}
+\makeatother
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+
+% algorithms
+\algnewcommand\algorithmicinput{\textbf{INPUT:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\algorithmicoutput{\textbf{OUTPUT:}}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+% Formating Macros
+
+\pagestyle{fancy}
+\lhead{\sc \hmwkClass\ $\; \;\cdot \; \;$ \hmwkSemester\ $\; \;\cdot \; \;$
+Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{\sc Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{}
+\rhead{\em \hmwkAuthorName\ $($\hmwkAuthorID$)$\/}
+\cfoot{}
+\lfoot{}
+\rfoot{\sc Page\ \thepage\ of\ \protect\pageref{LastPage}}
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\fancypagestyle{fancycollab}
+{
+    \lfoot{\textit{Collaborators: \hmwkCollaborators}}
+}
+
+\fancypagestyle{problemstatement}
+{
+    \rhead{}
+    \lfoot{}
+}
+
+%%%%%% Begin document with header and title %%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%% Header Information %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Shouldn't need to change these
+\newcommand{\hmwkClass}{COS 255}
+\newcommand{\hmwkSemester}{Spring 2016}
+
+%%% Your name, in standard First Last format
+\newcommand{\hmwkAuthorName}{Lukas Leung}
+%%% Your NetID
+\newcommand{\hmwkAuthorID}{lleung}
+
+%%% The problem set number (just the number)
+\newcommand{\hmwkAssignmentNum}{7}
+
+%%% The problem number (just the number)
+\newcommand{\hmwkProblemNum}{2}
+
+%%% A list of your collaborators' NetIDs, separated by ", ".
+%%% You can use a new line ("\\") in the middle to prevent a long
+%%% list from overflowing.
+\newcommand{\hmwkCollaborators}{}
+%%% Sets the collaborator list to appear on the first page
+\thispagestyle{fancycollab}
+
+%%%%%%% begin Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% start TA_Scheduling %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Book 7.28: TA Scheduling}
+
+%%%%%%% Mathematical Formulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Mathematical Formulation}
+\textbf{(a)} Given an input of $T$ TA's, $S$ sessions, and parameters a, b, and c where the number of sessions each TA 
+can hold a week is $t_i$, $a \leq t_i \leq b, \forall i \in 1..T$ and the total number of seesions that can
+be held a week must be $\leq c$. Determine which TAs cover which sessions if all requirements are met. \\
+
+\textbf{(b)}Given the above information, add in a density $d_i$ representing the minimum number of sessions that must be 
+held that day of the week. Again determine which TAs cover which sessions if all requirements are met.
+
+%%%%%%% Algorithm %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Solution}
+In both cases we will begin by determining if the number of TA's $T$ can acceed the minimum capacity
+$c$ by checking $c \geq T\cdot a$. We then construct a circulation digraph max flow 
+representation with $2 + T + S + 2$ nodes: 1 source, 1 virtual source, $T$ TA, $S$ session, 1 virtual 
+sink, and 1 sink node. To ensure that the minimum capacity for each TA is met, we connect the source to each
+TA node with capacity $a$, then, to account for this we will connect the source to the virtual source
+with with a capacity $c-T\cdot a$ and the virtual source will connect to each of the TA nodes with a
+capacity of $b-a$ so that the total sum of in-capacities for each TA node is $a + b - a = b$. Therefore
+our total out-degree from the source node will be $T\cdot a + (c - T\cdot a) = c$. Now, according to 
+availablility of the TA's, we connect them to the corresponding session nodes with a capacity of 1. This 
+is the same build for both parts (a) and (b). \\  
+\indent For part \textbf{(a)}, we will assign edges from each of the sesssion nodes to 
+the virtual sink with capacity 1 to represent that each session can only have 1 TA. Then to ensure that
+the cycle is complete and that the maximum number of sessions is $\leq c$, we connect the virtual sink
+with a capacity of $c$ to the sink. \\
+\indent For part \textbf{(b), we will add in 7 extra nodes, each representing a day with a correspoding
+value of $d_i, i \in 1..7$. We continue our connections by connecting each seesion, to their correspoding
+day with a capacity of 1 to represent that each session can only have 1 TA. The for each day, $i$, we connect
+it directly to the sink with a capacity of $d_i$ to represent the minimum density that must be met. Next, we 
+connect it to the virtual sink with a capacity of $\infty$ since they have met the minimum requitrement of $d_i$.
+Now we just connect the virtual sink to the sink with a capacity of $c - \sum_{i = 1}^7 d_i$ such that the
+total in-capacity of the sink is  $\sum_{i = 1}^7 d_i + c - \sum_{i = 1}^7 d_i = c$. \\
+Now that we are fully connected we run Ford Fulkerson and if the max flow is $\textless T\cdot a$ then we have
+not fufilled the required minimum flow. Otherwise we go through each TA node and check its edges, if the 
+edge has a flow value, then print the TA and the Session information.
+
+\begin{algorithm}[H]
+\caption{Build Network (part A)}
+\begin{algorithmic}
+    \Procedure{Main}{T, S, a, b, c}
+    
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+%%%%%%% Correctness %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsection{Correctness}
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+~ \\ \indent This algorithm will determine the correct .
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent We do this by construction. 
+\end{proof}
+
+
+%%%%%%% Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Analysis}
+
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The \underline{space complexity} of this algorithm is \textbf{O()}
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent This is due to the fact that 
+\end{proof}
+
+%%%%%%% PROPOSITION 2 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The \underline{time complexity} of this algorithm is \textbf{O()}
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent Let us 
+\end{proof}
+
+
+%%%%%%% end TA_Scheduling %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%% end Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
