@@ -130,11 +130,11 @@ Problem \hmwkAssignmentNum.\hmwkProblemNum}
 \thispagestyle{fancycollab}
 
 %%%%%%% begin Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Results from UVA}
-%\includegraphics[width=\textwidth]{uvaResults}
-%\newpage
+\section{Results from UVA}
+\includegraphics[width=\textwidth]{results}
 
-%%%%%%% start Bank Cards %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% start BlackBeard %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{UVA Problem 10937: Blackbeard}
 \textbf{Background} \\
@@ -178,7 +178,6 @@ the treasures, print out `'-1'
 
 %%%%%%% end Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newpage
 
 %%%%%%% Mathematical Formulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Mathematical Formulation}
@@ -352,12 +351,21 @@ solution. We do this using our HashMap mtsp  (see explanation of data structure 
 \subsection{Correctness}
 %%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
 \begin{proposition}
-~ \\ \indent This is clearly a TSP problem for which we need a fully connected graph G
-and we can each node is either a treasure or the source
+~ \\ \indent This is clearly a TSP problem for which we need to construct a fully connected graph G
+to run it on. Therefore this algorithm will construct such a graph (if one exists) that the TSP
+solution can be run on.
 \end{proposition}
 
 \begin{proof}
-~ \\ \indent Using the fact that 
+~ \\ \indent We build this graph G such that each node is either a treasure or the source. We determine
+if this is possible by first recording how many treasures there are. Then we clean up the map such
+that the native camps and all of their surrounding aread are marked as unreachable. Then we ensure
+that all of the treasures are still there; if they are not, we know that we cannot create G. \\
+\indent Next we begin to create the connections between treasures by running a bfs with the source
+and each treasure as the starting point and only marking tiles where Blackbeard can travel. i.e. we
+check to see if all treasures/source are reachable from eachother and how far each one is from one
+another. These distances are recorded as the the edge weights between each point. Therefore, after
+fully running each n+1 bfs's we have created a fully connected graph G.
 \end{proof}
 
 
@@ -503,7 +511,7 @@ best \implies \{s,t_2,t_1,s\} =
 \]
 Therefore we have the least cost as 14.
 
-%%%%%%% end Bank Cards %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% end BlackBeard %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %%%%%%% end Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
