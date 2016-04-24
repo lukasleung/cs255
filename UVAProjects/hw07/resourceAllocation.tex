@@ -145,92 +145,49 @@ $r \in R^{\ast}$ is allocated to it, however each resource can only be used once
 Given a number $k \textgreater 0$, determine if resources $\in R$ can be allocated
 so that at least $k$ processes $\in P$ will be active. For the following cases,
 give a polynomial algorithm or proove it is NP-Complete.
-\begin{enumerate}
+\begin{enumerate}[(a)]
     \item General Case i.e. $k \textgreater 0$
     \item $k = 2$
+    \item Have 2 types of resources, if either one is fufilled for a process, then
+        the process is considered active
     \item Each resource can be allocated a maximum of 2 times
 \end{enumerate}
 
-\subsection{Part A}
+\subsection{Part (a)}
 \begin{proposition}
 This is an NP-Complete problem.
 \end{proposition}
 
 \begin{proof}
 ~ \\ \indent We show first that this problem is NP. Given a set of k processes, check
-to see if there are resources shared between them all.
+to see if there are resources shared between them all which take $k\cdot m^{\ast} = totalResources$
+time where $m^{\ast}$ is the average number of resources all of the processes contain.
+More specifically we can create a HashSet which we will add each resource as we see them
+in each set. Therefore we will check to see if the resource is already present in the
+set, if it is then there is a repetition; if we can get to the end, then there are no more. \\
+\indent Now we say that this is an NP-Hard problem by doing a reduction from the Independent
+Set problem i.e. $IndependentSet \leq_P Problem$. Assume that we have an independent set of
+graph $G$ and the number $k$. We take the verticies, $V \in G$ to represent each process and
+all edges $E \in G$ to be resources. Therefore verticies are only considered to be adjacent if
+they have a common resource. So if \underline{there exists an independent set}, $G^{\ast}\in G$
+s.t. $|G^{\ast}| \geq k$, we say that this implies that verticies within $G^{\ast}$ have no
+common edges, i.e. there are no shared resources $\implies$ solved the problem. Now if
+\underline{there exist k processes} which resources from a disjoint set, then the corresponding
+graph would have no edges in common for these processes $\implies$ independent set. \\
+\indent Since Independent Set is NP-hard $\implies$ this problem is at least NP-Hard
+\begin{center}$\therefore$ this process is both NP and NP-Hard $\implies$ NP-Complete.\end{center}
 \end{proof}
 
-%%%%%%% Algorithm %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Part (b)}
+This can be solved in polynomial time by brute force since there only exist $n^2$ process
+combinations. Therefore doing the above mentioned algorithm for checking if sets are indeed
+valid, we can go through all pairs; if at any pair they have a disjoint set of resources, then
+we accept, if we go through every possible combination and never get into an accepting state,
+we will say it is impossible.
 
-\subsection{Solution}
-Important Confusing Data Structures:
-\begin{itemize}
-    \item type \textbf{name} : ~ explaination
-\end{itemize}
-
-The main functionality of 
-
-\begin{algorithm}[H]
-\caption{ Method}
-\begin{algorithmic}
-    \Procedure{name}{..,..,}
-        
-    \EndProcedure
-\end{algorithmic}
-\end{algorithm}
-
-
-%%%%%%% Correctness %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Correctness}
-%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
-\begin{proposition}
-~ \\ \indent propose
-\end{proposition}
-
-\begin{proof}
-~ \\ \indent Using the fact that 
-\end{proof}
-
-
-%%%%%%% Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Analysis}
-For the following analysis, we will say that..
-
-%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
-\begin{proposition}
-\label{numq}
-The \underline{space complexity} of this algorithm is \textbf{O(..)}
-\end{proposition}
-
-\begin{proof}
-~ \\ \indent This is due to the fact that all of our data is stored in data structures:
-\begin{itemize}
-    \item \underline{cause}: reason $\implies complexity$
-\end{itemize}
-\begin{center}
-    Giving us a space complexity of \textbf{O(..)}
-\end{center}
-\end{proof}
-
-%%%%%%% PROPOSITION 2 %%%%%%%%%%%%%%%
-\begin{proposition}
-\label{numq}
-The \underline{time complexity} of this algorithm is \textbf{O(..)}
-\end{proposition}
-
-\begin{proof}
-This is the case because our algorithm...
-\begin{center}
-    Giving us a time complexity of \textbf{O(..)}
-\end{center}
-\end{proof}
-
-%%%%%%% Example %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{An Example}
-
+\subsection{Part (c) and Part (d)}
+These are seen as more specialized versions of problem (a), therefore we can can generalize
+and say that these will also be NP-Complete.
 %%%%%%% end Resource Allocation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
