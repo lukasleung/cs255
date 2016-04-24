@@ -9,6 +9,7 @@
 \usepackage{multirow}
 \usepackage{graphicx}
 \usepackage{pgfplots}
+\usepackage[shortlabels]{enumitem}
 \usepackage[vmargin=1.20in,hmargin=1.25in,centering,letterpaper]{geometry}
 \setlength{\headsep}{.50in}
 \setlength{\headheight}{15pt}
@@ -136,8 +137,29 @@ Problem \hmwkAssignmentNum.\hmwkProblemNum}
 \section{Book 8.4: Resource Allocation}
 
 %%%%%%% Mathematical Formulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Mathematical Formulation}
-Given an input of
+\subsection*{Mathematical Formulation}
+Given an input of $n$ processes, $P = \{p_1, p_2, ..., p_n\}$,  and a set of $m$
+resources, $R = \{r_1, r_2, ..., r_m\}$, each process requires a set of resources
+$R^{\ast}, R^{\ast} \subseteq R$. Each process in required active iff every resource
+$r \in R^{\ast}$ is allocated to it, however each resource can only be used once.
+Given a number $k \textgreater 0$, determine if resources $\in R$ can be allocated
+so that at least $k$ processes $\in P$ will be active. For the following cases,
+give a polynomial algorithm or proove it is NP-Complete.
+\begin{enumerate}
+    \item General Case i.e. $k \textgreater 0$
+    \item $k = 2$
+    \item Each resource can be allocated a maximum of 2 times
+\end{enumerate}
+
+\subsection{Part A}
+\begin{proposition}
+This is an NP-Complete problem.
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent We show first that this problem is NP. Given a set of k processes, check
+to see if there are resources shared between them all.
+\end{proof}
 
 %%%%%%% Algorithm %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
