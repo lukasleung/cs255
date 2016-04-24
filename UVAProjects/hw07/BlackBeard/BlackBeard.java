@@ -46,11 +46,11 @@ public class BlackBeard {
                 System.out.println(0);
                 continue;
             }
-            print();
+//            print();
             // replace the camps with palm Trees
             replaceCamps();
-            System.out.println("\n");
-            print();
+//            System.out.println("\n");
+//            print();
             // locate treasures
             if (!locateTreasures()) {
                 System.out.println(-1);
@@ -65,7 +65,7 @@ public class BlackBeard {
                         break;
                     }
                 }
-                printDist();
+//                printDist();
                 // if any node un reachable => not possible problem
                 if (!reachable) {
                     System.out.println(-1);
@@ -214,7 +214,7 @@ public class BlackBeard {
         // fill out table
         for (int i = length; i < (length << 1); i++) {
             char[] bitRep = Integer.toBinaryString(i).toCharArray();
-            System.out.println(bitRep);
+//            System.out.println(bitRep);
             for (int c = 1; c < bitRep.length; c++) {
                 if (bitRep[c] == 49) { // if it is a 1
                     bitRep[c] = '0';

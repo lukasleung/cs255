@@ -239,7 +239,29 @@ specifying which TA will cover which time slots. If one does not exist, then it 
 \end{proposition}
 
 \begin{proof}
-~ \\ \indent We do this by construction. 
+~ \\ \indent Above we have described how to construct the flow network in detail. As so we
+show now that this supports the constraints set forth by the question. The first constraint
+is that each TA must have a minimum of $a$ office hours and a maximum of $b$ each week. It is
+simple to upper bound each TA by $b$ by ensuring that the sum of the maximum capacity of all
+edges coming into each TA is equal to $b$. Therefore the only thing we need to constrain is
+that we have at least $a$ for each TA. We acheive this by making an edge of maximum capacity
+$a$ between the source and each TA, which will be filled out first. Similarly we will have a
+"whatever we have left" node which we call the virtual source. The connections from the
+virtual source, we connect to each TA node with edges with max capacity of $b-a$ to ensure
+that each node has and input of $b$. \\
+\indent Now to account for the second constraint that at most $c$ office hours may occur each
+week. We do this by making the maximum capacity of all edges leaving the source and entering
+the sink to be $c$. Therefore (since $T\cdot a$ has already left the source going to each TA),
+we connect the source to the virtual source with a value of $c - T\cdot a$. \\
+\indent The last constraint of the problem is that each day $i$ have a specific density $d_i$
+that acts as a minimum value. To account for this, we have each Session connect to its
+respective day with a max capacity of 1 so that only one TA can be present at each session.
+Then from each day, we will connect directly to the sink with maximum capacity $d_i$ therefore
+we need to adjust our edge capacity from the virtual sink to the sink to be $c - \sum d_i$ and
+connect each day to the virtual sink with max capacity $\infty$. \\
+\indent Now we have shown that each constraint has been accounted for, but to ensure that each
+one has held up, we simply will check the flow values of each of the edges from the source to
+the TA nodes are full and those from each day to the sink are full.
 \end{proof}
 
 
