@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a510cd61-d845-4e19-9805-14b24573b129" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hw07/fullReport.pdf" afterPath="$PROJECT_DIR$/hw07/fullReport.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hw07/resourceAllocation.pdf" afterPath="$PROJECT_DIR$/hw07/resourceAllocation.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hw07/fullReport.tex" afterPath="$PROJECT_DIR$/hw07/fullReport.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hw07/resourceAllocation.tex" afterPath="$PROJECT_DIR$/hw07/resourceAllocation.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hw07/runTex.sh" afterPath="$PROJECT_DIR$/hw07/runTex.sh" />
-    </list>
+    <list default="true" id="a510cd61-d845-4e19-9805-14b24573b129" name="Default" comment="" />
     <ignored path="UVAProjects.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
