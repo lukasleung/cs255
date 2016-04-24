@@ -24,7 +24,7 @@ ___
 
 ##### 3. UVA [12192](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=3344)  and UVA [124](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=60)
 
-##### 4. Book 5.3 and  4.12 [not in folders, just reports were submitted]
+##### 4. Book 5.3 and  4.12
 
 ##### 5. Book 6.4, UVA [11516](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2511), UVA  [108](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=44), and UVA [10261](https://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1202) [Code is complete:Reports in progress]
 

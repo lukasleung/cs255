@@ -1,0 +1,301 @@
+% Use this template to write your solutions to COS 423 problem sets
+
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amsfonts, amsthm, amssymb, algorithm, graphicx, mathtools, xfrac}
+\usepackage[noend]{algpseudocode}
+\usepackage{fancyhdr, lastpage}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage[vmargin=1.20in,hmargin=1.25in,centering,letterpaper]{geometry}
+\setlength{\headsep}{.50in}
+\setlength{\headheight}{15pt}
+
+% Landau notation
+\DeclareMathOperator{\BigOm}{\mathcal{O}}
+\newcommand{\BigOh}[1]{\BigOm\left({#1}\right)}
+\DeclareMathOperator{\BigTm}{\Theta}
+\newcommand{\BigTheta}[1]{\BigTm\left({#1}\right)}
+\DeclareMathOperator{\BigWm}{\Omega}
+\newcommand{\BigOmega}[1]{\BigWm\left({#1}\right)}
+\DeclareMathOperator{\LittleOm}{\mathrm{o}}
+\newcommand{\LittleOh}[1]{\LittleOm\left({#1}\right)}
+\DeclareMathOperator{\LittleWm}{\omega}
+\newcommand{\LittleOmega}[1]{\LittleWm\left({#1}\right)}
+
+% argmin and argmax
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Exp}{\mathbb{E}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\sign}{\mathrm{sign\ }}
+\newcommand{\abs}{\mathrm{abs\ }}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\zo}{\{0, 1\}}
+\newcommand{\SAT}{\mathit{SAT}}
+\renewcommand{\P}{\mathbf{P}}
+\newcommand{\NP}{\mathbf{NP}}
+\newcommand{\coNP}{\co{NP}}
+\newcommand{\co}[1]{\mathbf{co#1}}
+\renewcommand{\Pr}{\mathop{\mathrm{Pr}}}
+
+% theorems, lemmas, invariants, etc.
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{invariant}[theorem]{Invariant}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{property}[theorem]{Property}
+\newtheorem{proposition}[theorem]{Proposition}
+
+% piecewise functions
+\newenvironment{piecewise}{\left \{\begin{array}{l@{,\ }l}}
+{\end{array}\right.}
+
+% paired delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\len}{|}{|}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+
+\makeatletter
+\@addtoreset{equation}{section}
+\makeatother
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+
+% algorithms
+\algnewcommand\algorithmicinput{\textbf{INPUT:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\algorithmicoutput{\textbf{OUTPUT:}}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+% Formating Macros
+
+\pagestyle{fancy}
+\lhead{\sc \hmwkClass\ $\; \;\cdot \; \;$ \hmwkSemester\ $\; \;\cdot \; \;$
+Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{\sc Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{}
+\rhead{\em \hmwkAuthorName\ $($\hmwkAuthorID$)$\/}
+\cfoot{}
+\lfoot{}
+\rfoot{\sc Page\ \thepage\ of\ \protect\pageref{LastPage}}
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\fancypagestyle{fancycollab}
+{
+    \lfoot{\textit{Collaborators: \hmwkCollaborators}}
+}
+
+\fancypagestyle{problemstatement}
+{
+    \rhead{}
+    \lfoot{}
+}
+
+%%%%%% Begin document with header and title %%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%% Header Information %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Shouldn't need to change these
+\newcommand{\hmwkClass}{COS 255}
+\newcommand{\hmwkSemester}{Spring 2016}
+
+%%% Your name, in standard First Last format
+\newcommand{\hmwkAuthorName}{Lukas Leung}
+%%% Your NetID
+\newcommand{\hmwkAuthorID}{lleung}
+
+%%% The problem set number (just the number)
+\newcommand{\hmwkAssignmentNum}{4}
+
+%%% The problem number (just the number)
+\newcommand{\hmwkProblemNum}{12}
+
+%%% A list of your collaborators' NetIDs, separated by ", ".
+%%% You can use a new line ("\\") in the middle to prevent a long
+%%% list from overflowing.
+\newcommand{\hmwkCollaborators}{}
+%%% Sets the collaborator list to appear on the first page
+\thispagestyle{fancycollab}
+
+%%%%%%% begin Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% start Video Streams %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Book 4.12: Video Streams}
+\textbf{Background} \\
+~\indent Suppose you have $n$ video streams that need to be sent,
+one after another, over a communication link. Stream $i$ consists
+of a total of $b_i$ bits that need to be sent, at a constant rate
+over a period of $t_i$ seconds. You cannot send two streams at the
+same time, so you need to determine a $schedule$ for the streams:
+an order in which to send them. Whichever order you choose, there
+cannot be any delays between the end of one stream and the start
+of the next. Suppose your schedule starts at time 0 (and therefore
+ends at time $\sum_{i=1}^{n} t_i$, whichever order you choose). We
+assume that all the values $b_i$ and $t_i$ are positive integers. \\
+\indent Now, because you're just one user, the link does not want
+you taking up too much bandwidth, so it imposes the following
+constraint, using a fixed parameter $r$.
+
+~ \\ \indent \textit{($\ast$) For each natural number t
+$\textgreater$ 0, the total number of bits you send over the \\
+~ \indent time interval from 0 to t cannot exceed r$\cdot$t.} \\
+
+Note that this constraint is only imposed for time intervals that
+start at 0, $not$ for time intervals that start at any other value.
+We say that a schedule is $valid$ if it satisfies the constraint
+($\ast$) imposed by the link. \\
+
+\textbf{Questions:} \\
+~\indent Given a set of $n$ streams, each specified by its number
+of bits $b_i$ and its time duration $t_i$, as well as the link
+parameter r, determine whether $\exists$ a valid schedule.
+
+\subsubsection{Question 1:}
+\begin{center}\textit{Claim: $\exists$ a valid schedule $\iff$
+each stream i satisfies $b_i\leq r\cdot t_i$.}\end{center}
+Decide whether you think the claim is true or false, and give a
+proof of either the claim or its negation.
+
+\subsubsection{Question 2:}
+Give an algorithm that takes a set of $n$ streams, each specified
+by its number of bits $b_i$ and its time duration $t_i$, as well as
+the link parameter $r$, and determines whether there exists a valid
+schedule. The running time of your algorithm should be polynomial
+in $n$.
+
+%%%%%%% end Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+%%%%%%% first Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Question 1:}
+\textbf{False.} \\
+Proof by example, giving the case:  $s_1$ = (1,1), $s_2$ = (2,1)
+and $r$ = 1. We see here that this is clearly an acceptable order as
+there is no space and for \underline{t=1} $\implies$ $b_1 \leq r\cdot t$
+i.e. $1 \leq 1\cdot 1$ so $\ast$ holds. Similarly for \underline{t=2}
+$\implies$ $b_2 \leq r\cdot t$ i.e. $2 \leq 1\cdot 2$ so $\ast$ holds.
+However this will fail the case since for $s_2$, $b_2 \nleq r\cdot t_2$
+i.e. $2 \nleq 1\cdot 1 \implies$ fails the case. $\square$
+
+\subsection{Question 2:}
+%%%%%%% Mathematical Formulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Mathematical Formulation}
+Given an input of $n$ video streams, $s_1 = (b_1,t_1), s_2 = (b_2, t_1),
+..., s_n = (b_n,t_n)$ where $b_i$ = the load of stream $i$ and $t_i$ =
+the duration for how long it takes to transmit all data. We will say
+that in the correct order, there cannot be any delays between the end
+of one stream and the start of the next. i.e. time starts t=1 and goes
+to $\sum_{i=1}^{n} t_i$. We will denote the current time as $T_i$
+for when each step $i$ begins where $T_1 = 1$. Additionally there is a
+rule that $b_i \leq r\cdot T_i$ for each stream $i$ where $r$ is a
+fixed parameter.
+
+%%%%%%% Algorithm %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Solution}
+Important Confusing Data Structures:
+\begin{itemize}
+    \item VideoStream[n] \textbf{streams} : ~ Holds the video streams
+    storing them as objects able to retrieve their $(d_i, t_i)$
+\end{itemize}
+
+\noindent The main functionality of this is to sort the video streams
+by $d_i/t_i$, and then check to see if the condition is met. If at
+any point it is not, then there does not exist a valid arrangement.
+
+\begin{algorithm}[H]
+\caption{Method}
+\begin{algorithmic}
+    \Procedure{sortStreams}{streams, r}
+        \State \Call{sort}{streams, Comparator()}
+        \State $T \gets$ 1
+        \For{$s_i \in streams$}
+            \If{$b_i\ \textgreater\ r\cdot T$}
+                \State return null
+            \EndIf
+            \State $T += t_i$
+        \EndFor
+        \State return streams
+    \EndProcedure
+    \Procedure{compare}{$d_a,t_a,d_b,t_b$}
+        \State $pos_a \gets d_a/t_a$
+        \State $pos_b \gets d_b/t_b$
+        \State return $pos_a - pos_b$
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+%%%%%%% Correctness %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Correctness}
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+~ \\ \indent Propose that by sorting via $d_i/t_i$ we gaurantee
+$\exists$ a valid ordered input.
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent The motivation behind this is using the equality
+$d_i \leq r\cdot T_i \implies d_i/T_i \leq r$ must also hold. Therefore,
+we see that the $i^{th}$ stream is depenent on the ratio between the
+load and the current time. $\therefore$ We develop our rational this
+way by saying that if we order them then in the order of their
+ratio, then those with lower $b_i$ compared to $t_i$ would appear
+first, i.e. $d_1/t_1 \leq d_2/t_2 \leq ... \leq d_n/t_n$. If $\exists$
+a valid output then this will give us a valid output. This is due
+to the fact that if you were to rearrange any part, then the ratios
+would be inverted and then streams would be worse off.
+\end{proof}
+
+
+%%%%%%% Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Analysis}
+\begin{center}Let $N$ be the total number of streams being considered.\end{center}
+
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The \underline{space complexity} of this algorithm is \textbf{O(N)}
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent This is due to the fact that all of our data is stored
+within the object array of size $N$ and two integers $T\ and\ r$.
+\begin{center}
+    Giving us a space complexity of \textbf{O(N)}
+\end{center}
+\end{proof}
+
+%%%%%%% PROPOSITION 2 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The \underline{time complexity} of this algorithm is \textbf{O(N$\cdot$log(N))}
+\end{proposition}
+
+\begin{proof}
+This is the case because our algorithm takes ($N\cdot log(N)$) to sort
+based off of this comparator and then linearly searches through, ($N$),
+doing the single check statement (1)
+\begin{center}
+    Giving us a time complexity of \textbf{O(N$\cdot$log(N))}
+\end{center}
+\end{proof}
+
+%%%%%%% end Video Streams %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%% end Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

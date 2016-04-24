@@ -1,0 +1,449 @@
+% Use this template to write your solutions to COS 423 problem sets
+
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amsfonts, amsthm, amssymb, algorithm, graphicx, mathtools, xfrac}
+\usepackage[noend]{algpseudocode}
+\usepackage{fancyhdr, lastpage}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage[vmargin=1.20in,hmargin=1.25in,centering,letterpaper]{geometry}
+\setlength{\headsep}{.50in}
+\setlength{\headheight}{15pt}
+
+% Landau notation
+\DeclareMathOperator{\BigOm}{\mathcal{O}}
+\newcommand{\BigOh}[1]{\BigOm\left({#1}\right)}
+\DeclareMathOperator{\BigTm}{\Theta}
+\newcommand{\BigTheta}[1]{\BigTm\left({#1}\right)}
+\DeclareMathOperator{\BigWm}{\Omega}
+\newcommand{\BigOmega}[1]{\BigWm\left({#1}\right)}
+\DeclareMathOperator{\LittleOm}{\mathrm{o}}
+\newcommand{\LittleOh}[1]{\LittleOm\left({#1}\right)}
+\DeclareMathOperator{\LittleWm}{\omega}
+\newcommand{\LittleOmega}[1]{\LittleWm\left({#1}\right)}
+
+% argmin and argmax
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Exp}{\mathbb{E}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\sign}{\mathrm{sign\ }}
+\newcommand{\abs}{\mathrm{abs\ }}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\zo}{\{0, 1\}}
+\newcommand{\SAT}{\mathit{SAT}}
+\renewcommand{\P}{\mathbf{P}}
+\newcommand{\NP}{\mathbf{NP}}
+\newcommand{\coNP}{\co{NP}}
+\newcommand{\co}[1]{\mathbf{co#1}}
+\renewcommand{\Pr}{\mathop{\mathrm{Pr}}}
+
+% theorems, lemmas, invariants, etc.
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{invariant}[theorem]{Invariant}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{property}[theorem]{Property}
+\newtheorem{proposition}[theorem]{Proposition}
+
+% piecewise functions
+\newenvironment{piecewise}{\left \{\begin{array}{l@{,\ }l}}
+{\end{array}\right.}
+
+% paired delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\len}{|}{|}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+
+\makeatletter
+\@addtoreset{equation}{section}
+\makeatother
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+
+% algorithms
+\algnewcommand\algorithmicinput{\textbf{INPUT:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\algorithmicoutput{\textbf{OUTPUT:}}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+% Formating Macros
+
+\pagestyle{fancy}
+\lhead{\sc \hmwkClass\ $\; \;\cdot \; \;$ \hmwkSemester\ $\; \;\cdot \; \;$
+Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{\sc Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{}
+\rhead{\em \hmwkAuthorName\ $($\hmwkAuthorID$)$\/}
+\cfoot{}
+\lfoot{}
+\rfoot{\sc Page\ \thepage\ of\ \protect\pageref{LastPage}}
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\fancypagestyle{fancycollab}
+{
+    \lfoot{\textit{Collaborators: \hmwkCollaborators}}
+}
+
+\fancypagestyle{problemstatement}
+{
+    \rhead{}
+    \lfoot{}
+}
+
+%%%%%% Begin document with header and title %%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%% Header Information %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Shouldn't need to change these
+\newcommand{\hmwkClass}{COS 255}
+\newcommand{\hmwkSemester}{Spring 2016}
+
+%%% Your name, in standard First Last format
+\newcommand{\hmwkAuthorName}{Lukas Leung}
+%%% Your NetID
+\newcommand{\hmwkAuthorID}{lleung}
+
+%%% The problem set number (just the number)
+\newcommand{\hmwkAssignmentNum}{4}
+
+%%% The problem number (just the number)
+\newcommand{\hmwkProblemNum}{0}
+
+%%% A list of your collaborators' NetIDs, separated by ", ".
+%%% You can use a new line ("\\") in the middle to prevent a long
+%%% list from overflowing.
+\newcommand{\hmwkCollaborators}{}
+%%% Sets the collaborator list to appear on the first page
+\thispagestyle{fancycollab}
+
+%%%%%%% begin Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% start Bank Cards %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Book 5.3: Bank Cards}
+\textbf{Background:} \\
+~\indent Suppose you're consulting for a bank that's concerned about
+fraud detection, and they come to you with the following problem.
+They have a collenction of $n$ bank cards that they've confiscated,
+suspecting them of being used in fraud. Each bank card is a small
+plastic object, containing a magnetic stripe with some encrypted
+data, and it corresponds to a unique account in the bank. Each account
+can have many bank cards corresponding to it, and we'll say that
+two bank cards are $equivalent$ if they correspond to the same
+account. It's very difficult to read the account number off a bank
+card directly, but the bank has a high-tech "equivalence tester"
+that takes two bank cards and, after performing some computations,
+determines whether they are equivalent. \\
+\textbf{Question:} \\
+~\indent Among the collection of $n$ cards, is there a set of more
+than $n/2$ of them that are all equivalent to one another? Assume
+that the only feasible operations you can do with the cards are to
+pick two of them and plug them in to the equivalence tester. Show
+how to decide the answer to their question with only $(n\cdot log(n))$
+invocations of the equivalence tester.
+%%%%%%% end Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
+%%%%%%% Mathematical Formulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Mathematical Formulation}
+Given an input of $n$ bank cards, determine if $\exists$ a subset $M$
+where all cards $c_i \in M$ are identical and $n/2\ \textless\ |M|$.
+s.t. $c_i = c_j$.
+
+%%%%%%% Algorithm %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Solution}
+Important Confusing Data Structures:
+\begin{itemize}
+    \item BankCard[n] \textbf{bankCards} : ~ Store each Bank Card in
+    each slot. We note that we are not able to sort this or do anything
+    but access and swap positions i.e. can only access.
+\end{itemize}
+
+We will begin by making the observation that if $\exists$ a subset $M$
+where all cards $c_i \in M$ are identical and $n/2\ \textless\ m\ =\ |M|$,
+then in one of the halves $bankCards[0..(n/2)]$ or $bankCards[(n/2+1)..n]$
+$\exists$ at least $m/2$ identical cards. This algorithm will implement
+this recursively in order to determine whether or not the afformentioned
+statement holds. $Note: for\ the\ sake\ of\ this\ algorithm\ I\ will\ use\ BankCard[\ ]\
+to\ pass\ through$ $but\ the\ actual\ algorithm\ would\ use\ a\ global\
+array\ and\ pass\ the\ corresponding\ indices$
+
+\begin{algorithm}[H]
+\caption{BankCard}
+\begin{algorithmic}
+    \Procedure{Equivalence}{BankCard[] bankCards}
+        \State $n \gets$ \Call{sizeOf}{bankCards}
+        \State $m \gets$ n/2
+        \If{n == 1}
+            \State return bankCard[0]
+        \Else{\ n == 2}
+            \If{bankCards[0].\Call{equals}{bankCards[1]}}
+                \State return bankCard[0]
+            \EndIf
+        \EndIf
+        \State $bankCards1, bankCards2 \gets$ bankCards[0..m], bankCards[(m+1)..n]
+        \State $card1, card2 \gets$ \Call{Equivalence}{bankCards1}, \Call{Equivalence}{bankCards2}
+        \If{card1 is a card}
+            \State test card1 against all other cards in bankCards and numberEqual++ when equal
+            \If{numberEqual == GOAL\_SIZE}
+                \State return card1
+            \EndIf
+        \EndIf
+        \If{card2 is a card}
+            \State test card2 against all other cards in bankCards and numberEqual++ when equal
+            \If{numberEqual == GOAL\_SIZE}
+                \State return card2
+            \EndIf
+        \EndIf
+        \State return bankCards
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+If at the end of this method no card has been returned $\implies$
+there is no matching of size n/2
+
+
+
+%%%%%%% Correctness %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Correctness}
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+~ \\ \indent Propose that the algorithm will determine if $\exists$
+a subset $M$ where all cards $c_i \in M$ are identical and
+$n/2\ \textless\ m\ =\ |M|$.
+
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent This holds because if more than $n/2$ cards are equivalent,
+one of the halves $bankCards[0..(n/2)]$ or $bankCards[(n/2+1)..n]$
+$\exists$ more than $m/2$ identical cards. $\therefore$ one of the two
+recursive calls must return a card equivalent to the whole set’s
+majority equivalence $\therefore$ this algorithm compares all returned
+cards to the whole set, so then the majority equivalence will be found.
+\end{proof}
+
+
+%%%%%%% Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Analysis}
+For the following analysis, we will say that..
+
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The \underline{space complexity} of this algorithm is \textbf{O(N)}
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent This is due to the fact that all of our data is stored
+in the array containing all the cards. Everything else is pointers
+which are being initialized recursively so at most $3\cdot log(N)$
+of them will be active at a time.
+\begin{center}
+    Giving us a space complexity of \textbf{O(N)}
+\end{center}
+\end{proof}
+
+%%%%%%% PROPOSITION 2 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The \underline{time complexity} of this algorithm is \textbf{O(N$\cdot$log(N))}
+\end{proposition}
+
+\begin{proof}
+This is the case because our algorithm calls the $Equivalence$ method,
+where N cards = T(N), as two recursive calls (each of size n/2) and
+at most 2n tests for the two returned cards at each level. So T(n)
+$\cong$ 2T(n/2) + 2n = O(n log n) from class.
+\begin{center}
+    Giving us a time complexity of \textbf{O(N$\cdot$log(N))}
+\end{center}
+\end{proof}
+
+%%%%%%% end Bank Cards %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%% start Video Streams %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Book 4.12: Video Streams}
+\textbf{Background} \\
+~\indent Suppose you have $n$ video streams that need to be sent,
+one after another, over a communication link. Stream $i$ consists
+of a total of $b_i$ bits that need to be sent, at a constant rate
+over a period of $t_i$ seconds. You cannot send two streams at the
+same time, so you need to determine a $schedule$ for the streams:
+an order in which to send them. Whichever order you choose, there
+cannot be any delays between the end of one stream and the start
+of the next. Suppose your schedule starts at time 0 (and therefore
+ends at time $\sum_{i=1}^{n} t_i$, whichever order you choose). We
+assume that all the values $b_i$ and $t_i$ are positive integers. \\
+\indent Now, because you're just one user, the link does not want
+you taking up too much bandwidth, so it imposes the following
+constraint, using a fixed parameter $r$.
+
+~ \\ \indent \textit{($\ast$) For each natural number t
+$\textgreater$ 0, the total number of bits you send over the \\
+~ \indent time interval from 0 to t cannot exceed r$\cdot$t.} \\
+
+Note that this constraint is only imposed for time intervals that
+start at 0, $not$ for time intervals that start at any other value.
+We say that a schedule is $valid$ if it satisfies the constraint
+($\ast$) imposed by the link. \\
+
+\textbf{Questions:} \\
+~\indent Given a set of $n$ streams, each specified by its number
+of bits $b_i$ and its time duration $t_i$, as well as the link
+parameter r, determine whether $\exists$ a valid schedule.
+
+\subsubsection{Question 1:}
+\begin{center}\textit{Claim: $\exists$ a valid schedule $\iff$
+each stream i satisfies $b_i\leq r\cdot t_i$.}\end{center}
+Decide whether you think the claim is true or false, and give a
+proof of either the claim or its negation.
+
+\subsubsection{Question 2:}
+Give an algorithm that takes a set of $n$ streams, each specified
+by its number of bits $b_i$ and its time duration $t_i$, as well as
+the link parameter $r$, and determines whether there exists a valid
+schedule. The running time of your algorithm should be polynomial
+in $n$.
+
+%%%%%%% end Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+%%%%%%% first Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Question 1:}
+\textbf{False.} \\
+Proof by example, giving the case:  $s_1$ = (1,1), $s_2$ = (2,1)
+and $r$ = 1. We see here that this is clearly an acceptable order as
+there is no space and for \underline{t=1} $\implies$ $b_1 \leq r\cdot t$
+i.e. $1 \leq 1\cdot 1$ so $\ast$ holds. Similarly for \underline{t=2}
+$\implies$ $b_2 \leq r\cdot t$ i.e. $2 \leq 1\cdot 2$ so $\ast$ holds.
+However this will fail the case since for $s_2$, $b_2 \nleq r\cdot t_2$
+i.e. $2 \nleq 1\cdot 1 \implies$ fails the case. $\square$
+
+\subsection{Question 2:}
+%%%%%%% Mathematical Formulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Mathematical Formulation}
+Given an input of $n$ video streams, $s_1 = (b_1,t_1), s_2 = (b_2, t_1),
+..., s_n = (b_n,t_n)$ where $b_i$ = the load of stream $i$ and $t_i$ =
+the duration for how long it takes to transmit all data. We will say
+that in the correct order, there cannot be any delays between the end
+of one stream and the start of the next. i.e. time starts t=1 and goes
+to $\sum_{i=1}^{n} t_i$. We will denote the current time as $T_i$
+for when each step $i$ begins where $T_1 = 1$. Additionally there is a
+rule that $b_i \leq r\cdot T_i$ for each stream $i$ where $r$ is a
+fixed parameter.
+
+%%%%%%% Algorithm %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Solution}
+Important Confusing Data Structures:
+\begin{itemize}
+    \item VideoStream[n] \textbf{streams} : ~ Holds the video streams
+    storing them as objects able to retrieve their $(d_i, t_i)$
+\end{itemize}
+
+\noindent The main functionality of this is to sort the video streams
+by $d_i/t_i$, and then check to see if the condition is met. If at
+any point it is not, then there does not exist a valid arrangement.
+
+\begin{algorithm}[H]
+\caption{Method}
+\begin{algorithmic}
+    \Procedure{sortStreams}{streams, r}
+        \State \Call{sort}{streams, Comparator()}
+        \State $T \gets$ 1
+        \For{$s_i \in streams$}
+            \If{$b_i\ \textgreater\ r\cdot T$}
+                \State return null
+            \EndIf
+            \State $T += t_i$
+        \EndFor
+        \State return streams
+    \EndProcedure
+    \Procedure{compare}{$d_a,t_a,d_b,t_b$}
+        \State $pos_a \gets d_a/t_a$
+        \State $pos_b \gets d_b/t_b$
+        \State return $pos_a - pos_b$
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+%%%%%%% Correctness %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Correctness}
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+~ \\ \indent Propose that by sorting via $d_i/t_i$ we gaurantee
+$\exists$ a valid ordered input.
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent The motivation behind this is using the equality
+$d_i \leq r\cdot T_i \implies d_i/T_i \leq r$ must also hold. Therefore,
+we see that the $i^{th}$ stream is depenent on the ratio between the
+load and the current time. $\therefore$ We develop our rational this
+way by saying that if we order them then in the order of their
+ratio, then those with lower $b_i$ compared to $t_i$ would appear
+first, i.e. $d_1/t_1 \leq d_2/t_2 \leq ... \leq d_n/t_n$. If $\exists$
+a valid output then this will give us a valid output. This is due
+to the fact that if you were to rearrange any part, then the ratios
+would be inverted and then streams would be worse off.
+\end{proof}
+
+
+%%%%%%% Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Analysis}
+\begin{center}Let $N$ be the total number of streams being considered.\end{center}
+
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The \underline{space complexity} of this algorithm is \textbf{O(N)}
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent This is due to the fact that all of our data is stored
+within the object array of size $N$ and two integers $T\ and\ r$.
+\begin{center}
+    Giving us a space complexity of \textbf{O(N)}
+\end{center}
+\end{proof}
+
+%%%%%%% PROPOSITION 2 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The \underline{time complexity} of this algorithm is \textbf{O(N$\cdot$log(N))}
+\end{proposition}
+
+\begin{proof}
+This is the case because our algorithm takes ($N\cdot log(N)$) to sort
+based off of this comparator and then linearly searches through, ($N$),
+doing the single check statement (1)
+\begin{center}
+    Giving us a time complexity of \textbf{O(N$\cdot$log(N))}
+\end{center}
+\end{proof}
+
+%%%%%%% end Video Streams %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%% end Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
