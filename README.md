@@ -13,8 +13,11 @@ ___
 + Dynamic Programming
 + Network Flow
 + P, NP, and NP-Complete
-___
+
+---
+
 #### Assignments:
+
 ##### 1. [Turtle Graphics and Anagrams](http://www.cs.clarku.edu/~lhan/courses/cs255/hw1.pdf)
 
 ##### 2. [Burrows-Wheeler Compression](http://www.cs.princeton.edu/courses/archive/fall15/cos226/assignments/burrows.html)
