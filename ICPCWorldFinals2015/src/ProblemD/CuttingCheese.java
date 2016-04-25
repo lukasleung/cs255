@@ -11,13 +11,14 @@ import java.util.Scanner;
  * @version 3.0
  */
 public class CuttingCheese {
-    private final double PI = Math.PI/3, DIM = 100*1000, EPSILON = 0.0000005;
-    private double v = DIM*DIM*DIM, goal; // total volume, and what each segment must be
+    private final double PI = Math.PI/3, DIM = 100, EPSILON = 0.000001;
+    private double v, goal; // total volume, and what each segment must be
     private int numHoles, numSlices;
-    private int[][] holes;
+    private int[][] holes; // ith sphere (z, r)
     public CuttingCheese() {
         Scanner in = new Scanner(System.in);
         while (in.hasNextInt()) {
+            v = DIM*DIM*DIM;
             numHoles = in.nextInt();
             numSlices = in.nextInt();
             holes = new int[numHoles][2];
@@ -26,15 +27,19 @@ public class CuttingCheese {
                 in.nextInt();
                 in.nextInt(); // x,y
                 int z = in.nextInt();
-                holes[i][0] = z;
-                holes[i][1] = r;
+                holes[i][0] = z/1000;
+                holes[i][1] = r/1000;
                 v -= volume(z - r, z + r, i);
+            }
+            if (numSlices == 1) {
+                System.out.printf("0.000000");
+                continue;
             }
             goal = v / numSlices;
             Arrays.sort(holes, new Comparator<int[]>() {
                 @Override
                 public int compare(int[] o1, int[] o2) {
-                    return o1[0] - o2[0];
+                    return (o1[0] - o1[1]) - (o2[0] - o2[1]);
                 }
             });
             System.out.println("____________________");
@@ -49,30 +54,32 @@ public class CuttingCheese {
         }
     }
     // calculates the volume of a sphere contained in the range [z1, z2]
+    //  (guaranteed to be in these bounds before here)
     private double volume(double z1, double z2, int sphere) {
-        assert(z1 < z2);
         int z = holes[sphere][0],
             r = holes[sphere][1];
-        double h = 0, l = 0;
-        if ((z+r) <= z1 || (z-r) >= z2) { // not in specified range
-            return 0;
-        } else { // in range
-            // set lower bound
-            if (z1 < z-r) { l = -r; }
-            else { l = z1 - z; }
-            // set upper bound
-            if (z2 > z+r) { h = r; }
-            else { h = z2 - z; }
-        }
+        double h, l;
+        // we know
+        //  # z + r >= z1 >= z - r and
+        //  # z - r <= z2 <= z + r
+        // set lower bound
+        if (z1 < z-r) { l = -r; }
+        else { l = z1 - z; }        // z1 >= z - r
+        // set upper bound
+        if (z2 > z+r) { h = r; }
+        else { h = z2 - z; }        // z2 <= z + r
         int rprime = 3*r*r;
-        return PI*(rprime*h - h*h*h - rprime*l + l*l*l);
+        double value = PI*(rprime*h - h*h*h - rprime*l + l*l*l);
+        System.out.println(value);
+        return value;
     }
     // calculate the volume of all spheres contained in the range [z1, z2]
-    private double allVol(double z1, double z2) {
-        double val = DIM*DIM*(z2-z1);
+    private double allVol(double l, double h) {
+        double val = DIM*DIM*(h-l);
         for (int i = 0; i < holes.length; i++) {
-            if (holes[i][0] - holes[i][1] > z2) { break; }
-            if (holes[i][0] + holes[i][1] < z1) { continue; }
+            if (holes[i][0] - holes[i][1] > h) { break; }    // z - r > h
+            if (holes[i][0] + holes[i][1] < l) { continue; } // z + r < l
+            val -= volume(l, h, i);
         }
         return val;
     }
@@ -80,12 +87,15 @@ public class CuttingCheese {
     private void binarySearch() {
         double l = 0, h = DIM, cut, last = 0.0;
         int slicePerformed = 1;
-        while (slicePerformed != numSlices) {
+        while (slicePerformed < numSlices) {
             cut = (h + l)/2;
             double diff = goal - allVol(last, cut);
             if (Math.abs(diff) < EPSILON) { // got it
-                System.out.printf("%.6f\n", (cut - last));
+                System.out.printf("%.6f\n", (cut - last)/1000);
                 last = cut;
+                // reset
+                l = last; h = DIM;
+                slicePerformed++;
             } else if (diff > 0) {  // undershot
                 l = cut;
             }
