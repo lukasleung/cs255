@@ -1,0 +1,822 @@
+% java BurrowsWheeler - < inputs\dickens.txt | java MoveToFront - | java Huffman - > inputs\dickens_compressed.txt
+% du -b dickens.txt | awk '{ print $1, "* 8" }' | bc
+% Use this template to write your solutions to COS 423 problem sets
+
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amsfonts, amsthm, amssymb, algorithm, graphicx, mathtools, xfrac}
+\usepackage[noend]{algpseudocode}
+\usepackage{fancyhdr, lastpage}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage[vmargin=1.20in,hmargin=1.25in,centering,letterpaper]{geometry}
+\setlength{\headsep}{.50in}
+\setlength{\headheight}{15pt}
+
+% Landau notation
+\DeclareMathOperator{\BigOm}{\mathcal{O}}
+\newcommand{\BigOh}[1]{\BigOm\left({#1}\right)}
+\DeclareMathOperator{\BigTm}{\Theta}
+\newcommand{\BigTheta}[1]{\BigTm\left({#1}\right)}
+\DeclareMathOperator{\BigWm}{\Omega}
+\newcommand{\BigOmega}[1]{\BigWm\left({#1}\right)}
+\DeclareMathOperator{\LittleOm}{\mathrm{o}}
+\newcommand{\LittleOh}[1]{\LittleOm\left({#1}\right)}
+\DeclareMathOperator{\LittleWm}{\omega}
+\newcommand{\LittleOmega}[1]{\LittleWm\left({#1}\right)}
+
+% argmin and argmax
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Exp}{\mathbb{E}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\sign}{\mathrm{sign\ }}
+\newcommand{\abs}{\mathrm{abs\ }}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\zo}{\{0, 1\}}
+\newcommand{\SAT}{\mathit{SAT}}
+\renewcommand{\P}{\mathbf{P}}
+\newcommand{\NP}{\mathbf{NP}}
+\newcommand{\coNP}{\co{NP}}
+\newcommand{\co}[1]{\mathbf{co#1}}
+\renewcommand{\Pr}{\mathop{\mathrm{Pr}}}
+
+% theorems, lemmas, invariants, etc.
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{invariant}[theorem]{Invariant}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{property}[theorem]{Property}
+\newtheorem{proposition}[theorem]{Proposition}
+
+% piecewise functions
+\newenvironment{piecewise}{\left \{\begin{array}{l@{,\ }l}}
+{\end{array}\right.}
+
+% paired delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\len}{|}{|}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+
+\makeatletter
+\@addtoreset{equation}{section}
+\makeatother
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+
+% algorithms
+\algnewcommand\algorithmicinput{\textbf{INPUT:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\algorithmicoutput{\textbf{OUTPUT:}}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+% Formating Macros
+
+\pagestyle{fancy}
+\lhead{\sc \hmwkClass\ $\; \;\cdot \; \;$ \hmwkSemester\ $\; \;\cdot \; \;$
+Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{\sc Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{}
+\rhead{\em \hmwkAuthorName\ $($\hmwkAuthorID$)$\/}
+\cfoot{}
+\lfoot{}
+\rfoot{\sc Page\ \thepage\ of\ \protect\pageref{LastPage}}
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\fancypagestyle{fancycollab}
+{
+    \lfoot{\textit{Collaborators: \hmwkCollaborators}}
+}
+
+\fancypagestyle{problemstatement}
+{
+    \rhead{}
+    \lfoot{}
+}
+
+%%%%%% Begin document with header and title %%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%% Header Information %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Shouldn't need to change these
+\newcommand{\hmwkClass}{COS 255}
+\newcommand{\hmwkSemester}{Spring 2016}
+
+%%% Your name, in standard First Last format
+\newcommand{\hmwkAuthorName}{Annamalis \& Lukas}
+%%% Your NetID
+\newcommand{\hmwkAuthorID}{asharp\&lleung}
+
+%%% The problem set number (just the number)
+\newcommand{\hmwkAssignmentNum}{1}
+
+%%% The problem number (just the number)
+\newcommand{\hmwkProblemNum}{0}
+
+%%% A list of your collaborators' NetIDs, separated by ", ".
+%%% You can use a new line ("\\") in the middle to prevent a long
+%%% list from overflowing.
+\newcommand{\hmwkCollaborators}{}
+%%% Sets the collaborator list to appear on the first page
+\thispagestyle{fancycollab}
+
+%%%%%%% begin Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\noindent
+Was only able to finish correctness for the Move-To-Front. Updated in this, however the correctness
+proofs for Circular Suffix Array and Burrows Wheeler are not complete. Can complete at a further date.
+{\em This document contains an explaination of algorithmic design and solutions to ... problems.
+ First will be the statement of the question followed by the mathematical formulation, the
+ Brute-Force solution, our solution, proof of correctness for our solution and any slight
+ improvements we could do.}
+
+%%%%%%% begin Move-To-Front Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Move-To-Front}
+This algorithm has two parts: encoding and decoding. \\
+\indent The main idea of move-to-front encoding is to maintain an ordered sequence of  the characters
+in the alphabet, and repeatedly read in a character from the input message, print out the
+position in which that character appears, and move that character to the front of the sequence.
+The task is to maintain an ordered sequence of the 256 extended ASCII characters. Initialize
+the sequence by making the ith character in the sequence equal to the ith extended ASCII
+character. Now, read in each 8-bit character c from standard input one at a time, output the
+8-bit index in the sequence where c appears, and move c to the front. \\
+\indent The main idea of move-to-front decoding is to initialize an ordered sequence of 256 characters,
+where extended ASCII character i appears ith in the sequence. Now, read in each 8-bit character
+i (but treat it as an integer between 0 and 255) from standard input one at a time, write the
+ith character in the sequence, and move that character to the front. Check that the decoder
+recovers any encoded message.
+
+%%%%%%% end Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%% Mathematical Formulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Mathematical Formulation}
+In the Move-To-Front algorithm we will be taking an input of size $N$ characters and either
+encoding or decoding them using an alphabet (standard ASCI) of size $R = 256$.
+
+%%%%%%% Algorithm %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Solution}
+Move-To-Front $encode$( ) initializes a Linked List of all the asci-characters.
+Then each character is read in, call it c, from standard input one at a time.
+The character is then outputed as its correspoding 8-bit index as it appears in
+the sequence. Once this is done the character is removed from it's current spot
+and is moved to the front of the Linked List.
+
+\begin{algorithm}[H]
+\caption{Move-To-Front Encode}
+\begin{algorithmic}
+    \Procedure{encode}{ }
+        \State $alphabet \gets$ Character LinkedList storing all 256 asci-characters
+        \While{there is still input}
+            \State $c \gets$ the next character
+            \State $index \gets$ the current index of c in the alphabet
+            \State alphabet.\Call{remove}{index}
+            \State output the 8-bit index in sequence where c appears
+            \State alphabet.\Call{addFirst}{c}
+        \EndWhile
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\noindent Move-To-Front $decode$( ) initializes a Linked List of all the asci-characters.
+Then each character is read in, call it index, from standard input one at a time. Then
+each one is written out as the ith character in the sequence, and move that character
+to the front.
+
+\begin{algorithm}[H]
+\caption{Move-To-Front Decode}
+\begin{algorithmic}
+    \Procedure{decode}{ }
+        \State $alphabet \gets$ Character LinkedList storing all 256 asci-characters
+        \While{there is still input}
+            \State $index \gets$ the index corresponding to stored char
+            \State $c \gets$ alphabet.\Call{remove}{index} // the char from that index
+            \State output c
+            \State alphabet.\Call{addFirst}{c}
+        \EndWhile
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+%%%%%%% Correctness %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Correctness}
+
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+Our move-to-front $encode()$ and $decode()$ methods will produce the correct outputs required.
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent Without loss of generality (W.L.O.G.) let us say our alphabet (of length m) is $A_0$ for the initial state
+and the string we read in can be represented as $s$ with length $n$. We will denote the given
+index where $s_i$ in $A_i$ as $A_{s_i}$ and the resulting alphabet is $A_{i+1}$ where $A_i$ =
+$A_{i+1}$ $\iff$ $s_i$ = $s_{i-1}$. \\ \indent We begin by finding the first character $s_0$ within
+$A_0$ which gives us the number $A_{s_0}$ that will be the first to be outputted. We then note
+that $s_0$ will be moved to the front, i.e. $A_{s_0} = 0$, giving us the new alphabet $A_1$.
+$A_1$ will be identical to $A_0$ except all $A_{s_k}$ s.t. $k \textless s_0$ will be located at
+$A_{s_k+1}$ and $A_{s_0} = 0$. We can generalize this with changing 0 to $i$ such that for every
+input $s_i$, we change from $A_{i}$ to $A_{i+1}$ s.t. $A_{s_k}$ = $A_{s_k+1}$ $\forall$ $k
+\textless s_i$ and $A_{s_i} = 0 \implies$ producing $A_{i+1} = \{A_{s_i}, A_{s_0}, A_{s_1},...
+, A_{s_i-1}, A_{s_i+1}, A_{s_i+2},..., A_{s_{m-1}}\}$. Note here that $s_m$ where $m \neq i$ does not
+correlate to the string, but the index of a symbol in $A_i$. \\
+\indent This is the exact process that is asked to execute in the problem description and is executed
+in both $encode()$ and $decode()$. The only difference between the two is: in $encode()$ we are taking a
+sequence of characters, $s = s_0 s_1 ... s_{n-1}$ and outputting the corresponding $A_{s_i}$ for
+each $s_i \in s$; in $decode()$ we are taking a sequence of character codes, $c = c_0 c_1 ... c_{n-1}$ and
+outputting the character corresponding to the code. i.e. $c_0 = A_{s_0}, c_1 = A_{s_1}, ...c_{n-1} =  A_{s_{n-1}}$
+and output $= s_0 s_1 ... s_{n-1} = s$
+\end{proof}
+
+%%%%%%% PROPOSITION 2 %%%%%%%%%%%%%%%
+\begin{proposition}
+The move-to-front $encode$ and $decode$ methods will accurately be able to encode
+and decode the \textbf{same} message.
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent At both the encoding and decoding stages, we start out with the same unaltered linked
+list of ASCI characters (represented as ints). As explained above, both will go through the exact
+same process, however reversing their inputs and outputs. Therefore putting in the input
+\end{proof}
+
+%%%%%%% Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Analysis}
+For the following analysis, we will say that $N$ is the size of the given input.
+We also will use $R = 256$ to denote our alphabet size i.e. ASCI characters.
+
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The $encode()$ and $decode$ algorithms will both have time and space complexity in
+proportion to \textbf{O(R + N)}
+
+\end{proposition}
+\begin{proof}
+This is because for both, we begin by constructing our alphabet of all 256 Asci Characters \textbf{(R)}.
+Then for each character input (\textbf{N} of them):
+\begin{itemize}
+    \item \textbf{O(1)} ~ get the current index of the character, initially this will be worst
+                        case R, however after the first instance is found, the same letter
+                        should take a next to constant operation to find.
+    \item \textbf{O(1)} ~ write out the number (if encoding) or character (if decoding)
+    \item \textbf{O(1)} ~ remove and move character to the front of the alphabet
+\end{itemize}
+Now as for the Memory usage, all we use is the character array of the input (\textbf{N}),
+and the linked list of our alphabet (of size \textbf{R})
+\begin{center}
+    Giving us a complexity of \textbf{O(R + N)} for both time and memory.
+\end{center}
+\end{proof}
+
+%%%%%%% Example %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{An Example}
+Going through the example of ABRACADABRA! which would be inputted as: \\
+ARD!RCAAAABB after going through the Circular Suffix Array. We note that there
+are only 6 characters: \{!, A, B, C, D, R\}. I will go through how their ASCI
+Characters change in the table below as well as their final output.
+
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|c|cccccccccccc}
+		\toprule
+		\multicolumn{14}{c}{\textbf{Encoding}} \\ \hline
+		                & Original    & \multicolumn{12}{c}{Index of Character After Seeing} \\
+		Character       & Value       & A           & R           & D           & !           & R           & C           & A           & A           & A           & A           & B           & B \\
+		\midrule
+		!               & 21          & 22          & 23          & \textbf{24} & 00          & 01          & 02          & 03          & --          & --          & --          & 04          & 04 \\
+        A               & \textbf{41} & 00          & 01          & 02          & 03          & 03          & \textbf{04} & \textbf{00} & \textbf{00} & \textbf{00} & 00          & 01          & 01 \\
+        B               & 42          & --          & 43          & 44          & --          & --          & 45          & --          & --          & --          & \textbf{45} & \textbf{00} & 00 \\
+        C               & 43          & --          & 44          & 45          & --          & \textbf{45} & 00          & 01          & --          & --          & --          & 02          & 02 \\
+        D               & 44          & --          & \textbf{45} & 00          & 01          & 02          & 03          & 04          & --          & --          & --          & 05          & 05 \\
+        R               & 52          & \textbf{52} & 00          & 01          & \textbf{02} & 00          & 01          & 02          & --          & --          & --          & 03          & 03 \\ \hline
+        \textbf{Output} & \textbf{41} & \textbf{52} & \textbf{45} & \textbf{24} & \textbf{02} & \textbf{45} & \textbf{04} & \textbf{00} & \textbf{00} & \textbf{00} & \textbf{45} & \textbf{00} & -- \\
+		\bottomrule
+	\end{tabular}}
+\end{table}
+
+$\therefore$ Our encoded message is: \textbf{41 52 45 24 02 45 04 00 00 00 45 00} \\
+\noindent To decode this, we will go through the same process except for instead of writting down a number
+we will be writting down the correspoding character. Therefore we will have the following:
+
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|cccccccccccc}
+		\toprule
+		\multicolumn{13}{c}{\textbf{Decoding}} \\ \hline
+		Encoded String: & \textbf{41} & \textbf{52} & \textbf{45} & \textbf{24} & \textbf{02} & \textbf{45} & \textbf{04} & \textbf{00} & \textbf{00} & \textbf{00} & \textbf{45} & \textbf{00} \\
+		Characters      & \multicolumn{12}{c}{Index of Characters} \\
+		\midrule
+		!               & 21          & 22          & 23          & \textbf{24} & 00          & 01          & 02          & 03          & --          & --          & --          & 04          \\
+        A               & \textbf{41} & 00          & 01          & 02          & 03          & 03          & \textbf{04} & \textbf{00} & \textbf{00} & \textbf{00} & --          & 01          \\
+        B               & 42          & --          & 43          & 44          & --          & --          & 45          & --          & --          & --          & \textbf{45} & \textbf{00} \\
+        C               & 43          & --          & 44          & 45          & --          & \textbf{45} & 00          & 01          & --          & --          & --          & 02          \\
+        D               & 44          & --          & \textbf{45} & 00          & 01          & 02          & 03          & 04          & --          & --          & --          & 05          \\
+        R               & 52          & \textbf{52} & 00          & 01          & \textbf{02} & 00          & 01          & 02          & --          & --          & --          & 03          \\ \hline
+        \textbf{Output} & \textbf{A}  & \textbf{R}  & \textbf{D}  & \textbf{!}  & \textbf{R}  & \textbf{C}  & \textbf{A}  & \textbf{A}  & \textbf{A}  & \textbf{A}  & \textbf{B}  & \textbf{B}  \\
+		\bottomrule
+	\end{tabular}}
+\end{table}
+$\therefore$ Our decoded message is: \textbf{ARD!RCAAAABB} so we have returned to our original string!
+
+%%%%%%% end Move-To-Front Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newpage%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%% begin Circular Suffix Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Circular Suffix}
+Given a string, this algorithm constructs a circular suffix array who's i$^{th}$ entry
+is the index of the original suffix that appears i$^{th}$ in the sorted array.
+Holistically, we will enumerate every suffix of the word in a circular fashion and sort
+them, storing the index of where they had originally been. (see example)
+
+
+%%%%%%% Mathematical Formulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Mathematical Formulation}
+In the Circular Suffix algorithm we will be taking an input of size $N$ characters
+and creat an array of size $N$ which will contain the original indicies ($charAt(i)$)
+of the suffixes in sorted order. For reasons which will become appearent in the analysis
+section, we will also note here that for the average word we will do $C^{\ast}$ compares
+to determine the relationship between circular suffixes.
+
+%%%%%%% Algorithm %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Solution}
+When we construct the Circular Suffix Array, we will first check to see that the
+input is valid.  If it is then we will continue and make an array of indicies
+s.t. index[i] = i.  From here we will sort these indicies based off of our own
+comparator. This comparator will use the character array aspect of our input to
+execute comparisons. Given 2 starting indexes, the algorithm will check to see
+if the two characters are the same, if they are not then it will return the
+appropriate negative or positive value.  If they are the same, then the two
+pointers will advance (wrapping around to the front if the pointer should ever
+leave the string) and repeat.  If at the end of all $N$ compares the strings are
+identical, then the comparator will return 0 $\implies$ equal. At the end of this
+the object will store the generated sorted circular suffix array so therefore
+calls on length() and index() will be constant.
+
+\begin{algorithm}[H]
+\caption{Circular Suffix Array Construction}
+\begin{algorithmic}
+    \Procedure{init}{String $s$}
+        \If{$s$ is null}
+            \State throw NullPointerException()
+        \EndIf
+        \State $indicies \gets$ Filled out array [0..(N-1)]
+        \State Arrays.\Call{sort}{indicies,comparator()} // see next method
+    \EndProcedure
+    \Procedure{compare}{Integer i1, Integer i2}
+        \For{$i \in$ \{0..(N-1)\}}
+            \State (char) $c1 \gets$ s[(i1 + i) \% s.length]
+            \State (char) $c2 \gets$ s[(i2 + i) \% s.length]
+            \If{$c1 \neq c2$}
+                \State \Call{return}{c1-c2}
+            \EndIf
+            \State \Call{return}{0}
+        \EndFor
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+%%%%%%% Correctness %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Correctness}
+
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+The Circular Suffix Array will, given an input of size $N$, sort the sircular suffixes
+of the input and return an array of their sorted indexes.
+
+\end{proposition}
+
+\begin{proof}
+To come soon...
+\end{proof}
+
+%%%%%%% Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Analysis}
+For the following analysis, we will say that $N$ is the size of the given input which
+implies that we will 'generate' $N$ circular suffixes. We will also note here that for
+the average word we will do $C^{\ast}$ compares. (i.e. there will not be a significant
+time taken to make several comparisons and will act as the MSD sorting does.)
+
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The $construction$ algorithm will have both time complexity in
+proportion to \textbf{O(N$\cdot$log(N)$\cdot$C$^{\ast}$)} and space
+in \textbf{O(N)}.
+
+\end{proposition}
+\begin{proof}
+We describe each part of the analysis as follows: it will take \textbf{O(N$\cdot$log(N))}
+comparisons to sort the $N$ indicies using $Arrays.sort()$. This will cost \textbf{O(C$^{\ast}$)}
+per comparison. However we can count this as nearly negligable in the typical case (being
+words in the english dictionary). However the worst case would be a string that is uniform
+in character i.e. 'aaaaaa...a' would produce a cost of $N$ every comparison. Though there
+no such words in the english language. \\
+\indent Now as for the Memory usage, we are only using the indicies array of size $N$,
+the original string of size $N$ and two integer pointers in our $compare()$ method. This would
+give us a grand total of $N + N + 2$ = \textbf{O(N)}
+\begin{center}
+    $\therefore$ Giving us a complexity of \textbf{O(N$\cdot$log(N)$\cdot$C$^{\ast}$)} for time \\
+    and \textbf{O(N)} for memory.
+\end{center}
+\end{proof}
+
+%%%%%%% Example %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsection{An Example}
+As an example, consider the string $''ABRACADABRA!''$ of length 12. The table below shows its
+12 circular suffixes and the result of sorting them.
+
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|cc|c}
+		\toprule
+		i  & Original Suffixes       & Sorted Suffixes         & index[i] \\ \hline
+		\midrule
+        0  & A B R A C A D A B R A ! & ! A B R A C A D A B R A & 11  \\
+        1  & B R A C A D A B R A ! A & A ! A B R A C A D A B R & 10  \\
+        2  & R A C A D A B R A ! A B & A B R A ! A B R A C A D & 7   \\
+        3  & A C A D A B R A ! A B R & A B R A C A D A B R A ! & 0   \\
+        4  & C A D A B R A ! A B R A & A C A D A B R A ! A B R & 3   \\
+        5  & A D A B R A ! A B R A C & A D A B R A ! A B R A C & 5   \\
+        6  & D A B R A ! A B R A C A & B R A ! A B R A C A D A & 8   \\
+        7  & A B R A ! A B R A C A D & B R A C A D A B R A ! A & 1   \\
+        8  & B R A ! A B R A C A D A & C A D A B R A ! A B R A & 4   \\
+        9  & R A ! A B R A C A D A B & D A B R A ! A B R A C A & 6   \\
+        10 & A ! A B R A C A D A B R & R A ! A B R A C A D A B & 9   \\
+        11 & ! A B R A C A D A B R A & R A C A D A B R A ! A B & 2   \\
+		\bottomrule
+	\end{tabular}}
+\end{table}
+
+
+%%%%%%% end Circular Suffix Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+%%%%%%% begin Burrows Wheeler Transform  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Burrows Wheeler Transform}
+The goal of the Burrows-Wheeler transform is not to compress a message, but
+rather to transform it into a form that is more amenable to compression. The
+transform rearranges the characters in the input so that there are lots of
+clusters with repeated characters, but in such a way that it is still possible
+to recover the original input. It relies on the following intuition: if you
+see the letters hen in English text, then most of the time the letter preceding
+it is t or w. If you could somehow group all such preceding letters together
+(mostly t's and some w's), then you would have an easy opportunity for data
+compression. Our algorithm for Burrows Wheeler performs two actions, transforming
+a given string to be encoded and inverse transforming a given string to turn
+it back into its original form.
+
+
+%%%%%%% Mathematical Formulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Mathematical Formulation}
+We take in an input of size $N$ and use an alphabet of size $R$ to either
+transform or reverse transform it.
+
+%%%%%%% Algorithm %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Solution}
+The transform function of the Burrows Wheeler Transform program first creates a
+Circular Suffix Array of the given string. Then we record the index of the first
+original suffix (the unshifted original string). We then iterate through the CSA
+to record the index of the last character in each sorted suffix. These indices are
+then used to print out the character at each index of the original string.
+
+\begin{algorithm} [H]
+\caption{Burrows Wheeler Transform}
+\begin{algorithmic}
+\Procedure {transform}{ }
+	\State $originalWord \gets$ new StringBuilder
+	\While {BinaryStdIn is not empty}
+		\State $originalWord \gets$ BinaryStdIn.\Call {readChar} { }
+	\EndWhile
+	\State $csa \gets$ new CircularSuffixArray built from originalWord
+	\For {element $\in$ csa}
+		\If {csa.\Call {indexAt}{index} == 0}
+			\State first = index
+			\State BinaryStdOut .\Call{write}{first}
+			\State break
+		\EndIf
+	\EndFor
+
+	\For {element $\in$ csa}
+		\If {csa.index(i) == 0}
+			\State $index \gets$ csa length-1; // index of last character
+		\Else
+			\State $index \gets$ csa index at i – 1
+		\EndIf
+		\State Write originalWord character at index
+	\EndFor
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+To perform the inverse transformation, we read from Binary standard input the
+encoded string and initialize an array,  $t$, to the characters corresponding
+to the last character in each sorted suffix that will be used to reconstruct
+the string. The $t$ array is then copied and the copy is sorted using bucket
+sort. We now have the first characters of the sorted suffix array along with
+the last characters.
+
+\begin{algorithm} [H]
+\caption {Burrows Wheeler Inverse Transform}
+\begin{algorithmic}
+\Procedure {inverse}{ }
+	\State $first \gets$ BinaryStdIn.\Call{readInt}{ }
+	\State $Char[]t \gets$ coded message from BinaryStdIn
+	\State $length \gets$ t.\Call {length}{ }
+	\State $Char[] sorted \gets$ bucket sort version of t
+	\State $next \gets$ getNext{t, length} //see below
+	\For {element $\in$ sorted}
+		\State BinaryStdOut.\Call {write}{sorted[index]}
+		\State $index \gets$ next[index]
+	\EndFor
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+From here we reconstruct the original string by using a variation of bucket
+sorting the characters in $t$. This gives us the $next$ array in which will
+we define next[i] to be the row in the sorted order where the (j + 1)st original
+suffix appears. By moving through $next$ and taking the next[the previous next]
+we are able to reconstruct the original string.
+
+\begin{algorithm} [H]
+\caption {getNext}
+\begin{algorithmic}
+\Procedure {getNext}{t, length}
+	\State $next \gets$ int[]
+	\State $buckets \gets$ LinkedList \textless Integer \textgreater [number of ACSI chars]
+	\State $buckets \gets$ chars in t
+	\For {c \textless number of ACSI chars and i \textless length}
+		\While {i \textless length \&  buckets is not empty}
+			\State next[i] = buckets[c].\Call {remove}{first}
+		\EndWhile
+	\EndFor
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+%%%%%%% Correctness %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Correctness}
+
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+	The...will...
+\end{proposition}
+
+\begin{proof}
+	Since...
+\end{proof}
+
+%%%%%%% Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Analysis}
+
+We take in an input of size $N$ and use an alphabet of size $R$ to either
+transform or reverse transform it.
+
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+	\label{numq}
+	The $transform()$ algorithm has Time complexity of O(N$\cdot$log(N)$\cdot$C$^{\ast}$) and Space of O($N$)
+	
+	
+\end{proposition}
+
+\begin{proof}
+	This is the case since in $transform()$ we read in the string ($N$), build a CircularSuffixArray (N$\cdot$log(N)$\cdot$C$^{\ast}$, from above) and output the index of every character in the array ($N$).
+	The space will be N because all we use is an array to store the string. 
+	
+	
+	\begin{center}
+		Giving us an overarching \textbf{O(N$\cdot$log(N)$\cdot$C$^{\ast}$)} complexity and space of \textbf{O(N)}.
+	\end{center}
+	
+\end{proof}
+
+%%%%%%% PROPOSITION 2 %%%%%%%%%%%%%%%
+\begin{proposition}
+	\label{numq}
+	
+	The $inverse()$ transform algorithm has a time complexity of \\ $O(5N + 2R)$
+	
+	
+\end{proposition}
+
+\begin{proof}
+	This is the case since in $inverse()$ transform, we create an array of size N three times (3N) and make a call to getNext and sortArray. sortArray uses
+	bucket sort to sort the chars and thusly has a time complexity of N + R,
+	where R is the size of the alphabet. getNext uses a variation on bucket
+	sort and has a time complexity of N + R. This gives inverse transform
+	a time complexity of (5N + 2R)
+	
+	
+	\begin{center}
+		Giving us an overarching \textbf{O(N + R)} complexity.
+		
+		
+		
+	\end{center}
+	\em{Note: the space complexity will be the same.}	
+\end{proof}
+
+
+%\newpage
+%%%%%%% Example %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{An Example}
+As our example, we will begin by encoding the string $ABRACADABRA!$. This is done
+using the circular suffix array, explained on a previous page, and will produce the
+index[ ] which signifies the original index of the now sorted suffix. As you
+can see below, the last letter in each sorted suffix has been \textbf{bolded}; these are the
+letters that we will be outputting. These will be preceeded with the site of the
+original string, i.e. row $i=3$
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|cc|c}
+		\toprule
+		i  & Original Suffixes       & Sorted Suffixes         & index[i] \\ \hline
+		\midrule
+        0  & A B R A C A D A B R A ! & ! A B R A C A D A B R \textbf{A} & 11  \\
+        1  & B R A C A D A B R A ! A & A ! A B R A C A D A B \textbf{R} & 10  \\
+        2  & R A C A D A B R A ! A B & A B R A ! A B R A C A \textbf{D} & 7   \\ \hline
+        3  & A C A D A B R A ! A B R & A B R A C A D A B R A \textbf{!} & \textbf{0}   \\ \hline
+        4  & C A D A B R A ! A B R A & A C A D A B R A ! A B \textbf{R} & 3   \\
+        5  & A D A B R A ! A B R A C & A D A B R A ! A B R A \textbf{C} & 5   \\
+        6  & D A B R A ! A B R A C A & B R A ! A B R A C A D \textbf{A} & 8   \\
+        7  & A B R A ! A B R A C A D & B R A C A D A B R A ! \textbf{A} & 1   \\
+        8  & B R A ! A B R A C A D A & C A D A B R A ! A B R \textbf{A} & 4   \\
+        9  & R A ! A B R A C A D A B & D A B R A ! A B R A C \textbf{A} & 6   \\
+        10 & A ! A B R A C A D A B R & R A ! A B R A C A D A \textbf{B} & 9   \\
+        11 & ! A B R A C A D A B R A & R A C A D A B R A ! A \textbf{B} & 2   \\
+		\bottomrule
+	\end{tabular}}
+\end{table}
+
+\noindent The output from this then will the sequence: \\ \textbf{00 00 00 03 A R D ! R C A A A A B B} \\
+
+The next stage then is the inverse transform portion where we will be given this same sequence
+and parse it so that way we note that first = 3 and say an array, t, is
+[41 52 44 21 52 43 41 41 41 41 42 42] (this corresponds to the unicode value of each letter).
+We build a next[ ] which will represent which letter comes next by recalling three main things:
+\begin{enumerate}
+    \item We have all of the letters so can get the corresponding first letters to each last letter (t[i])
+    \item These are circular suffixes
+    \item If sorted row i and j both start with the same character then \\ i \textless\ j $\implies$ next[i] \textless\ next[j]
+\end{enumerate}
+By using these three simple rules, we can deduce that the first time that you see the '!' in t, its
+correspoding $next$ value must be the suffix for which you find the first '!' in the sorted list. Now using
+this simple notion combined with \textbf{3}, we see that first instance of A in t will be the next for the
+first occurance of A in the sorted and the second for the second and so on.  \\
+Our next[ ] will be: \textbf{[3 0 6 7 8 9 10 11 5 2 1 4]} \\
+\indent Since we now have a fully filled out next array, all we must do is call next[first] to get the
+second letter and next[next[first]] for the third and so on. Calling write() on each step will then give us the
+output: \textbf{ABRACADABRA!}
+
+\newpage
+%%%%%%% begin Princeton Readme %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Princeton Readme}
+%%%%%%% Question 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Question 1:}
+\underline{\textbf{Question:}} List in table format which input files you used to test your program.
+Fill in columns for how long your program takes to compress and
+decompress these instances (by applying BurrowsWheeler, MoveToFront,
+and Huffman in succession). Also, fill in the third column for
+the compression ratio (number of bytes in compressed message
+divided by the number of bytes in the message).  \\
+
+\noindent \underline{\textbf{Answer:}} Timing is done in seconds.
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{|c|c|c|c|}
+		\toprule
+		File                    & Encoding Time & Decoding Time  &  Compression ratio \\ \hline
+		\midrule
+        bible.txt               & 15.570        & 5.218          &  26.05\% \\
+        muchado.txt             & 1.218         & 0.519          &  35.37\% \\
+        chromosome11-human.txt  & 33.146        & 8.979          &  27.88\% \\
+        world192.txt            & 9.512         & 5.024          &  24.44\% \\
+        mobydick.txt            & 3.928         & 2.799          &  34.74\% \\
+        moby1.txt               & 0.359         & 0.317          &  45.81\% \\
+        sedgewick-algc.txt      & 0.658         & 0.427          &  25.15\% \\
+        pi-1million.txt         & 2.917         & 1.049          &  43.73\% \\
+        pi-10million.txt        & 42.474        & 16.506         &  43.74\% \\
+		\bottomrule
+	\end{tabular}}
+\end{table}
+
+%%%%%%% Question 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Question 2:}
+\underline{\textbf{Question:}} Compare the results of your program (compression ratio and running
+time) on mobydick.txt to that of the most popular Windows compression program (pkzip)
+or the most popular Unix/Mac one (gzip). If you don't have pkzip, use 7zip and
+compress using zip format.  \\
+
+\noindent \underline{\textbf{Answer:}}
+\begin{itemize}
+    \item \underline{original:} 9,531,704 bits
+    \item \underline{gzip:} 3,884,488 bits $\implies$ 40.75\% compression rate
+    \item \underline{ours:} 3,311,696 bits $\implies$ 34.74\% compression rate
+\end{itemize}
+\begin{center}
+    $\therefore$ Ours compresses 6.01\% more than theirs.
+\end{center}
+
+\newpage
+%%%%%%% Question 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Question 3:}
+\underline{\textbf{Question:}}  Give the order of growth of the running time of each of the 6
+methods as a function of the input size N and the alphabet size R both in practice
+(on typical English text inputs) and in theory (in the worst case), e.g., N, N + R,
+N log(N), N$^2$, or R N. Include the time for sorting circular suffixes in the
+Burrows-Wheeler encoder.  \\
+
+\noindent \underline{\textbf{Answer:}}
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{|c|c|c|c|}
+		\toprule
+		 Class & Method                                & Typical          & Worst \\ \hline
+		\midrule
+        \textbf{BurrowsWheeler} & $transform()$        &    N$\cdot$log(N) &N$^2\cdot$log(N)           \\
+        \textbf{BurrowsWheeler} & $inverseTransform()$ &    N + R         & N$\cdot$R       \\ \hline
+        \textbf{MoveToFront} & $encode()$              &    N + R         & N$\cdot$R      \\
+        \textbf{MoveToFront} & $decode()$              &    N + R         & N$\cdot$R      \\ \hline
+        \textbf{Huffman} & $compress()$                &    N + R$\cdot$log(R)   & N + R$\cdot$log(R) \\
+        \textbf{Huffman} & $expand()$                  &    N             & N                  \\
+		\bottomrule
+	\end{tabular}}
+\end{table}
+
+%%%%%%% Question 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Question 4:}
+\underline{\textbf{Known bugs / limitations}}
+\begin{itemize}
+    \item We are too awesome, truely limits us.
+    \item Our Circular Suffix Array is not very efficient with corner cases where the
+    input has long sections of repetition i.e. ''aaa...a''
+    \item Cannot compress dickens.txt (will run out of memory) \\ \em{Note: this may be due to cpu, not algorithm.}
+\end{itemize}
+
+%%%%%%% Question 5 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Question 5:}
+\underline{\textbf{Help Received}}  \\
+\textbf{Professor Han} helped with asking questions on how to design the BurrowsWheeler
+$inverseTransform()$ method as well as answering clarifying questions on how to run some
+testing scripts and formulate proofs for correctness. TA \textbf{Sam Kolvaka} gave us
+help for using System.err.println(); for testing purposes so as not to mess up the
+BinaryStdIn.getchar() function.
+
+%%%%%%% Question 6 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Question 6:}
+\underline{\textbf{Serious Problems Encountered}}  \\
+Our main issues came with learning how to build the coding environment and learning how
+to use the packages. The next hurdle was how to comprehend all of the abstract concepts
+that are associated with this project, namely the $inverseTransform()$ portion of the
+BurrowsWheeler class.
+
+%%%%%%% Question 7 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Question 7:}
+\underline{\textbf{Question:}}
+If you worked with a partner, assert below that you followed the protocol as described on
+the assignment page. Give one sentence explaining what each of you contributed. \\
+\noindent \underline{\textbf{Answer:}}  \\
+We worked on this project together and split up the work when it came time to writing up
+this readme.
+
+
+
+%%%%%%% end Princeton Readme %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% end Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

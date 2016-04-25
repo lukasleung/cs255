@@ -1,0 +1,125 @@
+#!/usr/bin/env bash
+
+printf "\n\n\nCompress:\n___________________________________\n"
+printf "case 1:\n"
+timeout 90s time java BurrowsWheeler - < testing/abra.txt | java MoveToFront - | java Huffman - > testing/compressed/abra_compressed.txt
+printf "case 2:\n"
+timeout 90s time java BurrowsWheeler - < testing/bible.txt | java MoveToFront - | java Huffman - > testing/compressed/bible_compressed.txt
+printf "case 3:\n"
+timeout 90s time java BurrowsWheeler - < testing/chromosome11-human.txt | java MoveToFront - | java Huffman - > testing/compressed/chromosome11-human_compressed.txt
+printf "case 4:\n"
+timeout 90s time java BurrowsWheeler - < testing/moby1.txt | java MoveToFront - | java Huffman - > testing/compressed/moby1_compressed.txt
+printf "case 5:\n"
+timeout 90s time java BurrowsWheeler - < testing/muchado.txt | java MoveToFront - | java Huffman - > testing/compressed/muchado_compressed.txt
+printf "case 6:\n"
+timeout 90s time java BurrowsWheeler - < testing/pi-1million.txt | java MoveToFront - | java Huffman - > testing/compressed/pi-1million_compressed.txt
+printf "case 7:\n"
+timeout 90s time java BurrowsWheeler - < testing/pi-10million.txt | java MoveToFront - | java Huffman - > testing/compressed/pi-10million_compressed.txt
+printf "case 8:\n"
+timeout 90s time java BurrowsWheeler - < testing/sedgewick-algc.txt | java MoveToFront - | java Huffman - > testing/compressed/sedgewick-algc_compressed.txt
+printf "case 9:\n"
+timeout 90s time java BurrowsWheeler - < testing/world192.txt | java MoveToFront - | java Huffman - > testing/compressed/world192_compressed.txt
+
+
+printf "\n\n\nDecompress:\n___________________________________\n"
+printf "case 1:\n"
+timeout 90s time java Huffman + < testing/compressed/abra_compressed.txt | java MoveToFront + | java BurrowsWheeler + > testing/uncompressed/abra_uncompressed.txt
+printf "case 2:\n"
+timeout 90s time java Huffman + < testing/compressed/bible_compressed.txt | java MoveToFront + | java BurrowsWheeler + > testing/uncompressed/bible_uncompressed.txt
+printf "case 3:\n"
+timeout 90s time java Huffman + < testing/compressed/chromosome11-human_compressed.txt | java MoveToFront + | java BurrowsWheeler + > testing/uncompressed/moby1_uncompressed.txt
+printf "case 4:\n"
+timeout 90s time java Huffman + < testing/compressed/moby1_compressed.txt | java MoveToFront + | java BurrowsWheeler + > testing/uncompressed/moby1_uncompressed.txt
+printf "case 5:\n"
+timeout 90s time java Huffman + < testing/compressed/muchado_compressed.txt | java MoveToFront + | java BurrowsWheeler + > testing/uncompressed/muchado_uncompressed.txt
+printf "case 6:\n"
+timeout 90s time java Huffman + < testing/compressed/pi-1million_compressed.txt | java MoveToFront + | java BurrowsWheeler + > testing/uncompressed/pi-1million_uncompressed.txt
+printf "case 7:\n"
+timeout 90s time java Huffman + < testing/compressed/pi-10million_compressed.txt | java MoveToFront + | java BurrowsWheeler + > testing/uncompressed/pi-10million_uncompressed.txt
+printf "case 8:\n"
+timeout 90s time java Huffman + < testing/compressed/sedgewick-algc_compressed.txt | java MoveToFront + | java BurrowsWheeler + > testing/uncompressed/sedgewick-algc_uncompressed.txt
+printf "case 9:\n"
+timeout 90s time java Huffman + < testing/compressed/world192_compressed.txt | java MoveToFront + | java BurrowsWheeler + > testing/uncompressed/world192_uncompressed.txt
+
+
+printf "\n\n\nBurrows Transform:\n___________________________________\n"
+printf "case 1:\n"
+timeout 90s time java BurrowsWheeler - < testing/abra.txt > testing/burrows/compressed/abra_compressed.txt
+printf "case 2:\n"
+timeout 90s time java BurrowsWheeler - < testing/bible.txt > testing/burrows/compressed/bible_compressed.txt
+printf "case 3:\n"
+timeout 90s time java BurrowsWheeler - < testing/chromosome11-human.txt > testing/burrows/compressed/chromosome11-human_compressed.txt
+printf "case 4:\n"
+timeout 90s time java BurrowsWheeler - < testing/moby1.txt > testing/burrows/compressed/moby1_compressed.txt
+printf "case 5:\n"
+timeout 90s time java BurrowsWheeler - < testing/muchado.txt > testing/burrows/compressed/muchado_compressed.txt
+printf "case 6:\n"
+timeout 90s time java BurrowsWheeler - < testing/pi-1million.txt > testing/burrows/compressed/pi-1million_compressed.txt
+printf "case 7:\n"
+timeout 90s time java BurrowsWheeler - < testing/pi-10million.txt > testing/burrows/compressed/pi-10million_compressed.txt
+printf "case 8:\n"
+timeout 90s time java BurrowsWheeler - < testing/sedgewick-algc.txt > testing/burrows/compressed/sedgewick-algc_compressed.txt
+printf "case 9:\n"
+timeout 90s time java BurrowsWheeler - < testing/world192.txt > testing/burrows/compressed/world192_compressed.txt
+
+
+printf "\n\n\nBurrows Inverse:\n___________________________________\n"
+printf "case 1:\n"
+timeout 90s time java BurrowsWheeler + < testing/burrows/compressed/abra_compressed.txt > testing/burrows/uncompressed/abra_uncompressed.txt
+printf "case 2:\n"
+timeout 90s time java BurrowsWheeler + < testing/burrows/compressed/bible_compressed.txt > testing/burrows/uncompressed/bible_uncompressed.txt
+printf "case 3:\n"
+timeout 90s time java BurrowsWheeler + < testing/burrows/compressed/chromosome11-human_compressed.txt > testing/burrows/uncompressed/chromosome11-human_uncompressed.txt
+printf "case 4:\n"
+timeout 90s time java BurrowsWheeler + < testing/burrows/compressed/moby1_compressed.txt > testing/burrows/uncompressed/moby1_uncompressed.txt
+printf "case 5:\n"
+timeout 90s time java BurrowsWheeler + < testing/burrows/compressed/muchado_compressed.txt > testing/burrows/uncompressed/muchado_uncompressed.txt
+printf "case 6:\n"
+timeout 90s time java BurrowsWheeler + < testing/burrows/compressed/pi-1million_compressed.txt > testing/burrows/uncompressed/pi-1million_uncompressed.txt
+printf "case 7:\n"
+timeout 90s time java BurrowsWheeler + < testing/burrows/compressed/pi-10million_compressed.txt > testing/burrows/uncompressed/pi-10million_uncompressed.txt
+printf "case 8:\n"
+timeout 90s time java BurrowsWheeler + < testing/burrows/compressed/sedgewick-algc_compressed.txt > testing/burrows/uncompressed/sedgewick-algc_uncompressed.txt
+printf "case 9:\n"
+timeout 90s time java BurrowsWheeler + < testing/burrows/compressed/world192_compressed.txt > testing/burrows/uncompressed/world192_uncompressed.txt
+
+
+printf "\n\n\nMove To Front Encode:\n___________________________________\n"
+printf "case 1:\n"
+timeout 10s time java MoveToFront - < testing/abra.txt > testing/mtf/compressed/abra_compressed.txt
+printf "case 2:\n"
+timeout 10s time java MoveToFront - < testing/bible.txt > testing/mtf/compressed/bible_compressed.txt
+printf "case 3:\n"
+timeout 10s time java MoveToFront - < testing/chromosome11-human.txt > testing/mtf/compressed/chromosome11-human_compressed.txt
+printf "case 4:\n"
+timeout 10s time java MoveToFront - < testing/moby1.txt > testing/mtf/compressed/moby1_compressed.txt
+printf "case 5:\n"
+timeout 10s time java MoveToFront - < testing/muchado.txt > testing/mtf/compressed/muchado_compressed.txt
+printf "case 6:\n"
+timeout 10s time java MoveToFront - < testing/pi-1million.txt > testing/mtf/compressed/pi-1million_compressed.txt
+printf "case 7:\n"
+timeout 10s time java MoveToFront - < testing/pi-10million.txt > testing/mtf/compressed/pi-10million_compressed.txt
+printf "case 8:\n"
+timeout 10s time java MoveToFront - < testing/sedgewick-algc.txt > testing/mtf/compressed/sedgewick-algc_compressed.txt
+printf "case 9:\n"
+timeout 10s time java MoveToFront - < testing/world192.txt > testing/mtf/compressed/world192_compressed.txt
+
+printf "\n\n\nMove To Front Decode:\n___________________________________\n"
+printf "case 1:\n"
+timeout 10s time java MoveToFront + < testing/mtf/compressed/abra_compressed.txt > testing/mtf/uncompressed/abra_uncompressed.txt
+printf "case 2:\n"
+timeout 10s time java MoveToFront + < testing/mtf/compressed/bible_compressed.txt > testing/mtf/uncompressed/bible_uncompressed.txt
+printf "case 3:\n"
+timeout 10s time java MoveToFront + < testing/mtf/compressed/chromosome11-human_compressed.txt > testing/mtf/uncompressed/chromosome11-human_uncompressed.txt
+printf "case 4:\n"
+timeout 10s time java MoveToFront + < testing/mtf/compressed/moby1_compressed.txt > testing/mtf/uncompressed/moby1_uncompressed.txt
+printf "case 5:\n"
+timeout 10s time java MoveToFront + < testing/mtf/compressed/muchado_compressed.txt > testing/mtf/uncompressed/muchado_uncompressed.txt
+printf "case 6:\n"
+timeout 10s time java MoveToFront + < testing/mtf/compressed/pi-1million_compressed.txt > testing/mtf/uncompressed/pi-1million_uncompressed.txt
+printf "case 7:\n"
+timeout 10s time java MoveToFront + < testing/mtf/compressed/pi-10million_compressed.txt > testing/mtf/uncompressed/pi-10million_uncompressed.txt
+printf "case 8:\n"
+timeout 10s time java MoveToFront + < testing/mtf/compressed/sedgewick-algc_compressed.txt > testing/mtf/uncompressed/sedgewick-algc_uncompressed.txt
+printf "case 9:\n"
+timeout 10s time java MoveToFront + < testing/mtf/compressed/world192_compressed.txt > testing/mtf/uncompressed/world192_uncompressed.txt

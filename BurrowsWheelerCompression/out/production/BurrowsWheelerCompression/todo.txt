@@ -1,0 +1,7 @@
+Things to do:
++ Create the Circular Suffix Array Data Type
++ Implement the Burrows-Wheeler data compression algorithm
+    - Burrows-Wheeler transform
+    - Move-to-front encoding
+    - Huffman compression
++ MoveToFront.java

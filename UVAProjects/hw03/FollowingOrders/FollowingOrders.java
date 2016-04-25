@@ -98,7 +98,7 @@ public class FollowingOrders {
             int n = symbols.length; // number of symbols
             LinkedList<Integer>[] G = (LinkedList<Integer>[]) new LinkedList[n];
             // for each character, initialize a linked list
-            for (int i = 0; i < n; i++) { G[i] = new LinkedList<>(); }
+            for (int i = 0; i < n; i++) { G[i] = new LinkedList(); }
             // for each character, map the index of the character
             //   and the character of the index
             char[] inverseMap = new char[n];

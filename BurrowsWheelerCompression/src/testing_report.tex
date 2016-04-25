@@ -1,0 +1,759 @@
+% Use this template to write your solutions to COS 423 problem sets
+
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amsfonts, amsthm, amssymb, algorithm, graphicx, mathtools, xfrac}
+\usepackage[noend]{algpseudocode}
+\usepackage{fancyhdr, lastpage}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage[vmargin=1.20in,hmargin=1.25in,centering,letterpaper]{geometry}
+\setlength{\headsep}{.50in}
+\setlength{\headheight}{15pt}
+
+% Landau notation
+\DeclareMathOperator{\BigOm}{\mathcal{O}}
+\newcommand{\BigOh}[1]{\BigOm\left({#1}\right)}
+\DeclareMathOperator{\BigTm}{\Theta}
+\newcommand{\BigTheta}[1]{\BigTm\left({#1}\right)}
+\DeclareMathOperator{\BigWm}{\Omega}
+\newcommand{\BigOmega}[1]{\BigWm\left({#1}\right)}
+\DeclareMathOperator{\LittleOm}{\mathrm{o}}
+\newcommand{\LittleOh}[1]{\LittleOm\left({#1}\right)}
+\DeclareMathOperator{\LittleWm}{\omega}
+\newcommand{\LittleOmega}[1]{\LittleWm\left({#1}\right)}
+
+% argmin and argmax
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Exp}{\mathbb{E}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\sign}{\mathrm{sign\ }}
+\newcommand{\abs}{\mathrm{abs\ }}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\zo}{\{0, 1\}}
+\newcommand{\SAT}{\mathit{SAT}}
+\renewcommand{\P}{\mathbf{P}}
+\newcommand{\NP}{\mathbf{NP}}
+\newcommand{\coNP}{\co{NP}}
+\newcommand{\co}[1]{\mathbf{co#1}}
+\renewcommand{\Pr}{\mathop{\mathrm{Pr}}}
+
+% theorems, lemmas, invariants, etc.
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{invariant}[theorem]{Invariant}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{property}[theorem]{Property}
+\newtheorem{proposition}[theorem]{Proposition}
+
+% piecewise functions
+\newenvironment{piecewise}{\left \{\begin{array}{l@{,\ }l}}
+{\end{array}\right.}
+
+% paired delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\len}{|}{|}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+
+\makeatletter
+\@addtoreset{equation}{section}
+\makeatother
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+
+% algorithms
+\algnewcommand\algorithmicinput{\textbf{INPUT:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\algorithmicoutput{\textbf{OUTPUT:}}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+% Formating Macros
+
+\pagestyle{fancy}
+\lhead{\sc \hmwkClass\ $\; \;\cdot \; \;$ \hmwkSemester\ $\; \;\cdot \; \;$
+Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{\sc Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{}
+\rhead{\em \hmwkAuthorName\ $($\hmwkAuthorID$)$\/}
+\cfoot{}
+\lfoot{}
+\rfoot{\sc Page\ \thepage\ of\ \protect\pageref{LastPage}}
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\fancypagestyle{fancycollab}
+{
+    \lfoot{\textit{Collaborators: \hmwkCollaborators}}
+}
+
+\fancypagestyle{problemstatement}
+{
+    \rhead{}
+    \lfoot{}
+}
+
+%%%%%% Begin document with header and title %%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%% Header Information %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Shouldn't need to change these
+\newcommand{\hmwkClass}{CSCI 255}
+\newcommand{\hmwkSemester}{Spring 2016}
+
+%%% Your name, in standard First Last format
+\newcommand{\hmwkAuthorName}{Annamalis \& Lukas}
+%%% Your NetID
+\newcommand{\hmwkAuthorID}{asharp,lleung}
+
+%%% The problem set number (just the number)
+\newcommand{\hmwkAssignmentNum}{1}
+
+%%% The problem number (just the number)
+\newcommand{\hmwkProblemNum}{2}
+
+%%% A list of your collaborators' NetIDs, separated by ", ".
+%%% You can use a new line ("\\") in the middle to prevent a long
+%%% list from overflowing.
+\newcommand{\hmwkCollaborators}{}
+%%% Sets the collaborator list to appear on the first page
+\thispagestyle{fancycollab}
+
+%%%%%%% begin Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\noindent
+We chose to do too extensive testing and was un-able to finish all test cases within the alloted time for all people but have attached all testing files and necessary scripting
+
+%%%%%%% Description of Testing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+To test we had seven test cases:
+\begin{table}[H]
+	\centering
+	\begin{tabular}{cc}
+		\toprule
+		Case & Input \\
+		\midrule
+		1 & \texttt{``abra.txt''} \\
+		2 & \texttt{``bible.txt''} \\
+		3 & \texttt{``chromosome11-human.txt''} \\
+		4 & \texttt{``moby1.txt''} \\
+		5 & \texttt{``muchado.txt''} \\
+		6 & \texttt{``pi-1million.txt''} \\
+		7 & \texttt{``pi-10million.txt''} \\
+		8 & \texttt{``sedgewick-algc.txt''} \\
+        9 & \texttt{``world192.txt''} \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+\noindent \underline{The reasoning behind each case is as follows:}
+\begin{enumerate}
+\item Base case
+\item 2
+\item Check for many repeating characters
+\item 4
+\item 5
+\item Check for random characters
+\item Should be proportional to Case 6 for random chars 
+\item 8
+\item 9
+\end{enumerate}
+
+%%%%%%% begin Compression Testing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Compression}
+\subsection{Correctness:}
+\underline{The results were:}
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|ccccccccc}
+		\toprule
+		Group name           & Case 1 & Case 2 & Case 3 & Case 4 & Case 5 & Case 6 & Case 7 & Case 8 & Case 9\\
+		\midrule
+		Annamalis \& Lukas   & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed\\
+		Brenda \& Josh       & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed \\
+		Brendan \& Christian & Failed & Failed & Failed & Failed & Failed & Failed & Failed & Failed & Failed  \\
+		Colin \& Derek       & Failed & Failed & Failed & Failed & Failed & Failed & Failed & Failed & Failed  \\
+		Jiri \& Ronak        & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed  \\
+		Lyle \& Jonathan     & Passed & Failed & Failed & Passed & Passed & Failed & Failed & Passed & Failed \\
+		Parker \& Rafael     &  &  &  &  &  &  &  & &  \\
+		Trung \& Viet        &  &  &  &  &  &  &  & &  \\
+        Tudo                 &  &  &  &  &  &  &  & &  \\
+		\bottomrule
+	\end{tabular}}
+\end{table}
+
+
+% TIMING
+\subsection{Timing:}
+\underline{The results were (seconds):}
+
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|ccccccccc}
+		\toprule
+		Group name           & Case 1 & Case 2 & Case 3 & Case 4 & Case 5 & Case 6 & Case 7 & Case 8 & Case 9\\
+		\midrule
+		Annamalis \& Lukas   & 0.533  & 23.664 & 43.733 & 1.059  & 1.679  & 5.784  & 57.538 & 1.147 & 14.485 \\
+		Brenda \& Josh       & 0.582  & 25.680 & 47.456 & 0.748  & 1.366  & 5.329  & 55.258 & 1.897 & 15.865  \\
+		Brendan \& Christian & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------& ------ \\
+		Colin \& Derek       & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------& ------  \\
+		Jiri \& Ronak        & 0.442  & 25.974 & 59.538 & 1.662  & 1.439 & 7.638 & 74.603 & 1.593 & 18.068  \\
+		Lyle \& Jonathan     & 0.552  & ------ & ------ & 1.555  & 80.578 & ------ & ------ & 53.415 & ------ \\
+		Parker \& Rafael     &  &  &  &  &  &  &  & &  \\
+		Trung \& Viet        &  &  &  &  &  &  &  & &  \\
+        Tudo                 &  &  &  &  &  &  &  & &  \\
+		\bottomrule
+	\end{tabular}}
+\end{table}
+
+\newpage
+% MEMORY
+\subsection{Memory:}
+\underline{The results were (percent used of total memory CSA:Burrows:MTF):}
+
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|c|ccccccccc}
+		\toprule
+		Group name           & Class 	& Case 1 & Case 2  & Case 3  & Case 4 & Case 5 & Case 6  & Case 7  & Case 8 & Case 9\\
+		\midrule
+		Annamalis \& Lukas   & CSA      & 1.04\% & 49.73\% & 70.92\% & 2.08\% & 7.90\% & 36.11\% & 64.71\% & 6.86\% & 48.06\%  \\
+		                     & Burrows  & 1.04\% & 49.73\% & 71.00\% & 2.10\% & 8.42\% & 36.38\% & 64.80\% & 7.38\% & 48.06\%  \\
+		                     & MTF      & 1.04\% & 1.63\%  & 10.67\% & 2.08\% & 6.25\% & 14.54\% & 22.69\% & 5.21\% & 19.25\%  \\ \hline
+
+		Brenda \& Josh       & CSA      & 1.56\% & 73.62\%  & 64.83\% & 2.55\% & 9.45\% & 46.88\% & 83.21\% & 8.27\% & 52.38\%  \\
+                             & Burrows  & 1.56\% & 67.91\% & 60.25\% & 2.55\% & 10.37\% & 50.25\% & 68.01\% & 8.59\% & 55.32\%  \\
+                             & MTF      & 1.04\% & 29.44\% & 87.08\% & 1.56\% & 3.06\% & 15.30\% & 82.18\% & 2.92\% & 32.40\%  \\ \hline
+
+        Brendan \& Christian & CSA      & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------  \\
+                             & Burrows  & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------  \\
+                             & MTF      & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------  \\ \hline
+
+		Colin \& Derek       & CSA      & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------  \\
+						   	 & Burrows  & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------  \\
+							 & MTF      & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------  \\ \hline
+
+		Jiri \& Ronak        & CSA      & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------  \\
+                             & Burrows  & 1.04\% & 67.08\% & 63.36\% & 2.72\% & 14.40\% & 23.23\% & 82.80\% & 12.54 & 37.04\%  \\
+                             & MTF      & 1.04\% & 1.56\% & 1.56\% & 1.56\% & 1.56\% & 1.56\% & 1.56\% & 1.56\% & 1.56\%  \\ \hline
+
+		Lyle \& Jonathan     & CSA      & 1.04\% & ------ & ------ & 35.69\% & 46.58\% & ------ & ------ & 52.67\% & ------  \\
+                             & Burrows  & 1.04\% & ------ & ------ & 35.69\% & 48.26\% & ------ & ------ & 52.67\% & ------  \\
+                             & MTF      & 1.04\% & ------ & ------ & 35.73\% & 29.64\% & ------ & ------ & 8.80\%  & ------  \\ \hline
+
+		Parker \& Rafael     & CSA      &  &  &  &  &  &  &  &  &   \\
+                             & Burrows  &  &  &  &  &  &  &  &  &   \\
+                             & MTF      &  &  &  &  &  &  &  &  &   \\ \hline
+
+		Trung \& Viet        & CSA      &  &  &  &  &  &  &  &  &   \\
+                             & Burrows  &  &  &  &  &  &  &  &  &   \\
+                             & MTF      &  &  &  &  &  &  &  &  &   \\ \hline
+
+        Tudo                 & CSA      &  &  &  &  &  &  &  &  &   \\
+                             & Burrows  &  &  &  &  &  &  &  &  &   \\
+                             & MTF      &  &  &  &  &  &  &  &  &   \\ \hline
+		\bottomrule
+	\end{tabular}}
+\end{table}
+For this section,
+
+
+
+%%%%%%% begin De-compression Testing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{De-Compression}
+\subsection{Correctness:}
+\underline{The results were:}
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|ccccccccc}
+		\toprule
+		Group name           & Case 1 & Case 2 & Case 3 & Case 4 & Case 5 & Case 6 & Case 7 & Case 8 & Case 9\\
+		\midrule
+		Annamalis \& Lukas   & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed\\
+		Brenda \& Josh       & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed  \\
+		Brendan \& Christian & Passed & Failed & Passed & Failed & Failed & Failed & Failed & Failed & Failed  \\
+		Colin \& Derek       & Failed & Failed & Failed & Failed & Failed & Failed & Failed & Failed & Failed  \\
+		Jiri \& Ronak        & Passed & Failed & Passed & Passed & Passed & Failed & Failed & Passed & Failed  \\
+		Lyle \& Jonathan     & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed \\
+		Parker \& Rafael     &  &  &  &  &  &  &  & &  \\
+		Trung \& Viet        &  &  &  &  &  &  &  & &  \\
+        Tudo                 &  &  &  &  &  &  &  & &  \\
+		\bottomrule
+	\end{tabular}}
+\end{table}
+
+
+% TIMING
+\subsection{Timing:}
+\underline{The results were (seconds):}
+
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|ccccccccc}
+		\toprule
+		Group name           & Case 1 & Case 2 & Case 3 & Case 4 & Case 5 & Case 6 & Case 7 & Case 8 & Case 9\\
+		\midrule
+		Annamalis \& Lukas   & 0.437  & 9.889  & 18.641  & 0.634  & 0.957  & 1.754  & 31.304 & 0.963 & 9.159 \\
+		Brenda \& Josh       & 0.752  & 5.285  & 9.138   & 0.762  & 0.813  & 2.209  & 12.653 & 0.996 & 3.831 \\
+		Brendan \& Christian & 0.626  & 3.030  & 5.887   & 0.815  & 0.891  & 1.555  & 7.244  & 1.241 & 2.296  \\
+		Colin \& Derek       & ------ & ------ & ------  & ------ & ------ & ------ & ------ & ------ & ------ \\
+		Jiri \& Ronak        & 0.646  & ------ & ------  & 0.711  & 13.795 & ------ & ------ & 7.830  & ------ \\
+		Lyle \& Jonathan     & 0.514  & 8.499  & 15.508  & 0.716  & 0.846 & 3.170 & 22.990 & 1.004 & 6.563 \\
+		Parker \& Rafael     &  &  &   &  &  &  &  & &  \\
+		Trung \& Viet        &  &  &   &  &  &  &  & &  \\
+        Tudo                 &  &  &   &  &  &  &  & &  \\
+		\bottomrule
+	\end{tabular}}
+\end{table}
+
+\newpage
+% MEMORY
+\subsection{Memory:}
+\underline{The results were (percent used of total memory CSA:Burrows:MTF):}
+
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|c|ccccccccc}
+		\toprule
+		Group name           & Class 	& Case 1 & Case 2  & Case 3  & Case 4 & Case 5  & Case 6  & Case 7  & Case 8  & Case 9\\
+		\midrule
+		Annamalis \& Lukas   & MTF  	& 1.04\% & 1.77\%  & 10.66\% & 2.08\% & 6.25\%  & 14.56\% & 46.03\% & 5.21\%  & 19.21\%  \\
+		                     & Burrows  & 1.04\% & 56.03\% & 79.61\% & 2.76\% & 14.29\% & 68.46\% & 75.55\% & 11.41\% & 41.91\%  \\ \hline
+
+		Brenda \& Josh       & MTF      & 1.56\% & 29.44\%  & 87.08\% & 1.56\% & 3.06\% & 15.30\% & 82.17\% & 2.92\% & 32.40\%  \\
+                             & Burrows  & 1.56\% & 49.07\% & 92.00\% & 2.59\% & 5.07\% & 17.40\% & 88.23\% & 4.62\% & 64.11\%  \\ \hline
+
+        Brendan \& Christian & MTF      & 1.56\% & 1.56\% & 1.56\% & 1.56\% & 1.56\% & 1.56\% & 1.56\% & 1.56\% & 1.56\%  \\
+                             & Burrows  & 1.56\% & 81.82\% & 59.66\% & 2.61\% & 10.97\% & 24.77 & 70.80 & 9.76 & 57.88  \\ \hline
+
+		Colin \& Derek       & MTF      & ------ &------ & ------ & ------ & ------ & ------ & ------ & ------ & ------  \\
+                             & Burrows   & ------ &------ & ------ & ------ & ------ & ------ & ------ & ------ & ------  \\ \hline
+
+		Jiri \& Ronak        & MTF      & 1.04\% & ------ & ------ & 1.56\% & 1.56\% & ------ & ------ & 1.56\% & ------  \\
+                             & Burrows  & 1.04\% & ------ & ------ & 2.51\% & 5.92\% & ------ & ------ & 5.52\% & ------  \\ \hline
+
+		Lyle \& Jonathan     & MTF      & 1.04\% & 64.70\% & 82.00\% & 2.09\% & 4.90\% & 4.90\% & 25.20\% & 87.46\% & 3.87\%  \\
+                             & Burrows  & 1.04\% & 67.12\% & 67.12\% & 2.53\% & 10.26\% & 10.25\% & 41.52\% & 82.04\% & 8.86\%  \\ \hline
+
+		Parker \& Rafael     & MTF      &  &  &  &  &  &  &  &  &   \\
+                             & Burrows  &  &  &  &  &  &  &  &  &   \\ \hline
+
+		Trung \& Viet        & MTF      &  &  &  &  &  &  &  &  &   \\
+                             & Burrows  &  &  &  &  &  &  &  &  &   \\ \hline
+
+        Tudo                 & MTF      &  &  &  &  &  &  &  &  &   \\
+                             & Burrows  &  &  &  &  &  &  &  &  &   \\ \hline
+		\bottomrule
+	\end{tabular}}
+\end{table}
+For this section,
+
+
+
+
+%%%%%%% begin Burrows Testing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Burrows Transform}
+\subsection{Correctness:}
+\underline{The results were:}
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|ccccccccc}
+		\toprule
+		Group name           & Case 1 & Case 2 & Case 3 & Case 4 & Case 5 & Case 6 & Case 7 & Case 8 & Case 9\\
+		\midrule
+		Annamalis \& Lukas   & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed\\
+		Brenda \& Josh       & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed \\
+		Brendan \& Christian & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed  \\
+		Colin \& Derek       & Failed & Failed & Failed & Failed & Failed & Failed & Failed & Failed & Failed  \\
+		Jiri \& Ronak        & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed \\
+		Lyle \& Jonathan     & Passed & Failed & Failed & Passed & Passed & Failed & Failed & Passed & Failed \\
+		Parker \& Rafael     &  &  &  &  &  &  &  & &  \\
+		Trung \& Viet        &  &  &  &  &  &  &  & &  \\
+        Tudo                 &  &  &  &  &  &  &  & &  \\
+		\bottomrule
+	\end{tabular}}
+\end{table}
+
+
+% TIMING
+\subsection{Timing:}
+\underline{The results were (seconds):}
+
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|ccccccccc}
+		\toprule
+		Group name           & Case 1 & Case 2 & Case 3 & Case 4 & Case 5 & Case 6 & Case 7 & Case 8 & Case 9\\
+		\midrule
+		Annamalis \& Lukas   & 0.225  & 20.286 & 37.788 & 0.315  & 0.696  & 4.043  & 47.375 & 0.702 & 12.273 \\
+		Brenda \& Josh       & 0.299  & 21.959 & 41.325 & 0.368  & 0.803 & 4.196 & 49.473 & 0.873 & 11.945 \\
+		Brendan \& Christian & 0.274 & 18.133 & 32.374 & 0.411 & 1.123 & 4.862 & 45.602 & 0.747 & 10.850  \\
+		Colin \& Derek       & 0.319 & 20.307 & 139.702 & 0.311 & 1.711 & 5.147 & 52.007 & 1.557 & 11.274 \\
+		Jiri \& Ronak        & 0.165 & 24.147 & 45.944 & 0.378 & 0.823 & 6.467 & 62.763 & 1.332 & 17.149 \\
+		Lyle \& Jonathan     & 0.192 & ------ & ------ & 0.742 & 40.453 & ------ & ------ & 27.408 & ------ \\
+		Parker \& Rafael     &  &  &  &  &  &  &  & &  \\
+		Trung \& Viet        &  &  &  &  &  &  &  & &  \\
+        Tudo                 &  &  &  &  &  &  &  & &  \\
+		\bottomrule
+	\end{tabular}}
+\end{table}
+
+\newpage
+% MEMORY
+\subsection{Memory:}
+\underline{The results were (percent used of total memory CSA:Burrows:MTF):}
+
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|c|ccccccccc}
+		\toprule
+		Group name           & Class 	& Case 1 & Case 2  & Case 3  & Case 4 & Case 5 & Case 6  & Case 7  & Case 8 & Case 9\\
+		\midrule
+		Annamalis \& Lukas   & CSA      & 1.04\% & 56.57\% & 63.26\% & 2.08\% & 7.90\% & 36.11\% & 64.41\% & 6.86\% & 46.56\%  \\
+		                     & Burrows  & 1.04\% & 56.57\% & 63.26\% & 2.10\% & 8.42\% & 36.38\% & 64.50\% & 7.38\% & 46.56\%  \\
+		                     
+
+		Brenda \& Josh       & CSA      & 1.04\% & 48.19\% & 65.94\% & 2.55\% & 9.45\% & 46.88\% & 81.96\% & 8.33\% & 52.22\%  \\
+                             & Burrows  & 1.04\% & 51.27\% & 61.26\%  & 2.55\% & 10.37\% & 50.25\% & 66.98\% & 8.66\% & 55.15\%  \\
+                             
+
+        Brendan \& Christian & CSA      & 2.08\% & 71.89\%  & 66.56\% & 3.04\% & 10.59\% & 57.58\% & 83.69\% & 9.40\% & 52.66\%  \\
+                             & Burrows  & 2.08\% & 71.94\% & 66.56\% & 3.04\% & 11.11\% & 55.39\% & 83.733\% & 9.40\% & 52.75\%  \\
+                             
+
+		Colin \& Derek       & CSA      & 2.08\% & 59.98\%  & 69.69\% & 3.68\% & 8.43\% & 52.05\% & 80.67\% & 7.10\% & 52.90\%  \\
+                             & Burrows  & 2.08\% & 62.73\%  & 76.87\% & 3.68\% & 9.20\% & 57.13\% & 76.48\% & 7.99\% & 59.64\%  \\
+                             
+
+		Jiri \& Ronak        & CSA      & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------  \\
+                             & Burrows  & 1.04\% & 66.56\% & 73.82 & 2.76\% & 14.40\% & 22.07\% & 82.239\% & 12.54\% & 36.82\%  \\
+                             
+
+		Lyle \& Jonathan     & CSA      & 1.56\% & ------ & ------ & 40.35\% & 55.32\% & ------ & ------ & 73.83\% & ------ \\
+                             & Burrows  & 1.56\% & ------ & ------ & 40.35\% & 55.32\% & ------ & ------ & 73.83\% & ------ \\
+                            
+
+		Parker \& Rafael     & CSA      &  &  &  &  &  &  &  &  &   \\
+                             & Burrows  &  &  &  &  &  &  &  &  &   \\
+                             & MTF      &  &  &  &  &  &  &  &  &   \\ \hline
+
+		Trung \& Viet        & CSA      &  &  &  &  &  &  &  &  &   \\
+                             & Burrows  &  &  &  &  &  &  &  &  &   \\
+                             & MTF      &  &  &  &  &  &  &  &  &   \\ \hline
+
+        Tudo                 & CSA      &  &  &  &  &  &  &  &  &   \\
+                             & Burrows  &  &  &  &  &  &  &  &  &   \\
+                             & MTF      &  &  &  &  &  &  &  &  &   \\ \hline
+		\bottomrule
+	\end{tabular}}
+\end{table}
+For this section,
+
+\section{Burrows Inverse Transform}
+\subsection{Correctness:}
+\underline{The results were:}
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+		\begin{tabular}{c|ccccccccc}
+			\toprule
+			Group name           & Case 1 & Case 2 & Case 3 & Case 4 & Case 5 & Case 6 & Case 7 & Case 8 & Case 9\\
+			\midrule
+			Annamalis \& Lukas   & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed\\
+			Brenda \& Josh       & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed \\
+			Brendan \& Christian & Passed & Failed & Failed & Failed & Failed & Failed & Failed & Failed & Failed \\
+			Colin \& Derek       & Passed & Failed & Failed & Failed & Failed & Passed & Passed & Failed & Failed  \\
+			Jiri \& Ronak        & Passed & Passed & Failed & Passed & Passed & Failed & Failed & Passed & Failed \\
+			Lyle \& Jonathan     & Passed & Failed & Failed & Passed & Passed & Failed & Failed & Passed & Failed \\
+			Parker \& Rafael     &  &  &  &  &  &  &  & &  \\
+			Trung \& Viet        &  &  &  &  &  &  &  & &  \\
+			Tudo                 &  &  &  &  &  &  &  & &  \\
+			\bottomrule
+		\end{tabular}}
+	\end{table}
+	
+	
+	% TIMING
+	\subsection{Timing:}
+	\underline{The results were (seconds):}
+	
+	\begin{table}[H]
+		\centering
+		\resizebox{\textwidth}{!}{
+			\begin{tabular}{c|ccccccccc}
+				\toprule
+				Group name           & Case 1 & Case 2 & Case 3 & Case 4 & Case 5 & Case 6 & Case 7 & Case 8 & Case 9\\
+				\midrule
+				Annamalis \& Lukas   & 0.160  & 7.332  & 14.059 & 0.206  & 0.450  & 0.965  & 25.527 & 0.681  & 7.387 \\
+				Brenda \& Josh       & 0.248 & 1.940 & 3.473 & 0.378 & 0.476 & 0.555 & 3.666 & 0.299 & 1.367 \\
+				Brendan \& Christian & 0.283 & 1.621 & 2.884 & 0.194 & 0.438 & 0.743 & 3.672 & 0.364 & 1.199 \\
+				Colin \& Derek       & 0.341 & 28.542 & 46.741 & 0.490 & 1.561 & 7.278 & 69.240 & 1.157 & 15.578  \\
+				Jiri \& Ronak        & 0.197 & ------ & ------ & 0.327 & 12.519 & ------ & ------ & 6.812 & ------ \\
+				Lyle \& Jonathan     & Passed & Passed & Passed & Passed & Passed & Passed & Passed & &  \\
+				Parker \& Rafael     &  &  &  &  &  &  &  & &  \\
+				Trung \& Viet        &  &  &  &  &  &  &  & &  \\
+				Tudo                 &  &  &  &  &  &  &  & &  \\
+				\bottomrule
+			\end{tabular}}
+		\end{table}
+		
+		\newpage
+		% MEMORY
+		\subsection{Memory:}
+		\underline{The results were (percent used of total memory CSA:Burrows:MTF):}
+		
+		\begin{table}[H]
+			\centering
+			\resizebox{\textwidth}{!}{
+				\begin{tabular}{c|c|ccccccccc}
+					\toprule
+					Group name           & Class 	& Case 1 & Case 2  & Case 3  & Case 4 & Case 5 & Case 6  & Case 7  & Case 8 & Case 9\\
+					\midrule
+					Annamalis \& Lukas   & Burrows  & 1.56\% & 57.40\% & 7.867\% & 2.76\% & 14.29\% & 68.46\% & 73.81\% & 11.40\% & 42.67\%  \\ 
+					
+					Brenda \& Josh       & Burrows  & 1.04\% & 47.87\% & 92.00\% & 2.59\% & 5.07\% & 17.39\% & 88.23\% & 4.63\% & 64.07\%  \\
+					
+					Brendan \& Christian & Burrows  & 1.56\% & 65.31\% & 28.65\% & 2.61\% & 10.98\% & 32.85\% & 64.00\% & 9.75\% & 42.47\%  \\
+							
+					Colin \& Derek       & Burrows  & 1.56\% & 41.61\% & 30.22\% & 5.15\% & 26.05\% & 56.77\% & 30.31\% & 25.35\% & 42.94\%  \\
+					
+					Jiri \& Ronak        & Burrows  & 1.56\% & ------ & ------ & 2.51\% & 5.93\% & ------ & ------ & 6.83\% & ------  \\
+		
+					Lyle \& Jonathan     & Burrows  & 1.04\% &  & Passed & Passed & Passed & Passed & Passed & Passed & Passed  \\				
+					
+					Parker \& Rafael     & Burrows  &  &  &  &  &  &  &  & &  \\
+								
+					Trung \& Viet        & Burrows  &  &  &  &  &  &  &  & &  \\
+						
+					Tudo                 & Burrows  &  &  &  &  &  &  &  & &  \\
+					
+					\bottomrule
+				\end{tabular}}
+			\end{table}
+			For this section,
+
+%%%%%%% begin Move-To-Front Testing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Move-To-Front Encode}
+\subsection{Correctness:}
+\underline{The results were:}
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|ccccccccc}
+		\toprule
+		Group name           & Case 1 & Case 2 & Case 3 & Case 4 & Case 5 & Case 6 & Case 7 & Case 8 & Case 9\\
+		\midrule
+		Annamalis \& Lukas   & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed\\
+		Brenda \& Josh       & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed  \\
+		Brendan \& Christian & Passed & Failed & Failed & Failed & Failed & Failed & Failed & Failed & Failed \\
+		Colin \& Derek       & Failed & Failed & Failed & Failed & Failed & Failed & Failed & Failed & Failed  \\
+		Jiri \& Ronak        & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed \\
+		Lyle \& Jonathan     & Passed & Failed & Failed & Passed & Failed & Failed & Failed & Failed & Failed \\
+		Parker \& Rafael     &  &  &  &  &  &  &  & &  \\
+		Trung \& Viet        &  &  &  &  &  &  &  & &  \\
+        Tudo                 &  &  &  &  &  &  &  & &  \\
+		\bottomrule
+	\end{tabular}}
+\end{table}
+
+
+% TIMING
+\subsection{Timing:}
+\underline{The results were (seconds):}
+
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|ccccccccc}
+		\toprule
+		Group name           & Case 1 & Case 2 & Case 3 & Case 4 & Case 5 & Case 6 & Case 7 & Case 8 & Case 9\\
+		\midrule
+		Annamalis \& Lukas   & 0.198  & 1.364 & 1.411 & 0.245  & 0.268  & 0.497  & 0.2367 & 0.302 & 0.936 \\
+		Brenda \& Josh       & 0.241  & 2.869 & 4.112 & 0.351  & 0.353  & 0.838  & 6.792 & 0.481 & 2.376  \\
+		Brendan \& Christian & 0.305 & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------ \\
+		Colin \& Derek       & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------  \\
+		Jiri \& Ronak        & 0.146 & 1.356 & 2.008 & 0.257 & 0.296 & 0.467 & 2.897 & 0.252 & 0.974  \\
+		Lyle \& Jonathan     & 0.157 & ------ & ------ & 0.705 & ------ & ------ & ------ & ------ & ------  \\
+		Parker \& Rafael     &  &  &  &  &  &  &  & &  \\
+		Trung \& Viet        &  &  &  &  &  &  &  & &  \\
+        Tudo                 &  &  &  &  &  &  &  & &  \\
+		\bottomrule
+	\end{tabular}}
+\end{table}
+
+\newpage
+% MEMORY
+\subsection{Memory:}
+\underline{The results were (percent used of total memory CSA:Burrows:MTF):}
+
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c|c|ccccccccc}
+		\toprule
+		Group name           & Class 	& Case 1 & Case 2  & Case 3  & Case 4 & Case 5 & Case 6  & Case 7  & Case 8 & Case 9\\
+		\midrule
+		Annamalis \& Lukas   & MTF      & 1.56\% & 1.31\%  & 39.64\% & 2.08\% & 6.25\% & 14.56\% & 43.26\% & 5.21\% & 19.21\%  \\ \hline
+		                     
+		                     
+
+		Brenda \& Josh       & MTF      & 1.56\% & 29.44\% & 87.08\% & 1.56\% & 3.06\% & 15.30\% & 82.17\% & 2.92\% & 32.40\%  \\ \hline
+                             
+                             
+
+        Brendan \& Christian & MTF      & 1.04\% & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------  \\ \hline
+                             
+                             
+
+		Colin \& Derek       & MTF      & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------  \\ \hline
+                             
+                             
+
+		Jiri \& Ronak        & MTF      & 1.56\% & 1.56\% & 1.56\% & 1.56\% & 1.56\% & 1.56\% & 1.56\% & 1.56\% & 1.56\%  \\ \hline
+                             
+                             
+
+		Lyle \& Jonathan     & MTF      & 1.56\% & ------ & ------ & 35.69\% & ------ & ------ & ------ & ------ & ------  \\ \hline
+                             
+                             
+
+		Parker \& Rafael     & MTF      &  &  &  &  &  &  &  & &  \\
+                             
+                             
+
+		Trung \& Viet        & MTF      &  &  &  &  &  &  &  & &  \\
+                             
+                             
+
+        Tudo                 & MTF      &  &  &  &  &  &  &  & &  \\
+                             
+                             
+		\bottomrule
+	\end{tabular}}
+\end{table}
+For this section,
+
+%%%%%%% begin Move-To-Front Testing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Move-To-Front Decoding}
+\subsection{Correctness:}
+\underline{The results were:}
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+		\begin{tabular}{c|ccccccccc}
+			\toprule
+			Group name           & Case 1 & Case 2 & Case 3 & Case 4 & Case 5 & Case 6 & Case 7 & Case 8 & Case 9\\
+			\midrule
+			Annamalis \& Lukas   & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed \\
+			Brenda \& Josh       & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed \\
+			Brendan \& Christian & Passed & Failed & Failed & Failed & Failed & Failed & Failed & Failed & Failed \\
+			Colin \& Derek       & Failed & Failed & Failed & Failed & Failed & Failed & Failed & Failed & Failed \\
+			Jiri \& Ronak        & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed & Passed \\
+			Lyle \& Jonathan     & Passed & Failed & Failed & Passed & Failed & Failed & Failed & Failed & Failed \\
+			Parker \& Rafael     &  &  &  &  &  &  &  & &  \\
+			Trung \& Viet        &  &  &  &  &  &  &  & &  \\
+			Tudo                 &  &  &  &  &  &  &  & &  \\
+			\bottomrule
+		\end{tabular}}
+	\end{table}
+	
+	
+	% TIMING
+	\subsection{Timing:}
+	\underline{The results were (seconds):}
+	
+	\begin{table}[H]
+		\centering
+		\resizebox{\textwidth}{!}{
+			\begin{tabular}{c|ccccccccc}
+				\toprule
+				Group name           & Case 1 & Case 2 & Case 3 & Case 4 & Case 5 & Case 6 & Case 7 & Case 8 & Case 9\\
+				\midrule
+				Annamalis \& Lukas   & 0.160 & 1.260 & 1.379  & 0.209  & 0.487  & 0.897 & 2.674 & 0.251 & 0.702 \\
+				Brenda \& Josh       & 0.257 & 3.716 & 5.156 & 0.387 & 0.522 & 1.013 & 7.679 & 0.354 & 2.106  \\
+				Brendan \& Christian & 0.315 & 0.303 & 0.198 & 0.186 & 0.249 & 0.190 & 0.215 & 0.246 & 0.342 \\
+				Colin \& Derek       & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------  \\
+				Jiri \& Ronak        & 0.218 & 0.846 & 1.098 & 0.203 & 0.250 & 0.401 & 1.712 & 0.253 & 0.670  \\
+				Lyle \& Jonathan     & 0.177 & 0.150 & 0.145 & 0.262 & 0.163 & 0.165 & 0.226 & 0.195 & 0.215 \\
+				Parker \& Rafael     &  &  &  &  &  &  &  & &  \\
+				Trung \& Viet        &  &  &  &  &  &  &  & &  \\
+				Tudo                 &  &  &  &  &  &  &  & &  \\
+				\bottomrule
+			\end{tabular}}
+		\end{table}
+		
+		\newpage
+		% MEMORY
+		\subsection{Memory:}
+		\underline{The results were (percent used of total memory CSA:Burrows:MTF):}
+		
+		\begin{table}[H]
+			\centering
+			\resizebox{\textwidth}{!}{
+				\begin{tabular}{c|c|ccccccccc}
+					\toprule
+					Group name           & Class 	& Case 1 & Case 2  & Case 3  & Case 4 & Case 5 & Case 6  & Case 7  & Case 8 & Case 9\\
+					\midrule
+					Annamalis \& Lukas   & MTF      & 1.04\% & 1.46\%  & 39.61\% & 2.08\% & 6.25\% & 14.56\% & 43.26\% & 5.21\% & 35.73\%  \\ \hline
+					
+					
+					
+					Brenda \& Josh       & MTF      & 1.56\% & 23.90\%  & 87.08\% & 1.56\% & 3.06\% & 15.30\% & 82.17\% & 2.92\% & 32.34\%  \\ \hline
+					
+					
+					
+					Brendan \& Christian & MTF      & 1.56\%\% & 1.56\% & 1.56\% & 1.04\% & 1.56\% & 1.04\% & 1.56\% & 1.04\% & 1.56\%  \\ \hline
+					
+					
+					
+					Colin \& Derek       & MTF      & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------ & ------  \\ \hline
+					
+					
+					
+					Jiri \& Ronak        & MTF      & 1.04\% & 1.56\% & 1.56\% & 1.56\% & 1.56\% & 1.56\% & 1.56\% & 1.56\% & 1.56\%  \\ \hline
+					
+					
+					
+					Lyle \& Jonathan     & MTF      & 1.56\% &  & 1.56\% & 1.56\% & 1.56\% & 1.56\% & 1.56\% & 1.56\% & 1.56\%  \\ \hline
+					
+					
+					
+					Parker \& Rafael     & MTF      &  &  &  &  &  &  &  & &  \\
+					
+					
+					
+					Trung \& Viet        & MTF      &  &  &  &  &  &  &  & &  \\
+					
+					
+					
+					Tudo                 & MTF      &  &  &  &  &  &  &  & &  \\
+					
+					
+					\bottomrule
+				\end{tabular}}
+			\end{table}
+			For this section,
+
+\section{Summary:}
+
+
+
+The only groups to pass all cases were Lyle \& Derek and Josh \& Parker.
+\newpage
+
+\end{document}
