@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ec0e3641-7cff-41e6-ac35-c0da060af5f1" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ProblemD/CuttingCheese.java" afterPath="$PROJECT_DIR$/src/ProblemD/CuttingCheese.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ProblemD/input/input.txt" afterPath="$PROJECT_DIR$/src/ProblemD/input/input.txt" />
-    </list>
+    <list default="true" id="ec0e3641-7cff-41e6-ac35-c0da060af5f1" name="Default" comment="" />
     <ignored path="ICPCWorldFinals2015.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
