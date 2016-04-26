@@ -17,21 +17,26 @@ public class CuttingCheese {
     private double[][] holes; // ith sphere (z, r)
     public CuttingCheese() {
         Scanner in = new Scanner(System.in);
-        while (in.hasNextInt()) {
+        while (in.hasNextLine()) {
+
+            String[] line = in.nextLine().split("\\s+");
+            numHoles = Integer.parseInt(line[0]);
+            numSlices = Integer.parseInt(line[1]);
+            // fill holes
             v = DIM*DIM*DIM;
-            System.out.println(v);
-            numHoles = in.nextInt();
-            numSlices = in.nextInt();
+            System.out.println("v: " + v);
             holes = new double[numHoles][3];
             for (int i = 0; i < numHoles; i++) {
-                int r = in.nextInt();
-                in.nextInt();
-                in.nextInt(); // x,y
-                int z = in.nextInt();
+                line = in.nextLine().split("\\s+");
+                int r = Integer.parseInt(line[0]),
+                    z = Integer.parseInt(line[3]);
                 holes[i][0] = z/1000;
                 holes[i][1] = r/1000;
-                holes[i][2] = volume(z - r, z + r, i);
-                v -= holes[i][2];
+                // holes[i][2] = volume(z - r, z + r, i); // problem
+                // System.out.println(holes[i][2]);
+                System.out.print("yolo v: " + v);
+                v = v - volume(z - r, z + r, i);// holes[i][2];
+                System.out.println(" = " + v);
             }
             if (numSlices == 1) {
                 System.out.printf("0.000000");
@@ -48,7 +53,7 @@ public class CuttingCheese {
                     System.out.println("____________________");
             print();
             System.out.println("____________________");
-            binarySearch();
+            // binarySearch();
         }
     }
     private void print() {
@@ -84,47 +89,50 @@ public class CuttingCheese {
             cRight = (b - z > 0);
         }
         // if whole sphere, return cached
-        if (l == -r && u == r) { return holes[sphere][2]; }
+        // if (l == r && u == r && holes[sphere][2] != Double.NaN) { return holes[sphere][2]; }
+        // System.out.println(l + " " + r);
         double vLeft = 0.0, vRight = 0.0,  // value of left and right hemispheres
                 r1, r2,  // radius of larger and smaller radii,
-                dist, height;          // distance from center and height of band
+                dist, height, temp;          // distance from center and height of band
         // Compute left side if it is there
         if (cLeft) {
-            dist = u;
-            if (cRight) {
-                dist = 0.0;
-            }
+            dist = cRight ? 0.0 : u; // if there is a right side, start at the middle
             height = l - dist;
-            double temp = r*r-dist*dist;
+            temp = r*r-dist*dist;
             r1 = Math.sqrt(temp);
             r2 = Math.sqrt(temp-2*dist*height-height*height);
-            vLeft = PI*height*(r1*r1 + r2*r2 + height/3);
+            vLeft = PI*height*(r1*r1 + r2*r2 + height*height/3);
         }
         // Compute right side if it is there
         if (cRight) {
-            dist = l;
-            if (cLeft) {
-                dist = 0.0;
-            }
+            dist = cLeft ? 0.0 : l;  // if there is a left side, start at the middle
             height = u - dist;
-            double temp = r*r-dist*dist;
-            r1 = Math.sqrt(temp);
+            temp = r*r-dist*dist;
+            System.out.print("RIGHT: dist = " + dist + " height = " + height + " temp = " + temp);
+            r1 = (temp < 0) ? 0.0 : Math.sqrt(temp);
             r2 = Math.sqrt(temp-2*dist*height-height*height);
-            vRight = PI*height*(r1*r1 + r2*r2 + height/3);
+            r1 = (r1 == Double.NaN) ? 0.0 : r1;
+            r2 = (r2 == Double.NaN) ? 0.0 : r2;
+            System.out.print(" r1 = " + r1 + " r2 = " + r2);
+            vRight = PI*height*(r1*r1 + r2*r2 + height*height/3);
         }
-
+        if (vLeft < 0 || vRight < 0) { System.out.println("I fucked up"); }
+        System.out.print(" - (" + vLeft + " + " + vRight + ")");
         return vLeft + vRight;
     }
-    // calculate the volume of all spheres contained in the range [z1, z2]
-    private double allVol(double l, double h) {
-        double val = DIM*DIM*(h-l);
+    // calculate the volume of all spheres contained in the range [l, u]
+    private double allVol(double a, double b) {
+        double val = DIM*DIM*(b - a);
+        double r = 0;
         for (int i = 0; i < holes.length; i++) {
-            if (holes[i][0] - holes[i][1] > h) { break; }    // z - r > h
-            if (holes[i][0] + holes[i][1] < l) { continue; } // z + r < l
-            // intersects with sphere
-            val -= volume(l, h, i);
+            if (holes[i][0] - holes[i][1] > b) { break; }    // z - r > b
+            if (holes[i][0] + holes[i][1] < a) { continue; } // z + r < a
+            // intersects with sphere, take out part of sphere intersecting with band a, b
+            val -= volume(a, b, i);
+            r = holes[i][1];
         }
-        System.out.println(val);
+//        System.out.println(val);
+//        System.out.println(val + Math.PI*4/3*r*r*r);
         return val;
     }
     // binary search
@@ -136,20 +144,18 @@ public class CuttingCheese {
             double diff = goal - allVol(last, cut);
             if (Math.abs(diff) < EPSILON) { // got it
                 System.out.printf("%.6f\n", (cut - last));
+                if (slicePerformed++ == numSlices) { break; }
                 last = cut;
                 // reset
                 l = last; h = DIM;
-                slicePerformed++;
-                if (slicePerformed == numSlices) { break; }
-            } else if (diff > 0) {  // undershot
+            } else if (diff > 0) {  // too light
                 l = cut;
             }
-            else if (diff < 0) {    // over shot
+            else if (diff < 0) {    // too heavy
                 h = cut;
             }
-            break;
         }
-        // System.out.printf("%.6f\n", (DIM - last));
+        System.out.printf("%.6f\n", (DIM - last));
     }
     public static void main(String[] args) {
         CuttingCheese solve = new CuttingCheese();
