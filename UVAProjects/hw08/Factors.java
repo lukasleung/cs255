@@ -20,6 +20,10 @@ public class Factors {
     public Factors() {
         buildLookUp();
         Scanner in = new Scanner(System.in);
+        while (in.hasNextInt()) {
+            int key = in.nextInt();
+            System.out.println(key + " " + table.get(key));
+        }
     }
     private int calcTop() {
         int sum = 0, ret = 1;
@@ -35,9 +39,7 @@ public class Factors {
     }
     private int fact(int n) {
         int fac = 1;
-        for (int i = 2; i <= n; i++) {
-            fac *= i;
-        }
+        for (int i = 2; i <= n; i++) { fac *= i; }
         return fac;
     }
     private int calcBot() {
