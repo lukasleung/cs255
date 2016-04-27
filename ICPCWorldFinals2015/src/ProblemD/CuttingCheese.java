@@ -3,15 +3,15 @@ import java.util.Comparator;
 import java.util.Scanner;
 /**
  * UVA 1712 ICPC Problem D 2015 World Finals Timelimit = 3.000 seconds
- * Completed testing in: _ seconds on _
+ * Completed testing in: 1.700 on 2016-04-27 22:19:28
  * To Run type:
  *      javac CuttingCheese.java
- *      java CuttingCheese < pathTo/input.txt > printToThis.txt
+ *      java CuttingCheese < pathTo/test.input.txt > printToThis.txt
  * @author Lukas Leung
  * @version 3.0
  */
 public class CuttingCheese {
-    private final double PI = Math.PI/2, DIM = 100000, EPSILON = 0.000001;
+    private final double DIM = 100*1000, EPSILON = 0.1;
     private double v, goal; // total volume, and what each segment must be
     private int numHoles, numSlices;
     private double[][] holes; // ith sphere (z, r)
@@ -22,9 +22,13 @@ public class CuttingCheese {
             String[] line = in.nextLine().split("\\s+");
             numHoles = Integer.parseInt(line[0]);
             numSlices = Integer.parseInt(line[1]);
+            if (numSlices == 1) {
+                System.out.printf("100.000000000\n");
+                for (int i = 0; i < numHoles; i++) { in.nextLine(); }
+                continue;
+            }
             // fill holes
             v = DIM*DIM*DIM;
-            System.out.println("v: " + v);
             holes = new double[numHoles][2];
             for (int i = 0; i < numHoles; i++) {
                 line = in.nextLine().split("\\s+");
@@ -32,27 +36,20 @@ public class CuttingCheese {
                     z = Integer.parseInt(line[3]);
                 holes[i][0] = z;
                 holes[i][1] = r;
-                // holes[i][2] = volume(z - r, z + r, i); // problem
-                // System.out.println(holes[i][2]);
-                System.out.println("yolo v: " + v);
-                v = v - volInRange(z - r, z + r, i);
-                System.out.println(" = " + v);
+                v -= volInRange(z - r, z + r, i);
             }
-            if (numSlices == 1) {
-                System.out.printf("0.000000\n");
-                continue;
-            }
+
             goal = v / numSlices;
-            System.out.println("v: " + v + ", s:" + goal);
+//            System.out.println(v + "/" + numSlices + " = " + goal);
             Arrays.sort(holes, new Comparator<double[]>() {
                 @Override
                 public int compare(double[] o1, double[] o2) {
                     return (int) ((o1[0] - o1[1]) - (o2[0] - o2[1]));
                 }
             });
-                    System.out.println("____________________");
-            print();
-            System.out.println("____________________");
+//            System.out.println("____________________");
+//            print();
+//            System.out.println("____________________");
             binarySearch();
         }
     }
@@ -65,9 +62,9 @@ public class CuttingCheese {
     private double calcSphericalSegment(double d, double h, double R) {
         double r_1, r_2, tmp;
         tmp = (d+h);  // R^2 - d^2
-        r_1 = Math.sqrt((R*R) - (d*d));
-        r_2 = Math.sqrt((R*R) - tmp*tmp); // R^2 - d^2 - 2dh - h^2
-        return PI*h*((r_1*r_1) + (r_2*r_2) + (h*h)/3);
+        r_1 = Math.sqrt((R*R) - (d*d));   // R^2 - d^2
+        r_2 = Math.sqrt((R*R) - tmp*tmp); // R^2 - (d+h)^2
+        return (Math.PI*h*(3*(r_1*r_1) + 3*(r_2*r_2) + (h*h)))/6;
     }
     // calculates the volume of a sphere contained in the range [a, b]
     //  (guaranteed to be in these bounds before here)
@@ -81,7 +78,8 @@ public class CuttingCheese {
         // [a,b] does not contain sphere
         if (a >= coordRight || b <= coordLeft) { return 0.0; }
         // [a,b] fully contains sphere
-        if (a <= coordLeft && b >= coordRight) { return (4/3*Math.PI)*(R*R*R); }
+        if (a <= coordLeft && b >= coordRight) { return ((Math.PI*4*R*R*R)/3); }
+//        System.out.println("How the hell");
         // only a portion of the sphere is contained, calculate that
         boolean inLeft = false, inRight = false;
         double volLeft = 0.0, volRight = 0.0, d, h, coordD;
@@ -91,7 +89,7 @@ public class CuttingCheese {
             d = (inRight) ? 0.0 : mid-b;
             coordD = (inRight) ? mid : b;
             h = (a <= coordLeft) ? coordD-coordLeft : coordD-a;
-            System.out.println("d: " + d + ", h: " + h + ", R: " + R);
+//            System.out.println("d: " + d + ", h: " + h + ", R: " + R);
             volLeft = calcSphericalSegment(d, h, R);
         }
         if (inRight) {
@@ -100,23 +98,18 @@ public class CuttingCheese {
             h = (b >= coordRight) ? coordRight-coordD : b-coordD;
             volRight = calcSphericalSegment(d, h, R);
         }
-        System.out.println(" Left: " + volLeft + ", Right: " + volRight);
+//        System.out.println(" Left: " + volLeft + ", Right: " + volRight);
         return volLeft + volRight;
     }
     // calculate the volume of all spheres contained in the range [l, u]
     private double allVol(double a, double b) {
         double val = DIM*DIM*(b - a);
-//        System.out.println("Pre : " + val);
-        double r = 0;
         for (int i = 0; i < holes.length; i++) {
             if (holes[i][0] - holes[i][1] > b) { break; }    // z - r > b
             if (holes[i][0] + holes[i][1] < a) { continue; } // z + r < a
             // intersects with sphere, take out part of sphere intersecting with band a, b
             val -= volInRange(a, b, i);
-            r += holes[i][1];
         }
-//        System.out.println("Post: " + val);
-//        System.out.println("Redo: " + val + Math.PI*4/3*r*r*r);
         return val;
     }
     // binary search
@@ -126,14 +119,10 @@ public class CuttingCheese {
         while (true) {
             cut = (h + l)/2;
             double diff = goal - allVol(last, cut);
-            if (Double.isNaN(diff)) {
-                System.out.println("oops");
-                return;
-            }
             if (Math.abs(diff) < EPSILON) { // got it
-                System.out.printf("%.6f\n", (cut - last));
-                if (slicePerformed++ == numSlices) { break; }
+                System.out.printf("%.9f\n", (cut - last)/1000);
                 last = cut;
+                if (slicePerformed++ == numSlices-1) { break; }
                 // reset
                 l = last; h = DIM;
             } else if (diff > 0) {  // too light
@@ -142,8 +131,9 @@ public class CuttingCheese {
             else if (diff < 0) {    // too heavy
                 h = cut;
             }
+//            break;
         }
-        System.out.printf("%.6f\n", (DIM - last));
+        System.out.printf("%.9f\n", (DIM - last)/1000);
     }
     public static void main(String[] args) {
         CuttingCheese solve = new CuttingCheese();
