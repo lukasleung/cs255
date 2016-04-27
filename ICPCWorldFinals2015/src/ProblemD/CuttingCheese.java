@@ -11,7 +11,7 @@ import java.util.Scanner;
  * @version 3.0
  */
 public class CuttingCheese {
-    private final double PI = Math.PI/2, DIM = 100, EPSILON = 0.000001;
+    private final double PI = Math.PI/2, DIM = 100000, EPSILON = 0.000001;
     private double v, goal; // total volume, and what each segment must be
     private int numHoles, numSlices;
     private double[][] holes; // ith sphere (z, r)
@@ -25,21 +25,21 @@ public class CuttingCheese {
             // fill holes
             v = DIM*DIM*DIM;
             System.out.println("v: " + v);
-            holes = new double[numHoles][3];
+            holes = new double[numHoles][2];
             for (int i = 0; i < numHoles; i++) {
                 line = in.nextLine().split("\\s+");
                 int r = Integer.parseInt(line[0]),
                     z = Integer.parseInt(line[3]);
-                holes[i][0] = z/1000;
-                holes[i][1] = r/1000;
+                holes[i][0] = z;
+                holes[i][1] = r;
                 // holes[i][2] = volume(z - r, z + r, i); // problem
                 // System.out.println(holes[i][2]);
-                System.out.print("yolo v: " + v);
-                v = v - volume(z - r, z + r, i);// holes[i][2];
+                System.out.println("yolo v: " + v);
+                v = v - volInRange(z - r, z + r, i);
                 System.out.println(" = " + v);
             }
             if (numSlices == 1) {
-                System.out.printf("0.000000");
+                System.out.printf("0.000000\n");
                 continue;
             }
             goal = v / numSlices;
@@ -53,7 +53,7 @@ public class CuttingCheese {
                     System.out.println("____________________");
             print();
             System.out.println("____________________");
-            // binarySearch();
+            binarySearch();
         }
     }
     private void print() {
@@ -61,78 +61,62 @@ public class CuttingCheese {
             System.out.println(holes[i][0] + ": " + holes[i][1]);
         }
     }
+    // calculates a spherical segment given d and h and R
+    private double calcSphericalSegment(double d, double h, double R) {
+        double r_1, r_2, tmp;
+        tmp = (d+h);  // R^2 - d^2
+        r_1 = Math.sqrt((R*R) - (d*d));
+        r_2 = Math.sqrt((R*R) - tmp*tmp); // R^2 - d^2 - 2dh - h^2
+        return PI*h*((r_1*r_1) + (r_2*r_2) + (h*h)/3);
+    }
     // calculates the volume of a sphere contained in the range [a, b]
     //  (guaranteed to be in these bounds before here)
     //  http://mathworld.wolfram.com/SphericalSegment.html
     //  https://en.wikipedia.org/wiki/Spherical_segment
-    private double volume(double a, double b, int sphere) {
-        double z = holes[sphere][0],
-               r = holes[sphere][1],
-               l, u;     // distance of lower and upper bands from center
-        boolean cLeft, cRight; // contained in Left and Right
-        // set lower bound
-        if (a < z-r) {
-            l = r;
-            cLeft = true;
+    private double volInRange(double a, double b, int sphere) {
+        double R = holes[sphere][1],
+             mid = holes[sphere][0];
+        double coordLeft = mid - R,
+              coordRight = mid + R;
+        // [a,b] does not contain sphere
+        if (a >= coordRight || b <= coordLeft) { return 0.0; }
+        // [a,b] fully contains sphere
+        if (a <= coordLeft && b >= coordRight) { return (4/3*Math.PI)*(R*R*R); }
+        // only a portion of the sphere is contained, calculate that
+        boolean inLeft = false, inRight = false;
+        double volLeft = 0.0, volRight = 0.0, d, h, coordD;
+        if (a < mid) { inLeft = true; }
+        if (b > mid) { inRight = true; }
+        if (inLeft) {
+            d = (inRight) ? 0.0 : mid-b;
+            coordD = (inRight) ? mid : b;
+            h = (a <= coordLeft) ? coordD-coordLeft : coordD-a;
+            System.out.println("d: " + d + ", h: " + h + ", R: " + R);
+            volLeft = calcSphericalSegment(d, h, R);
         }
-        else {   // a >= z - r
-            l = Math.abs(a - z);
-            cLeft = (a - z < 0);
+        if (inRight) {
+            d = (inLeft) ? 0.0 : a-mid;
+            coordD = (inLeft) ? mid : a;
+            h = (b >= coordRight) ? coordRight-coordD : b-coordD;
+            volRight = calcSphericalSegment(d, h, R);
         }
-        // set upper bound
-        if (b > z+r) {
-            u = r;
-            cRight = true;
-        }
-        else {  // b <= z + r
-            u = Math.abs(b - z);
-            cRight = (b - z > 0);
-        }
-        // if whole sphere, return cached
-        // if (l == r && u == r && holes[sphere][2] != Double.NaN) { return holes[sphere][2]; }
-        // System.out.println(l + " " + r);
-        double vLeft = 0.0, vRight = 0.0,  // value of left and right hemispheres
-                r1, r2,  // radius of larger and smaller radii,
-                dist, height, temp;          // distance from center and height of band
-        // Compute left side if it is there
-        if (cLeft) {
-            dist = cRight ? 0.0 : u; // if there is a right side, start at the middle
-            height = l - dist;
-            temp = r*r-dist*dist;
-            r1 = Math.sqrt(temp);
-            r2 = Math.sqrt(temp-2*dist*height-height*height);
-            vLeft = PI*height*(r1*r1 + r2*r2 + height*height/3);
-        }
-        // Compute right side if it is there
-        if (cRight) {
-            dist = cLeft ? 0.0 : l;  // if there is a left side, start at the middle
-            height = u - dist;
-            temp = r*r-dist*dist;
-            System.out.print("RIGHT: dist = " + dist + " height = " + height + " temp = " + temp);
-            r1 = (temp < 0) ? 0.0 : Math.sqrt(temp);
-            r2 = Math.sqrt(temp-2*dist*height-height*height);
-            r1 = (r1 == Double.NaN) ? 0.0 : r1;
-            r2 = (r2 == Double.NaN) ? 0.0 : r2;
-            System.out.print(" r1 = " + r1 + " r2 = " + r2);
-            vRight = PI*height*(r1*r1 + r2*r2 + height*height/3);
-        }
-        if (vLeft < 0 || vRight < 0) { System.out.println("I fucked up"); }
-        System.out.print(" - (" + vLeft + " + " + vRight + ")");
-        return vLeft + vRight;
+        System.out.println(" Left: " + volLeft + ", Right: " + volRight);
+        return volLeft + volRight;
     }
     // calculate the volume of all spheres contained in the range [l, u]
     private double allVol(double a, double b) {
         double val = DIM*DIM*(b - a);
+//        System.out.println("Pre : " + val);
         double r = 0;
         for (int i = 0; i < holes.length; i++) {
             if (holes[i][0] - holes[i][1] > b) { break; }    // z - r > b
             if (holes[i][0] + holes[i][1] < a) { continue; } // z + r < a
             // intersects with sphere, take out part of sphere intersecting with band a, b
-            val -= volume(a, b, i);
-            r = holes[i][1];
+            val -= volInRange(a, b, i);
+            r += holes[i][1];
         }
-//        System.out.println(val);
-//        System.out.println(val + Math.PI*4/3*r*r*r);
+//        System.out.println("Post: " + val);
+//        System.out.println("Redo: " + val + Math.PI*4/3*r*r*r);
         return val;
     }
     // binary search
@@ -142,6 +126,10 @@ public class CuttingCheese {
         while (true) {
             cut = (h + l)/2;
             double diff = goal - allVol(last, cut);
+            if (Double.isNaN(diff)) {
+                System.out.println("oops");
+                return;
+            }
             if (Math.abs(diff) < EPSILON) { // got it
                 System.out.printf("%.6f\n", (cut - last));
                 if (slicePerformed++ == numSlices) { break; }
