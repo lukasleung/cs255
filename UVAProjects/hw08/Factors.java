@@ -3,20 +3,23 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 /**
- * UVA 10937 Blackbeard the Pirate Timelimit = 3.000 seconds
- * Completed testing in: 0. seconds on
+ * UVA 1575 Factors Timelimit = 3.000 seconds
+ * Completed testing in:  seconds on
  * To Run type:
- *      javac BlackBeard.java
- *      java BlackBeard < pathTo/input.txt > printToThis.txt
+ *      javac Factors.java
+ *      java Factors < pathTo/input.txt > printToThis.txt
  * @author Lukas Leung, Parker
  * @version 1.0
  */
 public class Factors {
     private static int[] primes = { 2, 3, 5, 7, 11, 13, 17,
                                     19, 23, 29, 31, 37, 41, 43,
-                                    47, 53, 59, 61, 67, 71 };
+                                    47, 53, 59, 61, 67, 71 };   // 20 numbers
+    private int[] xSequence = new int[20];    // stores corresponding
+                                              // exponents of the primes
     private HashMap<Integer, Integer> table;  // (n-value, k-value)
-    private int[] xSequence = new int[20];
+    // builds the table of precomputed values, then just ask and print
+    //   out the corresponding values.
     public Factors() {
         buildLookUp();
         Scanner in = new Scanner(System.in);
@@ -25,6 +28,7 @@ public class Factors {
             System.out.println(key + " " + table.get(key));
         }
     }
+    // calculate (x_1 + x_2 + ... + x_j)! / (x_1)!
     private int calcTop() {
         int sum = 0, ret = 1;
         for (int i = 0; i < xSequence.length; i++) {
@@ -37,11 +41,13 @@ public class Factors {
         }
         return ret;
     }
+    // calculates n!
     private int fact(int n) {
         int fac = 1;
         for (int i = 2; i <= n; i++) { fac *= i; }
         return fac;
     }
+    // calculates (x_2)! + ... + (x_j)!
     private int calcBot() {
         int ret = 1;
         for (int i = 1; i < xSequence.length; i++) {
@@ -50,6 +56,7 @@ public class Factors {
         }
         return ret;
     }
+    // calculates product( p_i^{x_i} )
     private int calcVal() {
         int ret = 1;
         for (int i = 0; i < xSequence.length; i++) {
@@ -62,15 +69,24 @@ public class Factors {
         table = new HashMap<Integer, Integer>();
         table.put(1, 2);    // corner case
         Arrays.fill(xSequence, 1);
-//        xSequence[0] = 4;
-//        xSequence[1] = 2;
-//        xSequence[2] = 1;
+        xSequence[0] = 4;
+        xSequence[1] = 2;
+        xSequence[2] = 1;
         int top, bot, key, val;
+        // need to compute from 2^61 * 3^1
         for (int i = 0; i < primes.length; i++) {
+            val = calcVal();
+            if (val >= (1 << 63)) {
+                System.out.println(val + " is too big!");
+                continue;
+            }
             top = calcTop();
             bot = calcBot();
             key = top/bot;
-            val = calcVal();
+            if (key >= (1 << 63)) {
+                System.out.println(key + " is too big!");
+                continue;
+            }
             table.put(key, val);
             System.out.println(top + "/" + bot + " = " + key + " with " + val);
             // permute xSequence

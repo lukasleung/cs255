@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a510cd61-d845-4e19-9805-14b24573b129" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hw08/Factors.java" afterPath="$PROJECT_DIR$/hw08/Factors.java" />
     </list>
     <ignored path="UVAProjects.iws" />
@@ -27,16 +26,14 @@
       <file leaf-file-name="Factors.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/hw08/Factors.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="60" column="31" selection-start-line="60" selection-start-column="31" selection-end-line="60" selection-end-column="31" />
+            <state relative-caret-position="-295">
+              <caret line="21" column="9" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#Factors#0;class#Factors#0" expanded="false" />
                 <element signature="method#calcTop#0;class#Factors#0" expanded="false" />
                 <element signature="method#fact#0;class#Factors#0" expanded="false" />
                 <element signature="method#calcBot#0;class#Factors#0" expanded="false" />
                 <element signature="method#calcVal#0;class#Factors#0" expanded="false" />
-                <element signature="method#buildLookUp#0;class#Factors#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -70,6 +67,7 @@
         <option value="$PROJECT_DIR$/hw07/runTex.sh" />
         <option value="$PROJECT_DIR$/hw07/fullReport.tex" />
         <option value="$PROJECT_DIR$/hw03/FollowingOrders/FollowingOrders.java" />
+        <option value="$PROJECT_DIR$/hw08/input.txt" />
         <option value="$PROJECT_DIR$/hw08/Factors.java" />
       </list>
     </option>
@@ -515,12 +513,10 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#Factors#0;class#Factors#0" expanded="false" />
             <element signature="method#calcTop#0;class#Factors#0" expanded="false" />
             <element signature="method#fact#0;class#Factors#0" expanded="false" />
             <element signature="method#calcBot#0;class#Factors#0" expanded="false" />
             <element signature="method#calcVal#0;class#Factors#0" expanded="false" />
-            <element signature="method#buildLookUp#0;class#Factors#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -620,21 +616,28 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-504">
           <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="14" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw08/input.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="1" column="3" selection-start-line="1" selection-start-column="3" selection-end-line="1" selection-end-column="3" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/hw08/Factors.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="60" column="31" selection-start-line="60" selection-start-column="31" selection-end-line="60" selection-end-column="31" />
+        <state relative-caret-position="-295">
+          <caret line="21" column="9" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#Factors#0;class#Factors#0" expanded="false" />
             <element signature="method#calcTop#0;class#Factors#0" expanded="false" />
             <element signature="method#fact#0;class#Factors#0" expanded="false" />
             <element signature="method#calcBot#0;class#Factors#0" expanded="false" />
             <element signature="method#calcVal#0;class#Factors#0" expanded="false" />
-            <element signature="method#buildLookUp#0;class#Factors#0" expanded="false" />
           </folding>
         </state>
       </provider>
