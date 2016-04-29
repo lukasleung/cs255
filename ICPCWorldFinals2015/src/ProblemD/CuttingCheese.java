@@ -38,24 +38,14 @@ public class CuttingCheese {
                 holes[i][1] = r;
                 v -= volInRange(z - r, z + r, i);
             }
-
             goal = v / numSlices;
-//            System.out.println(v + "/" + numSlices + " = " + goal);
             Arrays.sort(holes, new Comparator<double[]>() {
                 @Override
                 public int compare(double[] o1, double[] o2) {
                     return (int) ((o1[0] - o1[1]) - (o2[0] - o2[1]));
                 }
             });
-//            System.out.println("____________________");
-//            print();
-//            System.out.println("____________________");
             binarySearch();
-        }
-    }
-    private void print() {
-        for (int i = 0; i < holes.length; i++) {
-            System.out.println(holes[i][0] + ": " + holes[i][1]);
         }
     }
     // calculates a spherical segment given d and h and R

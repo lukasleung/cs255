@@ -31,8 +31,8 @@ public class AmalgamatedArtichokes {
                     l = val;
                 } else if (val < l) { // lower than current lowest, check diff
                     l = val;
-                    double curdiff = h - l;
-                    if (curdiff > diff) { diff = curdiff; }
+                    double curDiff = h - l;
+                    if (curDiff > diff) { diff = curDiff; }
                 }
             }
             System.out.printf("%.6f\n", p*(diff));
