@@ -1,0 +1,275 @@
+% Use this template to write your solutions to COS 423 problem sets
+
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amsfonts, amsthm, amssymb, algorithm, graphicx, mathtools,xfrac}
+\usepackage[noend]{algpseudocode}
+\usepackage{fancyhdr, lastpage}
+\usepackage[vmargin=1.20in,hmargin=1.25in,centering,letterpaper]{geometry}
+\usepackage[table]{xcolor}
+\setlength{\headsep}{.50in}
+\setlength{\headheight}{15pt}
+
+
+% Landau notation
+\DeclareMathOperator{\BigOm}{\mathcal{O}}
+\newcommand{\BigOh}[1]{\BigOm\left({#1}\right)}
+\DeclareMathOperator{\BigTm}{\Theta}
+\newcommand{\BigTheta}[1]{\BigTm\left({#1}\right)}
+\DeclareMathOperator{\BigWm}{\Omega}
+\newcommand{\BigOmega}[1]{\BigWm\left({#1}\right)}
+\DeclareMathOperator{\LittleOm}{\mathrm{o}}
+\newcommand{\LittleOh}[1]{\LittleOm\left({#1}\right)}
+\DeclareMathOperator{\LittleWm}{\omega}
+\newcommand{\LittleOmega}[1]{\LittleWm\left({#1}\right)}
+
+% argmin and argmax
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Exp}{\mathbb{E}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\sign}{\mathrm{sign\ }}
+\newcommand{\abs}{\mathrm{abs\ }}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\zo}{\{0, 1\}}
+\newcommand{\SAT}{\mathit{SAT}}
+\renewcommand{\P}{\mathbf{P}}
+\newcommand{\NP}{\mathbf{NP}}
+\newcommand{\coNP}{\co{NP}}
+\newcommand{\co}[1]{\mathbf{co#1}}
+\renewcommand{\Pr}{\mathop{\mathrm{Pr}}}
+
+% theorems, lemmas, invariants, etc.
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{invariant}[theorem]{Invariant}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{property}[theorem]{Property}
+\newtheorem{proposition}[theorem]{Proposition}
+
+% piecewise functions
+\newenvironment{piecewise}{\left\{\begin{array}{l@{,\ }l}}
+{\end{array}\right.}
+
+% paired delimiters
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\len}{|}{|}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+
+\makeatletter
+\@addtoreset{equation}{section}
+\makeatother
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+
+% algorithms
+\algnewcommand\algorithmicinput{\textbf{INPUT:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\algorithmicoutput{\textbf{OUTPUT:}}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+% Formating Macros
+
+\pagestyle{fancy}
+\lhead{\sc \hmwkClass $\;\;\cdot \;\;$ \hmwkSemester $\;\;\cdot\;\;$
+Assignment 7}
+%\chead{\sc Problem \hmwkAssignmentNum.\hmwkProblemNum}
+%\chead{}
+\rhead{\em \hmwkAuthorName\ $($\hmwkAuthorID$)$}
+\cfoot{}
+\lfoot{}
+\rfoot{\sc Page\ \thepage\ of\ \protect\pageref{LastPage}}
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\fancypagestyle{fancycollab}
+{
+% \lfoot{\em Collaborators: \hmwkCollaborators}
+}
+
+\fancypagestyle{problemstatement}
+{
+\rhead{}
+\lfoot{}
+}
+
+% makes paragraphs have numbers
+\setcounter{secnumdepth}{5}
+
+%%%%%% Begin document with header and title %%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+    %%%%%% Header Information %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    %%% Shouldn't need to change these
+    \newcommand{\hmwkClass}{CS 255}
+    \newcommand{\hmwkSemester}{Spring 2016}
+
+    %%% Your name, in standard First Last format
+    \newcommand{\hmwkAuthorName}{ Lukas, Trung, and Parker  }
+    %%% Your NetID
+    \newcommand{\hmwkAuthorID}{}
+
+    %%% The problem set number (just the number)
+    \newcommand{\hmwkAssignmentNum}{8}
+
+    %%% A list of your collaborators' NetIDs, separated by ", ".
+    %%% You can use a new line ("\\") in the middle to prevent a long
+    %%% list from overflowing.
+    \newcommand{\hmwkCollaborators}{   }
+    %%% Sets the collaborator list to appear on the first page
+    \thispagestyle{fancycollab}
+
+ %%%%%%% begin ICPC 2013: Problem D: Factors %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\section{Problem Description}
+	According to the fundamental theorem of arithmetic in number theory, every number can be uniquely represented as a product of one or more prime numbers. But we want to find out the number of arrangements for prime factors. Define $f(k)$ is the number of arrangements of the prime numbers of $k$. Given a number $n$, we want to figure out the smallest number $k$, so that $f(k)$ = n. \\
+
+    \section{Mathematical Formulation}
+ 	\textit{Given an integer $n$, which is the number of arrangement of prime factors, we want to find the smallest interger $k$} . \\
+
+	\textbf{Input} \\
+     Input consists of at most 1,000 cases, and each case, on each separate line, is a positive integer $n < 2^63.$\\
+
+   \textbf{Output} \\
+ 	For each one, print out $n$ and the smallest $k \textless 2^63$such that $f(k)$ = $n$. \\
+
+	\textbf{Formulation} \\
+	$k$ can be represented uniquely as a product of prime factors. Let's say $k$ is represented as \\
+	 k = $2^{p_1}\cdot 3^{p_2}\cdot ... m^{p_h}$ \\
+	 where the ordering of $p_i$ is decreasing that $p_1 \geq p_2 \geq...\geq p_h$  \\
+
+	Let's have all distinct prime integers, such that $p_i = 1, (i = 1..h)$ , then let's define $X$ as a sequence of distinct prime factors. Then, the number of arrangement of distinct prime factors would be $X$!. \\
+	And according to the problem's constraint that $X! \textless  2^63!$, we could only have the maximum value of $X$ is 20 because $20! \textless   2^63 \textless 21!$. \\
+	Then we could only have at most a sequence of 20 prime factors, which means X = 20.
+	Thus, the maximum prime number in the sequence $X$ would be only 71, as each of prime numbers is unique and increasing as followed: \\
+	k = $2^{p_1} \cdot 3^{p_2}\cdot ...\cdot 71^{p_20}$ \\
+	(the first 20 prime numbers are 2, 3 ,5 , 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71)\\
+	Then the number of arrangement for prime factors would be the number of permutation of these 20 prime numbers  $p_i$ where  $p_i \geq$ 0. In the general case, then $n$ would be the permutation of arranging each of these 20 $p_i$ in their total sum\\
+
+n = $\binom{ p_1 +  p_2 +   p_3 +... +  p_20 } {p_1 ,  p_2,  p_3,  ... ,  p_20}$
+=  $\frac{p_1 +  p_2 +   p_3 +... +  p_20 }
+{p_1! p_2! p_3!...p_20!}$  \\
+
+	The major key idea here in this formulation is that finding the number of ways to arrange each of these 20 $p_i$ would ensure the smallest value for $k$ such that $f(k)$ = $n$. Because the ordering of $p_i$, as we classified above, is descending such that \\
+	$p_1 \geq p_2 \geq ... \geq p_20$ \\
+Then, if we find out the sequence of these 20 prime numbers given the number of permutation of them- $n$, we know that $k$ is able to be represented as the product of increasing prime numbers, with each of them rising up to the power of $p_1, p_2, ... ,p_20$. \\
+So, here, it's true that $k$ is minimum since the smallest prime number in the product representation gets the biggest exponent $p_1$, and similarly the largest prime number gets the smallest exponent $p_20$.
+
+  \section{Solution}
+	Although we're given the number of permutation of the first 20 prime numbers, $n$, we still have to compute all the numbers of arranging these prime factors by calculating the binomial function given a sequence of $p_1, p_2, ... , p_20$. \\
+	So, our idea here is to build up the look-up hash table, called $table$, which maps the integer $n$, as the number of permutation to choose 20 prime numbers out of their total sum, to another integer $k$, as the product of prime numbers rising up to the exponents.
+	Then, we first have to enumerate different sequences of choosing the first 20 prime numbers based on the (binomial) chose function, which is stored in the array called $xSequence$. Constructing our array $xSequence$  in which each element is produced by using the binomial function, and then iterating through these elements with the use of complete search and pruning cases when the possible values in $xSequence$ would produce $k$ or $n$ $\geq$ $2^{63}$  \\
+	Then, essentially, for each given number $n$, we add to the $table$, the value of $k$.
+
+	Global vars: \\
+	int[] primes //explicitly initialize the array of the first 20 prime numbers \\
+	BigInteger MAX //the maximum upper bound $2^{63}$\\
+	int $anchor$, $inc$ \\
+
+\begin{algorithm}[H]
+\caption{building the lookup hash table}
+\begin{algorithmic}
+    \Procedure{main}{}
+   	\State initialize $table$ as a hash map BigInteger to BigInteger and $xSequence[0]$ = 1
+	\While{true}				//BigInteger vars: top, bot, key, val
+		\If{$xSequence[0]$ == 63}
+			\State break
+		\EndIf
+		\If {$val.compareTo(MAX)$ > 0 }
+			\State val = calcVal()
+			\If {val.compareTo(MAX) >0 }
+				\State reset()
+			\EndIf
+			\State top = calcTop(), bot = calcBot(), key = top.divide(bot)
+			\If {table.containsKey(key)}
+				\State stored = table.get(key)
+				\If{val.compareTo(stored) < 0 }
+					\State table.put(key,val)
+				\EndIf
+			\Else
+				\State table.put(key,val)
+			\EndIf
+			\If{ $inc$ +1 < $xSequence$.length}
+				 \State $xSequence[++inc]++$
+			\Else
+				\State reset()
+			\EndIf
+		\EndIf
+	\EndWhile
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+\caption{Helpers}
+\begin{algorithmic}
+    \Procedure{reset}{anchor, xSequence, inc}
+        \State $prev, next \gets$ anchor-1, anchor+1
+        \If{anchor != inc \&\& next != xSequence.length \&\& xSequence[anchor] xSequence[next]}
+            \State anchor++
+        \Else
+            \While{prev $\geq$ 0 \&\& xSequence[prev] == xSequence[anchor]}
+                \State anchor--, prev--
+            \EndWhile
+        \EndIf
+        \State zeroAfter() // make all zeros after the new anchor
+        \State xSequence[anchor]++;
+        \State inc = anchor;
+    \EndProcedure
+    \Procedure{CalcVal}{}
+        \State $val = 1$
+        \For{$x \in xSequence$}
+                \State $val = val \ast primes[indexOf(x)]^x$
+        \EndFor
+        \State \Return $val$
+    \EndProcedure
+    \Procedure{CalcTop}{}
+        \State $top = 0$
+        \For{$x \in xSequence$}
+            \State $top = top + x$
+        \EndFor
+        \State $top = top!$
+        \State \Return $top$
+    \EndProcedure
+    \Procedure{CalcBot}{}
+            \State $bot = 1$
+        \For{$x \in xSequence$}
+                \If{$x > 0$}
+                    \State $bot = bot \ast x!$
+            \EndIf
+        \EndFor
+        \State \Return $bot$
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+\section{Correctness}
+
+\begin{proposition}
+Our $algorithmName$ algorithm will, for any integer $n < 2^{63}$, produce output $k$ s.t. $k = xSequence_1^{p_1} \ast xSequence_2^{p_2} \ast ... \ast xSequence_{20}^{p_{20}}$, and $k$ is as small as possible.
+\end{proposition}
+
+\begin{proof}
+To begin, we construct our array $xSequence$ s.t. each $xSequence \in X$ corresponds to a prime number ${2, 3, 5, 7, ... 67}$ where $xSequence$ contains 20 distinct primes, and each prime in $xSequence$ is as small as possible. We know that the combination of $xSequence \in X$ can produce any number $n$ because our method of incrementing the elements in $xSequence$ will, through simple implementation, produce every possible value that can be produced by operating the $calcTop$ can $calcBottom$ operations on $xSequence$, stopping only if $k > 2^{63}$. Secondly, we construct each element of $xSequence$ s.t. $xSequence[1] == p_1, xSequence[2] = p_2, ... ,xSequence[20] = p_{20}$. We also state that $p_i \geq p_{i+1}$, meaning that $xSequence[i] \geq xSequence[i+1]$. These two facts taken together that the smallest primes in the sequence will have the highest exponents. This means that for the sequence of $n$ combinations, the sequence will contain as many small numbers as possible $\geq 0$, and that therefore $k$ will be the product of this set of the smallest possible prime integers. Since the product of smaller integers $\geq 0$ is necessarily smaller than the product any two integers where both are either larger or equal two the two smaller integers, $k$ is the smallest possible value for a combination of $xSequence$ choose $n$
+\end{proof}
+
+\section{Analysis}
+
+\begin{proposition}
+\label{numq}
+Our $algorithmName$ algorithm is constructed in a way such that the running time is independent of the input, and the actual time taken by the input is constant. In relation to Big Oh notation, we will define $n$ as $2^{63}$, the largest possible value that we will compute up to, and use that as a simulation of our input. Let us define $p$ as the possible values for each possible prime in the array, which is what we are actually modifying. With that in mind, the algorithm runs in $O(n \ast log(p)!)$ time.
+\end{proposition}
+
+\begin{proof}
+    Our algorithm performs multiple operations on the array $xSequence$, in order to both ensure that all possible values of $n$ are reached, and that pruning is performed so that combinations which produce out-of-index values are not counted. To that end, we iterate over the array several times, maintaining that $p_i \geq p_{i+1}$, meaning that we do not strictly brute-force the computations, and do not calculate all values since we do not need them.  We perform $n$ possible operations, but since we only modify the elements of $p$ s.t. modifying them obeys $p_i \geq p_{i+1}$, we have an operating time of $O(n \ast log(p)!)$
+\end{proof} %%%%%%% end UVA 10937: %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
