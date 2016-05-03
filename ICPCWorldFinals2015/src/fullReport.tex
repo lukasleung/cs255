@@ -117,10 +117,10 @@ Problem \hmwkAssignmentNum.\hmwkProblemNum}
 \newcommand{\hmwkAuthorID}{lleung}
 
 %%% The problem set number (just the number)
-\newcommand{\hmwkAssignmentNum}{4}
+\newcommand{\hmwkAssignmentNum}{9}
 
 %%% The problem number (just the number)
-\newcommand{\hmwkProblemNum}{0}
+\newcommand{\hmwkProblemNum}{}
 
 %%% A list of your collaborators' NetIDs, separated by ", ".
 %%% You can use a new line ("\\") in the middle to prevent a long
@@ -130,22 +130,59 @@ Problem \hmwkAssignmentNum.\hmwkProblemNum}
 \thispagestyle{fancycollab}
 
 %%%%%%% begin Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Results from UVA}
-%\includegraphics[width=\textwidth]{uvaResults}
-%\newpage
+\section*{Results from UVA}
+\subsection{Problem A}
+\includegraphics[width=\textwidth]{ProblemA}
+\subsection{Problem D}
+\includegraphics[width=\textwidth]{ProblemD}
+\newpage
 
 %%%%%%% start Problem A %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Problem A: Amalgamated Artichokes}
-\textbf{Background} \\
-~\indent Explaination...
+\noindent \textbf{Results:} \\
+
+\includegraphics[width=\textwidth]{ProblemA} \\
+
+\noindent \textbf{Background:} \\
+~\indent Fatima Cynara is an analyst at Amalgamated Artichokes (AA). As with any company, AA has had some
+very good times as well as some bad ones. Fatima does trending analysis of the stock prices for AA, and she
+wants to determine the largest decline in stock prices over various time spans. For example, if over a span
+of time the stock prices were 19, 12, 13, 11, 20 and 14, then the largest decline would be 8 between the first
+and fourth price. If the last price had been 10 instead of 14, then the largest decline would have been 10
+between the last two prices. \\
+\indent Fatima has done some previous analyses and has found that the stock price over any period of time can
+be modelled reasonably accurately with the following equation:
+\begin{center}$price(x) = p \cdot (sin(a\cdot x + b) + cos(c\cdot x + d) + 2)$\end{center}
+where $p,a,b,c,\ and\ d$ are constants.Fatima would like you to write a program to determine the largest
+price decline over a given sequence of prices. You have to consider the prices only for integer values of $x$. \\
+
+\noindent \textbf{Input:} \\
+~\indent The input file contains several test cases. Each test case is on a single line containing 6 integers,
+$p\ (1 \leq p \leq 1000),\ a,\ b,\ c,\ d\ (0 \leq a,b,c,d \leq 1000),\ and\ n\ (1 \leq n \leq 10^6)$. The first
+5 integers are described above. The sequence of stock prices to consider are $price(1), price(2),..., price(n).$ \\
+
+\noindent \textbf{Output:} \\
+~\indent For each test case, display the maximum decline in stock prices. If there is no decline, display the
+number '0'. Your output should have an absolute or relative error of at most $10^{-6}$. \\
+
+\noindent \textbf{Sample Input:} \\
+42 1 23 4 8 10  \\
+100 7 615 998 801 3  \\
+100 432 406 867 60 1000  \\
+
+\noindent \textbf{Sample Output:} \\
+104.855110477  \\
+0.00           \\
+399.303813
+
 %%%%%%% end Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newpage
 
 %%%%%%% Mathematical Formulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Mathematical Formulation}
-Given an input of integers $p, a, b, c, d, and n$, the formula
+Given an input of integers $p, a, b, c, d,\ and\ n$, the formula
 $f(x) = p\cdot (sin(a\cdot x + b) + cos(c\cdot x + d) + 2)$ where $x \in [1, n]$, determine the largest
 decrease between the integer values $x_i, x_j$ where $i \textless j$ and $x_i \geq x_j$ and there does
 not exist another pair $x_k, x_l$ where $k \textless l$ and $x_k \geq x_l$ but $x_k - x_l \textgreater x_i - x_j$.
@@ -192,11 +229,21 @@ the more costly the operation is.
 \subsection{Correctness}
 %%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
 \begin{proposition}
-~ \\ \indent propose
+~ \\ \indent We will determine the value of largest price decline over the interval $[1, n]$,
+only considering $f(1), f(2),..., f(n)$.
 \end{proposition}
 
 \begin{proof}
-~ \\ \indent Using the fact that 
+~ \\ \indent We do this by keeping track of the largest price decline seen thus far, $diff$,
+the current highest point seen, $h = f(x_i)$, and the current lowest point seen, $l = f(x_j)$,
+such that $x_i \leq x_j,\ and\ f(x_i) \geq f(x_j)$. Therefore whenever we see a higher point,
+$f(x_k) \textgreater f(x_i), x_k \textgreater x_i$, we update our $h = f(x_k)$ and reset our
+lowest point to be $l = h$ since we are searching for the largest decline $\implies l$ must
+occur \underline{after} $h$. Now every time that we see a number $f(x_m) \leq l$, we update
+$l$ and check to see if our $h - l \geq diff$, if so we update diff, else we continue to the
+next point.  If we see a higher point than $h$ we will repeat this process. Therefore we will
+be looking at each subsequent highest correspoing following lowest points $\implies$ we will
+see this largest price decline.
 \end{proof}
 
 
@@ -234,7 +281,28 @@ calculates each value one time.
 %%%%%%% Example %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{An Example}
+Given the input of: \underline{42 1 23 4 8 10}, we will read this in as
+$p = 42, a = 1, b = 23, c = 4, d = 8, and\ n = 10$. Then we will initialize our $h = l = f(1)$ and $diff = 0$.
+Then starting with the second point until the 10th we will read through and record the values of what h, l, curDiff,
+and diff are:
 
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{c||c|c|c|c|c|c|c|c|c|c|}
+		\toprule
+		x =      & 1        & 2         & 3         & 4         & 5         & 6         & 7         & 8         & 9         & 10        \\
+		\midrule
+		f(x)    & -0.061724 & -1.090011 & 1.170641  & 1.380555  & -0.691700 & 0.170589  & -1.115995 & -1.070976 & 1.551270  & 0.359768 \\
+        h       & -0.061724 & -0.061724 & 1.170641  & 1.380555  & 1.380555  & 1.380555  & 1.380555  & 1.380555  & 1.551270  & 1.551270 \\
+        l       & -0.061724 & -1.090011 & 1.170641  & 1.380555  & -0.691700 & -0.691700 & -1.115995 & -1.115995 & 1.551270  & 0.359768 \\
+        curDiff & --        & 1.028286  & --        & --        & 2.072255  & --        & 2.496550  & --        & --        & 1.191502 \\
+        diff    & 0         & 1.028286  & 1.028286  & 1.028286  & 2.072255  & 2.072255  & 2.496550  & 2.496550  & 2.496550  & 2.496550 \\
+        \bottomrule
+	\end{tabular}}
+\end{table}
+
+Now multiplying our $diff$ by $p \implies 2.496550 \cdot 42 = 104.855110$ which is our solution.
 %%%%%%% end Problem A %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
