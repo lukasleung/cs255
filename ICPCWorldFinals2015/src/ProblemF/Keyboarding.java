@@ -1,6 +1,5 @@
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
+
 /**
  * UVA 1714 ICPC Problem F 2015 World Finals Timelimit = 30.000 seconds
  * Completed testing in: seconds on
@@ -8,14 +7,14 @@ import java.util.Scanner;
  *      javac Keyboarding.java
  *      java Keyboarding < pathTo/test.input.txt > printToThis.txt
  * @author Lukas Leung
- * @version 5.0
+ * @version 6.0
  */
 public class Keyboarding {
-    private int[][] adj, graph;
+    private int[][] adj;//, graph;
     private char[][] keyboard;
     private int[] dr = {-1, 1, 0,  0},
                   dc = { 0, 0, 1, -1},
-             inverse;
+             inverse, graph;
     private int R, C, size;
     private HashMap<Character, String> indices;
     private HashMap<Character, Integer> num;
@@ -47,23 +46,28 @@ public class Keyboarding {
                 }
             }
             // now build adj
+            long start = System.currentTimeMillis();
             build();
+            long stop = System.currentTimeMillis();
+            System.err.println("Adj: " + (stop - start));
 //            printkeyboard();
 //            printadj();
 //            System.out.println("\n\n");
-            fw();
+            //fw();
 //            printadj();
             line = in.nextLine().concat("*"); // string to find
 //            System.out.println(line);
+            start = System.currentTimeMillis();
             buildGraph(line);
+            stop = System.currentTimeMillis();
+            System.err.println("G  : " + (stop - start));
 //            System.out.println("\n\n");
 //            printgraph();
-            findShortestPaths();
 //            System.out.println("\n\n");
 //            printgraph();
             int minValue = Integer.MAX_VALUE;
             for (int i = (graph.length-num.get('*')); i < graph.length; i++) {
-                 minValue = Math.min(graph[0][i], minValue);
+                 minValue = Math.min(graph[i], minValue);
             }
 //            System.out.println(minValue);
             System.out.println(minValue + line.length());
@@ -101,16 +105,15 @@ public class Keyboarding {
         }
     }
     private void printgraph() {
-        for (int r = 0; r < graph.length; r++) {
-            for (int c = 0; c < graph[r].length; c++) {
-                if (graph[r][c] == Integer.MAX_VALUE) {
-                    System.out.printf("  - ");
-                } else {
-                    System.out.printf(" %2d ", graph[r][c]);
-                }
+        System.out.println("GRAPH");
+        for (int i = 0; i < graph.length; i++) {
+            if (graph[i] == Integer.MAX_VALUE) {
+                System.out.printf("  - ");
+            } else {
+                System.out.printf(" %2d ", graph[i]);
             }
-            System.out.println();
         }
+        System.out.println();
     }
     public void print(int[][] arr) {
         System.out.println("TEMP");
@@ -136,7 +139,10 @@ public class Keyboarding {
         C = Integer.parseInt(temp[1]);
         size = R*C;
         adj = new int[size][size];
-        for (int i = 0; i < size; i++) { Arrays.fill(adj[i], Integer.MAX_VALUE); }
+        for (int i = 0; i < size; i++) {
+            Arrays.fill(adj[i], Integer.MAX_VALUE);
+            adj[i][i] = 0;
+        }
         keyboard = new char[R][C];
         indices = new HashMap<Character, String>();
         num = new HashMap<Character, Integer>();
@@ -148,62 +154,50 @@ public class Keyboarding {
     private boolean inBounds(int r, int c) {
         return ((r >= 0 && r < R) && (c >= 0 && c < C));
     }
-    // build the initial adjacency matrix
-    private void build() {
-        int index = 0;
-        for (int r = 0; r < R; r++) {
-            for (int c = 0; c < C; c++) {
-                char letter = keyboard[r][c];
-                adj[index][index] = 0;
-                for (int i = 0; i < dc.length; i++) {
-                    int dR = r + dr[i],
-                        dC = c + dc[i];
-                    while (inBounds(dR, dC)) {
-                        // the same letter as before
-                        if (keyboard[dR][dC] == keyboard[dR-dr[i]][dC-dc[i]]) {
-                            dR = dR + dr[i];
-                            dC = dC + dc[i];
-                            continue;
-                        }
-                        int dIndex = indexOf(dR, dC);
-                        if (letter != keyboard[dR][dC]) {
-                            adj[index][dIndex] = 1;
-                            //adj[dIndex][index] = 1;
-                            break;
-                        }
+    // perform bfs with sRow and sCol as the source coordinates
+    private void bfs(int sRow, int sCol) {
+        int source = indexOf(sRow, sCol);
+        boolean[][] seen = new boolean[keyboard.length][keyboard[0].length];
+        Queue<Integer> q = new LinkedList<Integer>();
+        q.add(sRow);
+        q.add(sCol);
+        q.add(0);
+        seen[sRow][sCol] = true;
+        while (!q.isEmpty()) {
+            int row = q.remove(), col = q.remove(), dist = q.remove();
+            char letter = keyboard[row][col];
+            for (int i = 0; i < dc.length; i++) {
+                int dR = row + dr[i], dC = col + dc[i];
+                while (inBounds(dR, dC)) {
+                    // the same letter as before
+                    if (keyboard[dR][dC] == keyboard[dR-dr[i]][dC-dc[i]]) {
                         dR = dR + dr[i];
                         dC = dC + dc[i];
+                        continue;
                     }
+                    int dIndex = indexOf(dR, dC);
+                    if (letter != keyboard[dR][dC]) {
+                        if (!seen[dR][dC] && dist+1 < adj[source][dIndex]) {
+                            adj[source][dIndex] = (dist + 1);
+                            q.add(dR);
+                            q.add(dC);
+                            q.add((dist + 1));
+                            seen[dR][dC] = true;
+                        }
+                        break;
+                    }
+                    dR = dR + dr[i];
+                    dC = dC + dc[i];
                 }
-                index++;
             }
         }
     }
-    // run Floyd-Warshall on adj
-    private void fw() {
-        int N = adj.length;
-        for (int i = 0; i < N; i++) {
-            int[] vRow = new int[N],
-                    vCol = new int[N];
-            for (int row = 0; row < N; row++) {
-                vRow[row] = adj[row][i];
-            }
-            for (int col = 0; col < N; col++) {
-                vCol[col] = adj[i][col];
-            }
-            // build temp
-            int[][] temp = new int[N][N];
-            for (int row = 0; row < N; row++) {
-                for (int col = 0; col < N; col++) {
-                    temp[row][col] = (vRow[row] == Integer.MAX_VALUE || vCol[col] == Integer.MAX_VALUE) ? Integer.MAX_VALUE : vRow[row] + vCol[col] ;
-                }
-            }
-            // adjust
-            for (int row = 0; row < N; row++) {
-                for (int col = 0; col < N; col++) {
-                    if (row == col) { continue; }
-                    adj[row][col] = Math.min(adj[row][col], temp[row][col]);
-                }
+    // build the initial adjacency matrix
+    private void build() {
+        //int index = 0;
+        for (int r = 0; r < R; r++) {
+            for (int c = 0; c < C; c++) {
+                bfs(r, c);
             }
         }
     }
@@ -235,67 +229,35 @@ public class Keyboarding {
     }
     // build the graph
     private void buildGraph(String line) {
+        long start = System.currentTimeMillis();
         int numVert = calcNumVert(line), l = 0, h = 1;
         buildInverse(line, numVert);
-        graph = new int[numVert][numVert];
-        for (int i = 0; i < graph.length; i++) {
-            Arrays.fill(graph[i], Integer.MAX_VALUE);
-            graph[i][i] = 0;
-        }
+        long stop = System.currentTimeMillis();
+        System.err.println("Set-Up: " + (stop - start));
+        // dijkstra on graph
+        graph = new int[numVert];
+        Arrays.fill(graph, Integer.MAX_VALUE);
+        graph[0] = 0; // source to itself is 0;
         int prevSize = 1;
         char c;
         for (int i = 0; i < line.length(); i++) {
             c = line.charAt(i);
             int sizeBlock = num.get(c);
             for (int from = 0; from < prevSize; from++) {
+                int s = l + from;
+                int vSource = graph[s];
+                if (vSource == Integer.MAX_VALUE) { continue; }
                 for (int to = 0; to < sizeBlock; to++) {
-                    int s = l + from,
-                        t = h + to;
-                    graph[s][t] = adj[inverse[s]][inverse[t]];
-//                    System.out.println("graph["+s+"]["+t+"] = adj["+inverse[s]+"]["+inverse[t]+"] = "+adj[inverse[s]][inverse[t]]);
+                    int t = h + to, dist = adj[inverse[s]][inverse[t]];
+//                    System.out.println("adj["+inverse[s]+"]["+inverse[t]+"] = "+dist);
+                    if (dist != Integer.MAX_VALUE && (dist + vSource < graph[t])) {
+                        graph[t] = dist + vSource;
+                    }
                 }
             }
             l = h;
             h += sizeBlock;
             prevSize = sizeBlock;
-        }
-    }
-    // find shortest path of the line
-    private void findShortestPaths() {
-        int N = graph.length;
-//        System.out.println("ADJACENCY");
-//        printgraph();
-        for (int i = 0; i < N; i++) {
-            int[] vRow = new int[N],
-                  vCol = new int[N];
-
-            for (int row = 0; row < N; row++) {
-                vRow[row] = graph[row][i];
-            }
-//            print(vRow, "ROW");
-            for (int col = 0; col < N; col++) {
-                vCol[col] = graph[i][col];
-            }
-//            print(vCol, "COL");
-            // build temp
-            int[][] temp = new int[N][N];
-            for (int row = 0; row < N; row++) {
-                for (int col = row; col < N; col++) {
-                    temp[row][col] = (vRow[row] == Integer.MAX_VALUE || vCol[col] == Integer.MAX_VALUE) ? Integer.MAX_VALUE : vRow[row] + vCol[col] ;
-                }
-            }
-//            print(temp);
-//            System.out.println("ADJACENCY");
-//            printadj();
-            // adjust
-            for (int row = 0; row < N; row++) {
-                for (int col = row; col < N; col++) {
-                    if (row == col) { graph[row][col] = 0; }
-                    graph[row][col] = Math.min(graph[row][col], temp[row][col]);
-                }
-            }
-//            System.out.println("POST");
-//            printgraph();
         }
     }
     public static void main(String[] args) { Keyboarding solve = new Keyboarding(); }
