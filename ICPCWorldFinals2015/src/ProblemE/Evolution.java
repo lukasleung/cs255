@@ -1,7 +1,7 @@
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.Scanner;
 import java.util.Arrays;
+import java.util.Scanner;
+import java.util.Stack;
+import java.util.Comparator;
 
 /**
  * UVA 1713 ICPC Problem E 2015 World Finals Timelimit = 30.000 seconds
@@ -14,7 +14,6 @@ import java.util.Arrays;
  */
 public class Evolution {
     private String[] sequence;
-    private LinkedList<Integer>[] sso; // Sub-Sequence Of
     private String goal;
     public Evolution() {
         Scanner in = new Scanner(System.in);
@@ -31,18 +30,71 @@ public class Evolution {
                     return (o1.length() - o2.length());
                 }
             });
-            print();
-            sso = new LinkedList[N];
-            for (int i = 0; i < N; i++) {
-                sso[i] = new LinkedList<Integer>();
-                System.out.println("*" + sequence[i]);
-                for (int j = i+1; j < N; j++) {
-                    if (isSubSequence(sequence[i], sequence[j])) {
-                        System.out.println(" - " + sequence[j]);
-                        sso[i].add(j);
-                    }
-                }
+//            print();
+            // computeHighToLow();
+            computeLowToHigh();
+        }
+    }
+    private void printReverse(Stack<String> s) {
+        Stack<String> temp = new Stack<String>();
+        while (!s.isEmpty()) {
+            temp.push(s.pop());
+        }
+        while (!temp.isEmpty()) {
+            System.out.println(temp.pop());
+        }
+    }
+    private void computeLowToHigh() {
+        Stack<String> sub1 = new Stack<String>(),
+                      sub2 = new Stack<String>();
+        boolean failed = false;
+        for (int i = 0; !failed && i < sequence.length; i++) {
+            String token = sequence[i];
+            if (sub1.isEmpty() || isSubSequence(sub1.peek(), token)) {
+                sub1.push(token);
+            } else if (sub2.isEmpty() || isSubSequence(sub2.peek(), token)) {
+                sub2.push(token);
+            } else {
+                failed = true;
             }
+        }
+        if (!isSubSequence(sub1.peek(), goal)) {
+            failed = true;
+        }
+        if ((!sub2.isEmpty() && !isSubSequence(sub2.peek(), goal))) {
+            failed = true;
+        }
+        if (failed) { System.out.println("impossible"); }
+        else {
+            System.out.println((sub2.size()) + " " + (sub1.size()));
+            printReverse(sub2);
+            printReverse(sub1);
+        }
+    }
+    private void computeHighToLow() {
+        Stack<String> sub1 = new Stack<String>(),
+                      sub2 = new Stack<String>();
+        boolean failed = false;
+        sub1.push(goal);
+        sub2.push(goal);
+        for (int i = sequence.length-1; !failed && i >= 0; i--) {
+            String token = sequence[i];
+            if (isSubSequence(token, sub1.peek())) { sub1.push(token); }
+            else if (isSubSequence(token, sub2.peek())) { sub2.push(token); }
+            else { failed = true; }
+        }
+        if (failed) {
+            System.out.println("impossible");
+        } else {
+            System.out.println((sub2.size()-1) + " " + (sub1.size()-1));
+            print(sub2);
+            print(sub1);
+        }
+    }
+    // prints out the contents of one of the stacks
+    private void print(Stack<String> s) {
+        while (s.size() > 1) {
+            System.out.println(s.pop());
         }
     }
     // determines if s1 is a sub sequence of s2
