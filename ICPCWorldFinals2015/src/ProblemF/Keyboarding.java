@@ -84,7 +84,14 @@ public class Keyboarding {
         boolean[][][] seen  = new boolean[length][keyboard.length][keyboard[0].length];
         Queue<Integer> q = new LinkedList<Integer>();
         // 0: index in string
-        if (line.charAt(0) == keyboard[0][0]) { q.add(1); }
+        int temp = 0;
+        if (line.charAt(temp) == keyboard[0][0]) {
+            while (line.charAt(temp) == keyboard[0][0]) {
+                temp++;
+            }
+
+            q.add(temp);
+        }
         else { q.add(0); }
         q.add(0); // 1: row
         q.add(0); // 2: column
@@ -103,7 +110,7 @@ public class Keyboarding {
             for (int i = 0; i < dc.length; i++) {
                 int dR = row + dr[i], dC = col + dc[i];
                 char lastLetter = keyboard[dR-dr[i]][dC-dc[i]];
-                while (inBounds(dR, dC) && !seen[index][dR][dC]) {
+                while (inBounds(dR, dC)) {
                     char thisLetter = keyboard[dR][dC];
                     // the same letter as before
                     if (thisLetter == lastLetter) {
@@ -112,7 +119,7 @@ public class Keyboarding {
                         continue;
                     }
                     // if not the same letter as we started with
-                    if (curLetter != thisLetter) {
+                    if (!seen[index][dR][dC]) {
                         seen[index][dR][dC] = true;
                         if (thisLetter == goal) {
 //                            System.out.println("\n==> found: " + goal + " for index " + index + " after " + l + " steps " + dR + ", " + dC + "\n");
@@ -120,8 +127,8 @@ public class Keyboarding {
 //                                System.out.println("returning: " + l);
                                 return l;
                             }
-                            q.add(index+1);
-                            seen[index+1][dR][dC] = true;
+                            q.add(index + 1);
+                            seen[index + 1][dR][dC] = true;
                         } else {
                             q.add(index);
                         }
@@ -129,11 +136,8 @@ public class Keyboarding {
                         q.add(dC);
                         q.add(l);
 //                        System.out.println("  added: " + keyboard[dR][dC] + ": " + dR + ", " + dC + ": " + l);
-                        break;
                     }
-                    dR += dr[i];
-                    dC += dc[i];
-                    lastLetter = thisLetter;
+                    break;
                 }
             }
         }

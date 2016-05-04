@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ec0e3641-7cff-41e6-ac35-c0da060af5f1" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ProblemF/Keyboarding.java" afterPath="$PROJECT_DIR$/src/ProblemF/Keyboarding.java" />
     </list>
     <ignored path="ICPCWorldFinals2015.iws" />
@@ -25,11 +24,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Keyboarding.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Keyboarding.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ProblemF/Keyboarding.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="105" column="63" selection-start-line="105" selection-start-column="43" selection-end-line="105" selection-end-column="63" />
+            <state relative-caret-position="990">
+              <caret line="90" column="13" selection-start-line="90" selection-start-column="13" selection-end-line="90" selection-end-column="13" />
               <folding>
                 <element signature="e#3256#3265#0" expanded="true" />
                 <element signature="method#printSeenLetters#0;class#Keyboarding#0" expanded="false" />
@@ -38,14 +37,14 @@
                 <element signature="method#build#0;class#Keyboarding#0" expanded="false" />
                 <element signature="method#calcNumVert#0;class#Keyboarding#0" expanded="false" />
                 <element signature="method#buildInverse#0;class#Keyboarding#0" expanded="false" />
-                <marker date="1462324309139" expanded="false" signature="7448:8893" placeholder="{...}" />
+                <marker date="1462325291144" expanded="false" signature="7455:8900" placeholder="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="keyboard-05.in" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/testCases/keyboard/keyboard-05.in">
+      <file leaf-file-name="keyboard-12.in" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/testCases/keyboard/keyboard-12.in">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -66,30 +65,6 @@
       </file>
       <file leaf-file-name="input3.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ProblemF/input/input3.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CuttingCheese.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ProblemD/CuttingCheese.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="45" column="17" selection-start-line="43" selection-start-column="16" selection-end-line="45" selection-end-column="17" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1698#1699#0" expanded="false" />
-                <element signature="e#1786#1787#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="fullReport.tex" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/fullReport.tex">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -684,14 +659,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ProblemA/o.txt" />
-    <entry file="file://$PROJECT_DIR$/src/ProblemA/AmalgamatedArtichokes.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ProblemA/AmalgamatedArtichokes.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -832,13 +799,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/testCases/keyboard/keyboard-09.in">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="7" column="9782" selection-start-line="7" selection-start-column="9782" selection-end-line="7" selection-end-column="9782" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/testCases/keyboard/keyboard-11.in">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -925,41 +885,10 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ProblemF/test.txt" />
-    <entry file="file://$PROJECT_DIR$/src/ProblemD/CuttingCheese.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="45" column="17" selection-start-line="43" selection-start-column="16" selection-end-line="45" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1698#1699#0" expanded="false" />
-            <element signature="e#1786#1787#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/fullReport.tex">
-      <provider editor-type-id="LaTeXFileEditor">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ProblemF/input/input4.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="36">
           <caret line="2" column="1" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ProblemF/input/input3.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -972,18 +901,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ProblemF/input/sample.txt">
+    <entry file="file://$PROJECT_DIR$/src/testCases/keyboard/keyboard-08.in">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="24" column="2" selection-start-line="24" selection-start-column="2" selection-end-line="24" selection-end-column="2" />
+        <state relative-caret-position="234">
+          <caret line="13" column="7" selection-start-line="13" selection-start-column="3" selection-end-line="13" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/testCases/keyboard/keyboard-09.in">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="9782" selection-start-line="7" selection-start-column="9782" selection-end-line="7" selection-end-column="9782" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ProblemF/Keyboarding.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="105" column="63" selection-start-line="105" selection-start-column="43" selection-end-line="105" selection-end-column="63" />
+        <state relative-caret-position="990">
+          <caret line="90" column="13" selection-start-line="90" selection-start-column="13" selection-end-line="90" selection-end-column="13" />
           <folding>
             <element signature="e#3256#3265#0" expanded="true" />
             <element signature="method#printSeenLetters#0;class#Keyboarding#0" expanded="false" />
@@ -992,8 +929,54 @@
             <element signature="method#build#0;class#Keyboarding#0" expanded="false" />
             <element signature="method#calcNumVert#0;class#Keyboarding#0" expanded="false" />
             <element signature="method#buildInverse#0;class#Keyboarding#0" expanded="false" />
-            <marker date="1462324309139" expanded="false" signature="7448:8893" placeholder="{...}" />
+            <marker date="1462325291144" expanded="false" signature="7455:8900" placeholder="{...}" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ProblemF/input/sample.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="24" column="2" selection-start-line="24" selection-start-column="2" selection-end-line="24" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fullReport.tex">
+      <provider editor-type-id="LaTeXFileEditor">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-972">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ProblemD/CuttingCheese.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="45" column="17" selection-start-line="43" selection-start-column="16" selection-end-line="45" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1582#1801#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ProblemF/input/input3.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/testCases/keyboard/keyboard-12.in">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
