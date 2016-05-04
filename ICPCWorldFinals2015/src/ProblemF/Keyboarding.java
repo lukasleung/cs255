@@ -55,7 +55,7 @@ public class Keyboarding {
             int index = q.remove(), row = q.remove(),
                   col = q.remove(), l = q.remove();
             l++;
-            char goal = line.charAt(index), curLetter = keyboard[row][col];
+            char goal = line.charAt(index);
 
             for (int i = 0; i < dc.length; i++) {
                 int dR = row + dr[i], dC = col + dc[i];
