@@ -24,50 +24,26 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Keyboarding.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Keyboarding.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ProblemF/Keyboarding.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="990">
-              <caret line="90" column="13" selection-start-line="90" selection-start-column="13" selection-end-line="90" selection-end-column="13" />
+            <state relative-caret-position="72">
+              <caret line="4" column="30" selection-start-line="4" selection-start-column="3" selection-end-line="4" selection-end-column="3" />
               <folding>
-                <element signature="e#3256#3265#0" expanded="true" />
-                <element signature="method#printSeenLetters#0;class#Keyboarding#0" expanded="false" />
-                <element signature="method#printkeyboard#0;class#Keyboarding#0" expanded="false" />
-                <element signature="method#init#0;class#Keyboarding#0" expanded="false" />
-                <element signature="method#build#0;class#Keyboarding#0" expanded="false" />
-                <element signature="method#calcNumVert#0;class#Keyboarding#0" expanded="false" />
-                <element signature="method#buildInverse#0;class#Keyboarding#0" expanded="false" />
-                <marker date="1462325291144" expanded="false" signature="7455:8900" placeholder="{...}" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#1203#1204#0" expanded="true" />
+                <element signature="e#1266#1267#0" expanded="true" />
+                <element signature="e#1468#1477#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="keyboard-12.in" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/testCases/keyboard/keyboard-12.in">
+      <file leaf-file-name="test.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ProblemF/test.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sample.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ProblemF/input/sample.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="24" column="2" selection-start-line="24" selection-start-column="2" selection-end-line="24" selection-end-column="2" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="input3.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ProblemF/input/input3.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="18">
+              <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -862,14 +838,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ProblemF/test.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="9" column="11" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/testCases/keyboard/keyboard-14.in">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="533">
@@ -917,31 +885,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ProblemF/Keyboarding.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="990">
-          <caret line="90" column="13" selection-start-line="90" selection-start-column="13" selection-end-line="90" selection-end-column="13" />
-          <folding>
-            <element signature="e#3256#3265#0" expanded="true" />
-            <element signature="method#printSeenLetters#0;class#Keyboarding#0" expanded="false" />
-            <element signature="method#printkeyboard#0;class#Keyboarding#0" expanded="false" />
-            <element signature="method#init#0;class#Keyboarding#0" expanded="false" />
-            <element signature="method#build#0;class#Keyboarding#0" expanded="false" />
-            <element signature="method#calcNumVert#0;class#Keyboarding#0" expanded="false" />
-            <element signature="method#buildInverse#0;class#Keyboarding#0" expanded="false" />
-            <marker date="1462325291144" expanded="false" signature="7455:8900" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ProblemF/input/sample.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="24" column="2" selection-start-line="24" selection-start-column="2" selection-end-line="24" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/fullReport.tex">
       <provider editor-type-id="LaTeXFileEditor">
         <state />
@@ -972,11 +915,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ProblemF/input/sample.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="24" column="2" selection-start-line="24" selection-start-column="2" selection-end-line="24" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/testCases/keyboard/keyboard-12.in">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ProblemF/test.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ProblemF/Keyboarding.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="4" column="30" selection-start-line="4" selection-start-column="3" selection-end-line="4" selection-end-column="3" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1203#1204#0" expanded="true" />
+            <element signature="e#1266#1267#0" expanded="true" />
+            <element signature="e#1468#1477#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
