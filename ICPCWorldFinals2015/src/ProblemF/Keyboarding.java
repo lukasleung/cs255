@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 /**
  * UVA 1714 ICPC Problem F 2015 World Finals Timelimit = 30.000 seconds
- * Completed testing in: seconds on
+ * Completed testing in:  13.780 seconds on 2016-05-04 01:50:35
  * To Run type:
  *      javac Keyboarding.java
  *      java Keyboarding < pathTo/test.input.txt > printToThis.txt
