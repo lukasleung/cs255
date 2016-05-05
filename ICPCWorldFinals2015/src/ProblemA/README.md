@@ -1,4 +1,4 @@
-# Problem A, UVA 1709 - Amalgamated Artichokes
+# Problem A, Amalgamated Artichokes - UVA 1709
 
 ## Background
 
