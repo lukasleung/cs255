@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ec0e3641-7cff-41e6-ac35-c0da060af5f1" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fullReport.pdf" afterPath="$PROJECT_DIR$/src/fullReport.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ProblemF/Keyboarding.java" afterPath="$PROJECT_DIR$/src/ProblemF/Keyboarding.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fullReport.tex" afterPath="$PROJECT_DIR$/src/fullReport.tex" />
     </list>
     <ignored path="ICPCWorldFinals2015.iws" />
