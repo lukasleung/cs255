@@ -686,11 +686,36 @@ in the same order (though there can be different letters in between them).
 \subsection{Correctness}
 %%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
 \begin{proposition}
-~ \\ \indent Given
+~ \\ \indent If $\exists$ two valid sub-sequence sets, $sub_1\ and\ sub_2,$ for the current species $s_g$,
+this algorithm will determine an instance of them and report them in chronological order. i.e.
+($\forall\ |s_i| \textless |s_j| \in sub_1\ or\ sub_2$).
 \end{proposition}
 
 \begin{proof}
-~ \\ \indent We know that
+~ \\ \indent We know that if two sub-sequence sets exist then every string $s_i,\ i \in [1..N]$ must be a
+sub-sequence of $s_g$. Also $\exists$ at most two strings of the same length within the entirety of the set
+of strings. If $\exists$ more then it is impossible to make two sub-sequences as the strings given are unique
+and therefore cannot be sub-sequences of one another if they are the same length by definition of a sub-sequence.
+Therefore the only way that a string $s_i$ can be a sub-sequence of another string $s_j$ is if $|s_i| \textless |s_j|$.
+So therefore we can build from the longest string and adhere to the following rules:
+\[ s_i\ sub-sequence\ of
+\begin{cases}
+    both\ sub_1\ and\ sub_2 \\
+    only\ sub_1             \\
+    only\ sub_2             \\
+    neither
+\end{cases}
+\]
+The cases then are simple, if ONLY $sub_1$ or $sub_2$, then the string gets placed in the subsequent one, if neither
+then the sequences are seen to be impossible. Therefore the only tricky situation is if $s_i \in sub_1\ and\ sub_2$.
+If this is the case, we will continue to read in strings appending them to this shared sub-sequence set until we
+either reach a string which is not a sub-sequence of them, or run out of strings. If we reach a string $s_k$ which is
+not a sub sequence of the shared set, then we check $s_k \in sub_1\ or\ sub_2$; if it is, we place it in the subsequent
+set and place the shared set on the other, if not then we know that it is impossible to have this
+$s_k \in sub_1\ or\ sub_2$. This follows by the fact that, if there are 2 valid sub-sequences, every string must belong
+to one or the other, therefore $s_k$ must exist in one of the sets, so we determine which one and then likewise, the
+sub-sequence must also exist on one of the sets, however since it can be placed on either, it is not constrained to
+which until we see an instance that must be on a specific one so we can decide at that time which it must be on.
 \end{proof}
 
 %%%%%%% Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -729,9 +754,34 @@ the end of a split as described in the proof above therefore giving us $N\cdot4\
 \end{proof}
 
 %%%%%%% Example %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\newpage
 \subsection{An Example}
 Given the input of:  \\
+5           \\
+AACMMAA     \\
+C           \\
+A           \\
+AA          \\
+AAAA        \\
+ACMAA       \\
+
+We note have $s_g = AACMMAA$ and note that we should have a valid subsequence here. So we begin by setting
+$sub_1 = \{AACMMAA\}$ and $sub_2 = \{AACMMAA\}$, now we read in our longest string and put it on
+$shared = \{ACMAA\}$ then read in the next string and see that $AAAA \notin ACMAA$ so we check $sub_1$ and
+put it there such that $sub_1 = \{AACMMAA, AAAA\}$ and $sub_2 = \{AACMMAA, ACMAA\}$. Next string we note
+can go on either so we have $shared = \{AA\}$, and with the next string we get $A \in shared,
+$ so $shared = \{AA, A\}$. However the next and final string $C \notin shared$, but is in $sub_2$ so we
+place it in there so $sub_1 = \{AACMMAA, AAAA, AA, A\}$ and $sub_2 = \{AACMMAA, ACMAA, C\}$. Then we print
+out such that we get: \\
+
+\noindent 3 2 \\
+A       \\
+AA      \\
+AAAA    \\
+C       \\
+ACMAA
+
+\newpage
 
 %%%%%%% end Problem E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
