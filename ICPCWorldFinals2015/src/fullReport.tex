@@ -137,7 +137,7 @@ Problem \hmwkAssignmentNum.\hmwkProblemNum}
 \includegraphics[width=\textwidth]{ProblemD}
 \subsection{Problem E (page 9)}
 \includegraphics[width=\textwidth]{ProblemE}
-\subsection{Problem F (page )}
+\subsection{Problem F (page 15)}
 \includegraphics[width=\textwidth]{ProblemF}
 \newpage
 
@@ -862,11 +862,59 @@ for each level.
             \State $R, C \gets$ sizes of array
             \State $keyboard[R][C] \gets$ filled from input
             \State $target.concat(\ast) \gets$ from input
+            \State $seen[target.length()][R][C] \gets$ initialized
+            \State $dr[4], dc[4] \gets$ right, left, up, down
+            \State \Call{print}{bfs(keyboard, target)+target.length()}
         \EndFor
     \EndProcedure
 \end{algorithmic}
 \end{algorithm}
 
+\begin{algorithm}[H]
+\caption{BFS}
+\begin{algorithmic}
+    \Procedure{bfs}{keyboard, target}
+        \State $q \gets$ initialize Integer Queue for bfs; (int) temp = 0
+        \While{target.charAt(temp) == keyboard[0][0]}
+            temp++;
+        \EndWhile
+        \State q.add(temp, 0, 0, 0); for depth(index in string), row, col, distance
+        \State seen[0][0][0] = true
+        \While{!q.empty()}
+            \State $index, row, col, l++ \gets$ 4x(q.pop())
+            \State char $goal \gets$ target.charAt(index);
+            \For{direction $d_i \in$ \{left, right, up, down\}}
+                \State $dr, dc \gets$ row + $d_i$, col + $d_i$
+                \State char $lastLetter \gets$ keyboard[$dr-d_i$][$dc-d_i$];
+                \While{dr, dc inBounds}
+                    \State char $thisLetter \gets$ keyboard[dr][dc]
+                    \If{thisLetter == lastLetter}
+                        \State dr, dc += $d_i$
+                        \State continue;
+                    \EndIf
+                    \If{!seen[index][dR][dC]}
+                        \State seen[index][dR][dC] = true
+                        \If{thisLetter == goal}
+                            \State temp = 0
+                            \While{target.charAt(temp) == keyboard[0][0]}
+                                \State temp++
+                                \If{index + temp == length} return l
+                                \EndIf
+                                \State q.add(index + temp)
+                                \State seen[index + temp][dR][dC] = true
+                            \EndWhile
+                        \Else
+                            q.add(index)
+                        \EndIf
+                        \State q.add(dr, dc, l)
+                    \EndIf
+                    \State break;
+                \EndWhile
+            \EndFor
+        \EndWhile
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
 
 %%%%%%% Correctness %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -925,6 +973,7 @@ This is the case because the worst case for this algorithm is to do a complete b
 
 \subsection{An Example}
 Given the input of:
+
 
 %%%%%%% end Problem F %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
