@@ -4,6 +4,7 @@
     <list default="true" id="ec0e3641-7cff-41e6-ac35-c0da060af5f1" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fullReport.pdf" afterPath="$PROJECT_DIR$/src/fullReport.pdf" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ProblemF/Keyboarding.java" afterPath="$PROJECT_DIR$/src/ProblemF/Keyboarding.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fullReport.tex" afterPath="$PROJECT_DIR$/src/fullReport.tex" />
     </list>
     <ignored path="ICPCWorldFinals2015.iws" />
@@ -33,12 +34,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="input1.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ProblemE/input/input1.txt">
+      <file leaf-file-name="Keyboarding.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ProblemF/Keyboarding.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="6" selection-end-column="1" />
-              <folding />
+            <state relative-caret-position="846">
+              <caret line="74" column="41" selection-start-line="74" selection-start-column="41" selection-end-line="74" selection-end-column="41" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1499#1508#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -92,12 +96,12 @@
         <option value="$PROJECT_DIR$/src/ProblemE/input/input2.txt" />
         <option value="$PROJECT_DIR$/src/ProblemE/input/input3.txt" />
         <option value="$PROJECT_DIR$/src/ProblemE/input/input4.txt" />
-        <option value="$PROJECT_DIR$/src/ProblemF/Keyboarding.java" />
         <option value="$PROJECT_DIR$/src/ProblemE/test.sh" />
         <option value="$PROJECT_DIR$/src/ProblemE/Evolution.java" />
         <option value="$PROJECT_DIR$/src/ProblemF/test.sh" />
         <option value="$PROJECT_DIR$/src/ProblemD/test/input/test.txt" />
         <option value="$PROJECT_DIR$/src/ProblemD/CuttingCheese.java" />
+        <option value="$PROJECT_DIR$/src/ProblemF/Keyboarding.java" />
         <option value="$PROJECT_DIR$/src/fullReport.tex" />
       </list>
     </option>
@@ -181,29 +185,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="ProblemE" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ICPCWorldFinals2015" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ICPCWorldFinals2015" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProblemE" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="input" />
+              <option name="myItemId" value="ProblemF" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -661,13 +643,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ProblemF/Keyboarding.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="623">
-          <caret line="57" column="42" selection-start-line="57" selection-start-column="42" selection-end-line="57" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/testCases/evolution/evolution-09-needles-in-a-haystack.in">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="18">
@@ -903,6 +878,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
           <caret line="11" column="4" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -934,6 +910,17 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="6" selection-end-column="1" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ProblemF/Keyboarding.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="846">
+          <caret line="74" column="41" selection-start-line="74" selection-start-column="41" selection-end-line="74" selection-end-column="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1499#1508#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

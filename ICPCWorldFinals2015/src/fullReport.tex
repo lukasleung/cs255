@@ -780,10 +780,149 @@ AA      \\
 AAAA    \\
 C       \\
 ACMAA
+%%%%%%% end Problem E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+
+
+
+
+
+
+
+%%%%%%% start Problem F %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Problem F: Keyboarding}
+\noindent \textbf{Results:} \\
+
+\includegraphics[width=\textwidth]{ProblemF} \\
+
+\noindent \textbf{Background:} \\
+~\indent How many keystrokes are necessary to type a text message? You may think that it is equal to the
+number of characters in the text, but this is correct only if one keystroke generates one character.
+With pocketsize devices, the possibilities for typing text are often limited. Some devices provide only
+a few buttons, signi cantly fewer than the number of letters in the alphabet. For such devices, several
+strokes may be needed to type a single character. One mechanism to deal with these limitations is
+a virtual keyboard displayed on a screen, with a cursor that can be moved from key to key to select
+characters. Four arrow buttons control the movement of the cursor, and when the cursor is positioned
+over an appropriate key, pressing the  fth button selects the corresponding character and appends it
+to the end of the text. To terminate the text, the user must navigate to and select the Enter key. This
+provides users with an arbitrary set of characters and enables them to type text of any length with
+only  ve hardware buttons. In this problem, you are given a virtual keyboard layout and your task
+is to determine the minimal number of strokes needed to type a given text, where pressing any of the
+ve hardware buttons constitutes a stroke. The keys are arranged in a rectangular grid, such that each
+virtual key occupies one or more connected unit squares of the grid. The cursor starts in the upper left
+corner of the keyboard and moves in the four cardinal directions, in such a way that it always skips to
+the next unit square in that direction that belongs to a different key. If there is no such unit square,
+the cursor does not move. \\
+
+\noindent \textbf{Input:} \\
+~\indent The input file contains several test cases. The  first line of the input contains two integers $r$ and
+$c\ (1 \leq r,c \leq 50)$, giving the number of rows
+and columns of the virtual keyboard grid. The virtual keyboard is specified in the next $r$ lines, each of which
+contains $c$ characters. The possible values of these characters are uppercase letters, digits, a
+dash, and an asterisk (representing Enter). There is only one key corresponding to any given character.
+Each key is made up of one or more grid squares, which will always form a connected region. The last
+line of the input contains the text to be typed. This text is a non-empty string of at most 10,000 of
+the available characters other than the asterisk. \\
+
+\noindent \textbf{Output:} \\
+~\indent For each test case, display the minimal number of strokes necessary to type the whole text, including
+the \textbf{Enter} key at the end.
+
+
+%%%%%%% end Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newpage
 
-%%%%%%% end Problem E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% Mathematical Formulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Mathematical Formulation}
+Given an input of a keyboard of size $RxC$ and a string of length $S$ that can be typed out on the keyboard,
+determine the minimum number of keytsrokes that are required to type in the string that is used which consist
+of starting in the top left corner of the keyboard, visiting each letter in the string and pushing each button,
+then moving to and pressing the "$\ast$" button.
+
+
+%%%%%%% Algorithm %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Solution}
+The main functionality of this algorithm is to perform $S+1$ bfs's for each one of the letters $s_1, s_2,...s_S \in s$
+the input string. We move onto the next level once we have found the corresponding goal letter for that level,
+however each level is fully explored unless we have found the terminating key and for each time that we find
+the correspodning key for that level we move up. \\
+
+The only data structures we use are the $keyboard[R][C]$ as a character array, the input string $target$,
+$|target| = S$ and the three dimensional $seen[S][R][C]$ to keep track of which keys have already been visited
+for each level.
+
+\begin{algorithm}[H]
+\caption{Main}
+\begin{algorithmic}
+    \Procedure{main}{x}
+
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+%%%%%%% Correctness %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Correctness}
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+~ \\ \indent We will determine the minimum number of keystrokes required to type in the string $s = s_1 s_2 ... s_S$
+on the given keyboard.
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent First use the fact that we can determine the shortest distance from any one key $k_i$ to another $k_j$
+on the keyboard through a bfs originating at $k_i$. Therefore we enact a $S$ depth bfs on the keyboard such that
+we go from depth $1 \rightarrow 2$ after we find $s_1$ as one of the keys $k_i$ on the first keyboard and start
+searching from key $k_i$ on lever 2 for $s_2$. The entire time however we continue to search on keyboard 1 until
+we either have explored the entire board; if we come across $s_1$ on say $k_l$ we will move up to board 2
+searching from $k_l$ unless it has already been seen. The reason this works is that if the original key is not the
+optimal first key to explore from, then we will have not seen the optimal route on one of levels currently exploring
+which will be explored from another searching origin.
+\end{proof}
+
+
+%%%%%%% Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Analysis}
+For purposes of this problem we will let $S$ be the length of the input string and $RxC$ be the dimensions of the
+given keyboard.
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The \underline{space complexity} of this algorithm is \textbf{O(S$\cdot$R$\cdot$C)}
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent This is due to the fact that we are storing a three dimentional array or $S$ 2-D boolean array of the
+keyboard of size $RxC$
+\begin{center}
+    Giving us a space complexity of \textbf{O(S$\cdot$R$\cdot$C)}
+\end{center}
+\end{proof}
+
+%%%%%%% PROPOSITION 2 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The \underline{time complexity} of this algorithm is \textbf{O(S$\cdot$R$\cdot$C)}
+\end{proposition}
+
+\begin{proof}
+This is the case because the worst case for this algorithm is to do a complete bfs for each of the $S$ keyboards.
+
+\begin{center}
+    Giving us a time complexity of \textbf{O(S$\cdot$R$\cdot$C)}
+\end{center}
+\end{proof}
+
+%%%%%%% Example %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{An Example}
+Given the input of:
+
+%%%%%%% end Problem F %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%% end Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

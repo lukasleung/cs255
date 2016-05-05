@@ -12,9 +12,6 @@ import java.util.Scanner;
  * @version 8.0
  */
 public class Keyboarding {
-    private char[][] keyboard;
-    private int[] dr = {-1, 1, 0,  0},
-                  dc = { 0, 0, 1, -1};
     private int R, C;
     public Keyboarding() {
         Scanner in = new Scanner(System.in);
@@ -23,7 +20,7 @@ public class Keyboarding {
             String[] temp = line.split("\\s+");
             R = Integer.parseInt(temp[0]);
             C = Integer.parseInt(temp[1]);
-            keyboard = new char[R][C];
+            char[][] keyboard = new char[R][C];
             for (int r = 0; r < R; r++) {
                 line = in.nextLine();
                 for (int c = 0; c < C; c++) {
@@ -31,19 +28,21 @@ public class Keyboarding {
                 }
             }
             line = in.nextLine().concat("*");
-            System.out.println(bfs(line) + line.length());
+            System.out.println(bfs(line, keyboard) + line.length());
         }
     }
     private boolean inBounds(int r, int c) {
         return ((r >= 0 && r < R) && (c >= 0 && c < C));
     }
-    private int bfs(String line) {
-        int length = line.length();
+    private int bfs(String target, char[][] keyboard) {
+        int[] dr = {-1, 1, 0,  0};
+        int[] dc = { 0, 0, 1, -1};
+        int length = target.length();
         boolean[][][] seen  = new boolean[length][keyboard.length][keyboard[0].length];
         Queue<Integer> q = new LinkedList<Integer>();
         // 0: index in string
         int temp = 0;
-        while (line.charAt(temp) == keyboard[0][0]) {
+        while (target.charAt(temp) == keyboard[0][0]) {
             temp++;
         }
         q.add(temp);
@@ -55,7 +54,7 @@ public class Keyboarding {
             int index = q.remove(), row = q.remove(),
                   col = q.remove(), l = q.remove();
             l++;
-            char goal = line.charAt(index);
+            char goal = target.charAt(index);
 
             for (int i = 0; i < dc.length; i++) {
                 int dR = row + dr[i], dC = col + dc[i];
@@ -73,7 +72,7 @@ public class Keyboarding {
                         seen[index][dR][dC] = true;
                         if (thisLetter == goal) {
                             temp = 0;
-                            while (line.charAt(index+temp) == keyboard[dR][dC]) {
+                            while (target.charAt(index+temp) == keyboard[dR][dC]) {
                                 temp++;
                                 if (index + temp == length) {
                                     return l;
