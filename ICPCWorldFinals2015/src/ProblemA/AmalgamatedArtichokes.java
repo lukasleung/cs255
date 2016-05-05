@@ -24,11 +24,8 @@ public class AmalgamatedArtichokes {
                     h = val,
                     l = val,
                     diff = 0;
-            System.out.printf("  %.6f &\n", val);
             for (int x = 2; x <= n; x++) {
-                System.out.println(x);
                 val = f(x);
-                System.out.printf(" f %.6f &\n", val);
                 if (val > h) { // higher than highest, reset
                     h = val;
                     l = val;
@@ -36,11 +33,7 @@ public class AmalgamatedArtichokes {
                     l = val;
                     double curDiff = h - l;
                     if (curDiff > diff) { diff = curDiff; }
-                    System.out.printf(" c %.6f &\n", curDiff);
-                    System.out.printf(" d %.6f &\n", diff);
                 }
-                System.out.printf(" h %.6f &\n", h);
-                System.out.printf(" l %.6f &\n", l);
             }
             System.out.printf("%.6f\n", p*(diff));
         }

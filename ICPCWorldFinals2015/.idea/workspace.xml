@@ -2,6 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ec0e3641-7cff-41e6-ac35-c0da060af5f1" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fullReport.pdf" afterPath="$PROJECT_DIR$/src/fullReport.pdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/testCases/keyboard/keyboard-15.out" afterPath="$PROJECT_DIR$/src/testCases/keyboard/keyboard-15.out" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ProblemA/AmalgamatedArtichokes.java" afterPath="$PROJECT_DIR$/src/ProblemA/AmalgamatedArtichokes.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ProblemD/CuttingCheese.java" afterPath="$PROJECT_DIR$/src/ProblemD/CuttingCheese.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/fullReport.tex" afterPath="$PROJECT_DIR$/src/fullReport.tex" />
     </list>
     <ignored path="ICPCWorldFinals2015.iws" />
@@ -26,23 +31,8 @@
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="fullReport.tex" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/fullReport.tex">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="623">
-              <caret line="984" column="0" selection-start-line="984" selection-start-column="0" selection-end-line="984" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Keyboarding.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ProblemF/Keyboarding.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1260">
-              <caret line="74" column="41" selection-start-line="74" selection-start-column="41" selection-end-line="74" selection-end-column="41" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
+          <provider selected="true" editor-type-id="LaTeXFileEditor">
+            <state />
           </provider>
         </entry>
       </file>
@@ -79,7 +69,6 @@
         <option value="$PROJECT_DIR$/src/ProblemA/runTex.sh" />
         <option value="$PROJECT_DIR$/src/runTex.sh" />
         <option value="$PROJECT_DIR$/src/ProblemA/inputs/test.txt" />
-        <option value="$PROJECT_DIR$/src/ProblemA/AmalgamatedArtichokes.java" />
         <option value="$PROJECT_DIR$/src/ProblemF/input/input1.txt" />
         <option value="$PROJECT_DIR$/src/ProblemF/input/input2.txt" />
         <option value="$PROJECT_DIR$/src/ProblemF/input/input3.txt" />
@@ -99,9 +88,10 @@
         <option value="$PROJECT_DIR$/src/ProblemE/Evolution.java" />
         <option value="$PROJECT_DIR$/src/ProblemF/test.sh" />
         <option value="$PROJECT_DIR$/src/ProblemD/test/input/test.txt" />
-        <option value="$PROJECT_DIR$/src/ProblemD/CuttingCheese.java" />
         <option value="$PROJECT_DIR$/src/ProblemF/Keyboarding.java" />
         <option value="$PROJECT_DIR$/src/fullReport.tex" />
+        <option value="$PROJECT_DIR$/src/ProblemD/CuttingCheese.java" />
+        <option value="$PROJECT_DIR$/src/ProblemA/AmalgamatedArtichokes.java" />
       </list>
     </option>
   </component>
@@ -185,7 +175,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="ProblemF" />
+              <option name="myItemId" value="ProblemA" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -571,14 +561,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/ProblemF/test.txt" />
-    <entry file="file://$PROJECT_DIR$/src/ProblemF/input/input4.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="2" column="1" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/testCases/keyboard/keyboard-05.in">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -894,13 +876,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ProblemD/CuttingCheese.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="371">
-          <caret line="100" column="36" selection-start-line="100" selection-start-column="36" selection-end-line="100" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ProblemE/input/input1.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -910,7 +885,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ProblemF/Keyboarding.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1260">
+        <state relative-caret-position="623">
           <caret line="74" column="41" selection-start-line="74" selection-start-column="41" selection-end-line="74" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -918,14 +893,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/fullReport.tex">
+    <entry file="file://$PROJECT_DIR$/src/ProblemD/CuttingCheese.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="623">
-          <caret line="984" column="0" selection-start-line="984" selection-start-column="0" selection-end-line="984" selection-end-column="0" />
+        <state relative-caret-position="-565">
+          <caret line="40" column="33" selection-start-line="40" selection-start-column="33" selection-end-line="40" selection-end-column="33" />
           <folding />
         </state>
       </provider>
-      <provider editor-type-id="LaTeXFileEditor">
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ProblemA/AmalgamatedArtichokes.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ProblemA/AmalgamatedArtichokes.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="468">
+          <caret line="26" column="42" selection-start-line="26" selection-start-column="42" selection-end-line="26" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fullReport.tex">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="299">
+          <caret line="987" column="0" selection-start-line="987" selection-start-column="0" selection-end-line="992" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="LaTeXFileEditor">
         <state />
       </provider>
     </entry>

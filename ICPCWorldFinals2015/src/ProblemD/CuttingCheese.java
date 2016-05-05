@@ -39,7 +39,6 @@ public class CuttingCheese {
                 v -= volInRange(z - r, z + r, i);
             }
             goal = v / numSlices;
-            System.out.println(v + " " + goal);
             Arrays.sort(holes, new Comparator<double[]>() {
                 @Override
                 public int compare(double[] o1, double[] o2) {
@@ -97,8 +96,6 @@ public class CuttingCheese {
             if (holes[i][0] + holes[i][1] < a) { continue; } // z + r < a
             // intersects with sphere, take out part of sphere intersecting with band a, b
             val -= volInRange(a, b, i);
-            System.out.println(" Interval: [" + a + ", " + b + "] :" + ((DIM*DIM*(b - a)) - val));
-            System.out.println(val);
         }
         return val;
     }
@@ -107,7 +104,6 @@ public class CuttingCheese {
         double l = 0, h = DIM, cut, last = 0.0;
         int slicePerformed = 1;
         while (true) {
-            System.out.print("Slice: " + 1);
             cut = (h + l)/2;
             double diff = goal - allVol(last, cut);
             if (Math.abs(diff) < EPSILON) { // got it

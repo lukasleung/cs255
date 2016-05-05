@@ -970,7 +970,7 @@ This is the case because the worst case for this algorithm is to do a complete b
 \end{proof}
 
 %%%%%%% Example %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\newpage
 \subsection{An Example}
 Given the input of: \\
 6 4     \\
@@ -982,8 +982,33 @@ DEFB    \\
 GHI*    \\
 AB      \\
 
+We begin by appending $\ast$ to the target so target = $AB\ast$ and $|target| = 3$ then we begin our search.
+noting that we immediately find 'A' so we move on starting at level 2, searching for 'B'. We note that the
+distances from A can be as followed: (- $\implies \infty$)
+\begin{center}
+A X Y B $\rightarrow$ \textbf{0} 1 2 3    \\
+B B B B $\rightarrow$ 1 2 3 -    \\
+K L M B $\rightarrow$ 2 3 4 -    \\
+O P Q B $\rightarrow$ 3 4 - -    \\
+D E F B $\rightarrow$ 4 - - -    \\
+G H I * $\rightarrow$ - - - -
+\end{center}
 
+For sakes of making this as painless as possible I will fill in the 3rd level in one swoop to show you what
+we will do, bolding where we have come up from level 2 to this level 3.
+\begin{center}
+A X Y B $\rightarrow$ 2 3 4 \textbf{3}    \\
+B B B B $\rightarrow$ \textbf{1 2 3} -    \\
+K L M B $\rightarrow$ 2 3 4 -    \\
+O P Q B $\rightarrow$ 3 4 - -    \\
+D E F B $\rightarrow$ 4 - - -    \\
+G H I * $\rightarrow$ - - - 4
+\end{center}
 
+Depending on the implementation, the arrays may be different, however we see here that the shortest route
+would be starting A $\rightarrow$ top right B $\rightarrow \ast$ which is reachable in a path length of 4.
+This is what the bfs would return and therefore will 4 and 4 + 3 = 7 which is the least amount of
+key-strokes  required.
 %%%%%%% end Problem F %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%% end Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
