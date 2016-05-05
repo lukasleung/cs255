@@ -26,11 +26,15 @@ decline, display the number ’0’. Your output should have an absolute or rela
 ## Sample Input
 
 42 1 23 4 8 10
+
 100 7 615 998 801 3
+
 100 432 406 867 60 1000
 
 ## Sample Output
 
 104.855110477
+
 0.00
+
 399.303813
