@@ -1,4 +1,4 @@
-# Problem D, Amalgamated Artichokes - UVA 1709
+# Problem D, Cutting Cheese - UVA 1712
 
 ## Background
 
