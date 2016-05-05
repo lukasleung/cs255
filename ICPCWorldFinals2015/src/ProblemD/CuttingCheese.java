@@ -39,6 +39,7 @@ public class CuttingCheese {
                 v -= volInRange(z - r, z + r, i);
             }
             goal = v / numSlices;
+            System.out.println(v + " " + goal);
             Arrays.sort(holes, new Comparator<double[]>() {
                 @Override
                 public int compare(double[] o1, double[] o2) {
@@ -69,7 +70,6 @@ public class CuttingCheese {
         if (a >= coordRight || b <= coordLeft) { return 0.0; }
         // [a,b] fully contains sphere
         if (a <= coordLeft && b >= coordRight) { return ((Math.PI*4*R*R*R)/3); }
-//        System.out.println("How the hell");
         // only a portion of the sphere is contained, calculate that
         boolean inLeft = false, inRight = false;
         double volLeft = 0.0, volRight = 0.0, d, h, coordD;
@@ -79,7 +79,6 @@ public class CuttingCheese {
             d = (inRight) ? 0.0 : mid-b;
             coordD = (inRight) ? mid : b;
             h = (a <= coordLeft) ? coordD-coordLeft : coordD-a;
-//            System.out.println("d: " + d + ", h: " + h + ", R: " + R);
             volLeft = calcSphericalSegment(d, h, R);
         }
         if (inRight) {
@@ -88,7 +87,6 @@ public class CuttingCheese {
             h = (b >= coordRight) ? coordRight-coordD : b-coordD;
             volRight = calcSphericalSegment(d, h, R);
         }
-//        System.out.println(" Left: " + volLeft + ", Right: " + volRight);
         return volLeft + volRight;
     }
     // calculate the volume of all spheres contained in the range [l, u]
@@ -99,6 +97,8 @@ public class CuttingCheese {
             if (holes[i][0] + holes[i][1] < a) { continue; } // z + r < a
             // intersects with sphere, take out part of sphere intersecting with band a, b
             val -= volInRange(a, b, i);
+            System.out.println(" Interval: [" + a + ", " + b + "] :" + ((DIM*DIM*(b - a)) - val));
+            System.out.println(val);
         }
         return val;
     }
@@ -107,6 +107,7 @@ public class CuttingCheese {
         double l = 0, h = DIM, cut, last = 0.0;
         int slicePerformed = 1;
         while (true) {
+            System.out.print("Slice: " + 1);
             cut = (h + l)/2;
             double diff = goal - allVol(last, cut);
             if (Math.abs(diff) < EPSILON) { // got it
