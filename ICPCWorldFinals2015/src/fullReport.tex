@@ -120,12 +120,12 @@ Problem \hmwkAssignmentNum.\hmwkProblemNum}
 \newcommand{\hmwkAssignmentNum}{9}
 
 %%% The problem number (just the number)
-\newcommand{\hmwkProblemNum}{0}
+\newcommand{\hmwkProblemNum}{1}
 
 %%% A list of your collaborators' NetIDs, separated by ", ".
 %%% You can use a new line ("\\") in the middle to prevent a long
 %%% list from overflowing.
-\newcommand{\hmwkCollaborators}{}
+\newcommand{\hmwkCollaborators}{none}
 %%% Sets the collaborator list to appear on the first page
 \thispagestyle{fancycollab}
 
@@ -484,8 +484,15 @@ total cost of the edges that go from the origin to the destination nodes.
 \end{proposition}
 
 \begin{proof}
-~ \\ \indent The formulation that we used for this graph was that we can start at any of the restaurants
-which are not the last one and make connections to any of the
+~ \\ \indent The formulation that we used for this graph was that we can start at any of the jobs which are
+not the last one and make connections to any job that occurs after it and not before. Then with the teams,
+they are allowed to go to any job first but cannot go to the same job at the same time since this would
+not match each place once. The destination nodes are each of the jobs since each one must be fuffilled and
+it only contains inEdges from jobs that can go to it or directly from each of the teams. Though this is not
+a full bipartite graph, we can see that it has the correct formulation if we include any non present nodes
+(teams in the destination section or the last job in the origin section) to have all indegrees and outdegrees
+of Infinity and not to count them in our searches. Though this only takes up space and time so we simply
+neglect them in our implementation, though they are technically present.
 \end{proof}
 
 
@@ -543,6 +550,7 @@ teams, 3 and 4 are jobs 1 and 2 and symbolize leaving them, and nodes 5, 6, and 
 and represent coming to them (destinations). \\
 \includegraphics[width=\textwidth]{ExampleCpart1} \\
 
+\newpage
 We then perform our dijkstra and update our copy of the graph such that it looks as below where we have
 reversed the edges 0 $\rightarrow$ 3 $\rightarrow$ 7 $\rightarrow$ 8 symbolizing going from job 1 to job 3. \\
 \includegraphics[width=\textwidth]{ExampleCpart2} \\
@@ -550,7 +558,7 @@ reversed the edges 0 $\rightarrow$ 3 $\rightarrow$ 7 $\rightarrow$ 8 symbolizing
 This is followed by finding the path that goes 0 $\rightarrow$ 1 $\rightarrow$ 6 $\rightarrow$ 8, symbolizing
 that team 1 starts out by going to job 2. \\
 \includegraphics[width=\textwidth]{ExampleCpart3} \\
-
+\newpage
 Then for our last augmentation we find the path that goes 0 $\rightarrow$ 2 $\rightarrow$ 5 $\rightarrow$ 8,
 symbolizing that team 2 starts out by going to job 1. \\
 \includegraphics[width=\textwidth]{ExampleCpart4} \\

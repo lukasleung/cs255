@@ -175,19 +175,19 @@ public class Catering {
     public int matchMe() {
         int[][] defCopyG = copy();
         int[] cost = new int[numNodes]; // cost of each node, will change throughout
-        System.out.println("Graph:");
-        print(graph);
+//        System.out.println("Graph:");
+//        print(graph);
         // preform on all requests
         for (int i = 0; i < N; i++) {
-            System.out.println("----------------------------------\n" + i);
+//            System.out.println("----------------------------------\n" + i);
             // initialize for dijkstra
             int[] distTo = new int[numNodes];
             int[] from = new int[numNodes];
             IndexMinPQ<Integer> mpq = new IndexMinPQ<Integer>(numNodes);
             // perform dijkstra
             dijkstra(defCopyG, distTo, from, mpq);
-            System.out.println(" Dist");
-            print(distTo);
+//            System.out.println(" Dist");
+//            print(distTo);
             // reverses all edges along path found
             int cNode = t;
             while (cNode != s) {
@@ -200,29 +200,29 @@ public class Catering {
             for (int j = 0; j < numNodes; j++) {
                 cost[j] += distTo[j];
             }
-            System.out.println(" Cost");
-            print(cost);
+//            System.out.println(" Cost");
+//            print(cost);
             // update flow on edges going from -> to
             for (int j = iFrom; j < iTo; j++) {
                 for (int k = 0; k < numNodes; k++) {
                     if (k != s && defCopyG[j][k] != Integer.MAX_VALUE) {
                         defCopyG[j][k] = cost[j] + graph[j][k] - cost[k];
-                        System.out.println("  " + j + " -> " + k + " = " + cost[j] + " + " + graph[j][k] + " - " + cost[k] + " = " + defCopyG[j][k]);
+//                        System.out.println("  " + j + " -> " + k + " = " + cost[j] + " + " + graph[j][k] + " - " + cost[k] + " = " + defCopyG[j][k]);
                     }
                 }
             }
-            System.out.println();
+//            System.out.println();
             // update flow on edges going from <- to
             for (int j = iTo; j < t; j++) {
                 for (int k = 0; k < numNodes; k++) {
                     if (k != t && defCopyG[j][k] != Integer.MAX_VALUE) {
                         defCopyG[j][k] = cost[k] + graph[k][j] - cost[j];
-                        System.out.println("  " + j + " <- " + k + " = " + cost[k] + " + " + graph[k][j] + " - " + cost[j] + " = " + defCopyG[j][k]);
+//                        System.out.println("  " + j + " <- " + k + " = " + cost[k] + " + " + graph[k][j] + " - " + cost[j] + " = " + defCopyG[j][k]);
                     }
                 }
             }
-            System.out.println(" Graph");
-            print(defCopyG);
+//            System.out.println(" Graph");
+//            print(defCopyG);
         }
         // sums total cost of the edges in the bipartite matching
         int minimum = 0;
