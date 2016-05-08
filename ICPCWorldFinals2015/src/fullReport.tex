@@ -131,13 +131,15 @@ Problem \hmwkAssignmentNum.\hmwkProblemNum}
 
 %%%%%%% begin Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Results from UVA}
-\subsection{Problem A (page 2)}
+\subsection{Problem A: Amalgamated Artichokes (page 2)}
 \includegraphics[width=\textwidth]{ProblemA}
-\subsection{Problem D (page 5)}
+\subsection{Problem C: Catering (page 5)}
+\includegraphics[width=\textwidth]{ProblemC}
+\subsection{Problem D: Cutting Chese (page 12)}
 \includegraphics[width=\textwidth]{ProblemD}
-\subsection{Problem E (page 9)}
+\subsection{Problem E: Evolution in Parallel (page 16)}
 \includegraphics[width=\textwidth]{ProblemE}
-\subsection{Problem F (page 15)}
+\subsection{Problem F: Keyboarding (page 22)}
 \includegraphics[width=\textwidth]{ProblemF}
 \newpage
 
@@ -312,6 +314,251 @@ Now multiplying our $diff$ by $p \implies 2.496550 \cdot 42 = 104.855110$ which 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%% start Problem C %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Problem C: Catering}
+\noindent \textbf{Results:} \\
+
+\includegraphics[width=\textwidth]{ProblemC} \\
+
+\noindent \textbf{Background:} \\
+~\indent Paul owns a catering company and business is booming. The company has k catering teams, each in charge of
+one set of catering equipment. Every week, the company accepts n catering requests for various events. For every
+request, they send a catering team with their equipment to the event location. The team delivers the food, sets up
+the equipment, and instructs the host on how to use the equipment and serve the food. After the event, the host is
+responsible for returning the equipment back to Paul’s company.
+
+Unfortunately, in some weeks the number of catering teams is less than the number of requests, so some teams may
+have to be used for more than one event. In these cases, the company cannot wait for the host to return the
+equipment and must keep the team on-site to move the equipment to another location. The company has an accurate
+estimate of the cost to move a set of equipment from any location to any other location. Given these costs, Paul
+wants to prepare an Advance Catering Map to service the requests while minimizing the total moving cost of
+equipment (including the cost of the first move), even if that means not using all the available teams. Paul
+needs your help to write a program to accomplish this task. The requests are sorted in ascending order of their
+event times and they are chosen in such a way that for any i \textless j, there is enough time to transport the
+equipment used in the i$^{th}$ request to the location of the j$^{th}$ request. \\
+
+\noindent \textbf{Input:} \\
+~\indent
+The input file contains several test cases, each of them as described below.
+
+The first line of input contains two integers n ($1 \leq n \leq 100$) and k ($1 \leq k \leq 100$) which are the
+number of requests and the number of catering teams, respectively. Following that are n lines, where the i$^{th}$
+line contains $n - i + 1$ integers between 0 and 1000000 inclusive. The j$^{th}$ number in the i$^{th}$ line is the
+cost of moving a set of equipment from location $i$ to location $i + j$. The company is at location 1 and the n
+requests are at locations 2 to $n + 1$. \\
+
+\noindent \textbf{Output:} \\
+~\indent For each test case, display the minimum moving cost to service all requests. (This amount does not
+include the cost of moving the equipment back to the catering company.)
+
+
+%%%%%%% end Problem %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
+%%%%%%% Mathematical Formulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Mathematical Formulation}
+Given an input of $k$ teams and $n$ jobs that must be fufilled, we are given the order that the jobs occur in
+chronological order such that $j_1$ occurs before $j_2 ...$before $j_n$. We are also given every cost of moving
+equipment from job $j_i$ to $j_k$ where that job $j_i$ occurs before $j_k$. The task is to determine what the
+minimum moving cost to service all of the jobs is.
+
+%%%%%%% Algorithm %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Solution}
+The main functionality of this algorithm is to construct a min-cost bipartite graph which has a total of
+$k + 2\cdot n + 1$ nodes which are representative of:
+\begin{enumerate}
+    \item \textbf{1}: source (s)
+    \item \textbf{k + (n - 1)}: for the left side of the graph representing a node for each team and a node for
+        each job except for the last one since they occur chronologically and therefor not possible to come from
+        that node. (iFrom)
+    \item \textbf{n}: for the right side as these are the destinations that each team can go to (starting point)
+        as well as coming from one of the previous jobs. (iTo)
+    \item \textbf{1}: sink (t)
+\end{enumerate}
+
+Giving us a total of $[1] + [k + (n-1)] + [n] + [1] = k + (n + n) - 1 + 1 + 1 = k + 2\cdot n + 1$.
+We use an adjacency matrix of integers denoting weight to go from one node to another to represent our graph
+and initialize the costs of going from the source to each of the left side, "origin", nodes to be 0 and each of
+the nodes from the right side, "destination", nodes to the sink to be 0.
+
+\begin{algorithm}[H]
+\caption{Build}
+\begin{algorithmic}
+    \Procedure{Control}{}
+        \For{each test case}
+            \State \Call{buildGraph}{ }
+            \State print(\Call{match}{ })
+        \EndFor
+    \EndProcedure
+    \Procedure{buildGraph}{}
+        \State $N, K, numNodes, s, iFrom, iTo, t \gets$ initialized
+        \State int[numNodes][numNodes] $graph \gets$ initialized with all infinity values initially
+        \For{each origin node $n, n\in [iFrom,iTo-1]$}
+            \State connect(s, n, 0)
+        \EndFor
+        \For{each origin node $n, n\in [iFrom,iTo-1]$}
+            \For{each destination node $m, m\in [iTo,t-1]$}
+                \State connect(n, m, costFromInput)
+            \EndFor
+        \EndFor
+        \For{each destination node $n, n\in [iFrom,iTo-1]$}
+            \State connect(n, t, 0)
+        \EndFor
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+Once we have created this graph, we note that it this is a min-cost bipartite graph problem as we seek to
+minimize the cost of getting from the source to the sink while visiting each node (although this is not a
+true bipartite graph this is discussed in the correcness section). To preform this we make a copy of our
+graph to which we will be altering while referening our original (very important) then we will define a
+cost array to store the cost of each node. From here we find our shortest path using dijkstra's algortihm
+and reverse all edges along that path found; then we update the cost of each vertex, the flow on edges going
+from our origin nodes to our destination nodes, then the flow on edges going from our destination back to our
+origin nodes. We do this process for each request so that way we do this $n$ times. Finally we will sum the
+total cost of the edges that go from the origin to the destination nodes.
+
+\begin{algorithm}[H]
+\caption{Min Cost Biparthide Matching}
+\begin{algorithmic}
+    \Procedure{match}{}
+        \State $defCopyG, cost \gets$ initialized
+        \For{each Request}
+            \State int[numNodes] $distTo, from \gets$ initialized
+            \State IndexMinPQ$\textless$Integer$\textgreater$ $mpq \gets$ initialized with size numNodes
+            \State perform dijkstra altering distTo and from arrays
+            \State // reverse all edges along the path found
+            \While{cNode \!= s}
+                \State int $index \gets$ from[cNode]
+                \State defCopyG[cNode][index] = defCopyG[index][cNode]
+                \State defCopyG[cNode][index] = Infinity
+                \State cNode = index
+            \EndWhile
+            \State // update cost of each vertex
+            \For{each node $n \in numNodes$}
+                \State cost[n] += distTo[n]
+            \EndFor
+            \State // update the flow on edges going from origin to destination
+            \For{each node $n \in origin$ and $m \in destination$}
+                \State defCopyG[n][m] = cost[n] + graph[n][m] - cost[m]
+            \EndFor
+            \State // update the flow on edges foring from destination to origin
+            \For{each node $n \in origin$ and $m \in destination$}
+                \State defCopyG[n][m] = cost[m] + graph[m][n] - cost[n]
+            \EndFor
+        \EndFor
+        \State int $minimum = 0$
+        \For{each origin node $n, n\in [iFrom,iTo-1]$}
+            \For{each node $m, m\in [1,numNodes]$}
+                \If{graph[n][m] != Infinity \&\& defCopyG[n][m] != Infinity}
+                    \State minimum += graph[n][m]
+                \EndIf
+            \EndFor
+        \EndFor
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+%%%%%%% Correctness %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Correctness}
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+~ \\ \indent Solving mincost bipartite matching on our graph construction will give us the correct answer.
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent The formulation that we used for this graph was that we can start at any of the restaurants
+which are not the last one and make connections to any of the
+\end{proof}
+
+
+%%%%%%% Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Analysis}
+We note that the number of nodes in our graph is $(k + 2\cdot n + 1)$ which is equal to O(k+n)
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The \underline{space complexity} of this algorithm is \textbf{O((k+n)$^2$)}
+\end{proposition}
+
+\begin{proof}
+~ \\ \indent This is due to the fact that all of our information is stored in either one dimentional or
+two dimensional integer arrays or a minimum priority queue, each of which has the size comparable to
+our number of nodes. The largest of these therefore is our two dimentional array of size $(numNodes)^2$.
+Since our number of nodes is $(k + 2\cdot n + 1)$ this is $(k + 2\cdot n + 1)^2$ s
+\begin{center}
+    Giving us a space complexity of \textbf{O((k+n)$^2$)}
+\end{center}
+\end{proof}
+
+%%%%%%% PROPOSITION 2 %%%%%%%%%%%%%%%
+\begin{proposition}
+\label{numq}
+The \underline{time complexity} of this algorithm is \textbf{O(n$\cdot$(k+n)$^2$)}
+\end{proposition}
+
+\begin{proof}
+We break the algorithm into a two main cases, our construction of the graph and performance of our min-cost
+bipartite algorithm (for purposes of readability we will use $N$ to represent $(k+n)$). We note that since
+this is a bipartite graph it is fully connected (essentially) so we can simplify that $V + E$ in normal
+graph representations is actually $N + N^2$. Therefore we note that the construction of the graph will
+take V+E time which is O($N^2$). The next part is the performance of our min-cose bipartite algorithm which
+will go trough for number of jobs (n) + and perform dijkstra's $(E + V\cdot log(V)) \implies (N^2) + N\cdot log(N)$
+, O($N^2$) then we will update costs which each time (4) will at most go through the entire graph once O($N^2$)
+$\implies$ $n\cdot (N^2 + 4\cdot N^2)$ = O($n \cdot N^2$). Comparing the two parts then gets us O($N^2$) +
+O($n \cdot N^2$).
+\begin{center}
+    Giving us a time complexity of \textbf{O(n$\cdot$(k+n)$^2$)}
+\end{center}
+\end{proof}
+
+%%%%%%% Example %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{An Example}
+Given the input of: \\
+3 2 \\
+40 30 40 \\
+50 \\
+50 \\
+
+We Build the following graph where indices 0 and 8 are the source and sink, 1 and 2 represent the
+teams, 3 and 4 are jobs 1 and 2 and symbolize leaving them, and nodes 5, 6, and 7 are jobs 1, 2, and 3
+and represent coming to them (destinations). \\
+\includegraphics[width=\textwidth]{ExampleCpart1} \\
+
+We then perform our dijkstra and update our copy of the graph such that it looks as below where we have
+reversed the edges 0 $\rightarrow$ 3 $\rightarrow$ 7 $\rightarrow$ 8 symbolizing going from job 1 to job 3. \\
+\includegraphics[width=\textwidth]{ExampleCpart2} \\
+
+This is followed by finding the path that goes 0 $\rightarrow$ 1 $\rightarrow$ 6 $\rightarrow$ 8, symbolizing
+that team 1 starts out by going to job 2. \\
+\includegraphics[width=\textwidth]{ExampleCpart3} \\
+
+Then for our last augmentation we find the path that goes 0 $\rightarrow$ 2 $\rightarrow$ 5 $\rightarrow$ 8,
+symbolizing that team 2 starts out by going to job 1. \\
+\includegraphics[width=\textwidth]{ExampleCpart4} \\
+
+Therefore our paths found can be understood as team 1 goes first to job 1 then to job 3 and team 2 goes
+only to job 2 which will produce the minimum cost of 80.
+%%%%%%% end Problem C %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
 
 
 

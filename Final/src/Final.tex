@@ -543,7 +543,9 @@ Otherwise we choose whichever one has a larger difference as what we should dete
 
 Once we have decided which set is a viable candidate for gerrymandering, W.L.O.G. we can denote this as
 $set_1$ which has a majority of value $sum_1$ and the one which is not as $set_2$ with a majority of value
-$sum_2$. What we do then is compile a list of
+$sum_2$. What we do then is arrange 2 sets of differences for those with $set_1$ as the dominant and another
+for those with $set_2$ such that they are organized by number of Districts that comprise them. i.e. level 2
+has all combinations of size 2 of districs.  (See proof for more details)
 
 \begin{algorithm}[H]
 \caption{Dynamic Programming Solution}
@@ -615,7 +617,7 @@ $sum_2$. What we do then is compile a list of
 %%%%%%% Correctness %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Correctness}
-%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+%%%%%%% COROLLARY 1 %%%%%%%%%%%%%%%%%
 \begin{corollary}
 ~ \\ \indent Given $N$ Precincts = $P$, if we define the total number of voters for party A as \\
 $sumA = \sum_{i=1}^{N} (A\ voters\ in\ p_i)$ and likewise the total number of voters for party B as
@@ -634,16 +636,29 @@ us a contradiction.
 \end{proof}
 
 
-%%%%%%% PROPOSITION 2 %%%%%%%%%%%%%%%
-\begin{corallary}
+%%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
+\begin{proposition}
 ~ \\ \indent Given two sets of differences that are organized by number of precincts used to create the returned
-value $D_1, D_2$ (i.e. $D_1(3)$ contains a list of integers which have been composed using 3 districtcs) and the
+value $D_A, D_B$ (i.e. $D_A(3)$ contains a list of integers which have been composed using 3 districtcs) and the
 total difference between sets 1 and 2 being a positive number $diff_D$, we can determine wheather or not
 Gerrymandering is possible.
-\end{corallary}
+\end{proposition}
 
 \begin{proof}
-~ \\ \indent We first define how $diff_D$ is involved. We know that $diff_D = SUM(A) - SUM(B)$
+~ \\ \indent We first define how $diff_D$ is involved. We know that $diff_D = SUM(A) - SUM(B)$ and this we can
+say is $sumA - sumB = (sumA_1 + sumA_2) - (sumB_1 + sumB_2) = (sumA_1 - sumB_1) + (sumA_2 - sumB_2)$ where
+$sumA_1$ corresponds to a subset of A-dominant districts and $sumB_1$ corresponds to a subset of A-dominant districts.
+Then it follows by Gerrymandering definition that for A to be succeptible, it must win in both sub-groups and the
+two subgroups must be of equal size. Therefore we can say that both $(sumA_1 - sumB_1)$ and $(sumA_2 - sumB_2)$
+must be positive i.e. $\textgreater 0$.  Since we have the relation then that $(sumA_1 - sumB_1) + (sumA_2 - sumB_2) = diff_D$
+$\implies (sumA_1 - sumB_1), (sumA_2 - sumB_2) \textless diff_D$ since neither can be positive.  Therefore it is sufficient
+to show that only one of these is within those bounds since it would gaurantee the other to be as well (similar argument
+as in Corollary above). So what we do then is to create sets using our given $D_A, D_B$ of set sizes that are equal
+to $\frac{N}{2}$ and checking to see each combination if the difference
+$e_1 - e_2,\ where\ e_1 \in D_A[i], e_2 \in D_B[\frac{N}{2}-i]$ is within the bounds.  When we have done this we
+are gauranteed that the complement set (not important what it is) is also within the bounds $\therefore$
+Gerrymandering is possible. If we enumerate every possiblity and nothing is found, then we are guaranteed that one
+does not exist since we looked at every possibility.
 \end{proof}
 
 %%%%%%% Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -669,9 +684,10 @@ we have (in worst case) run time of O($N + N^2\cdot D + N^3$)
 \end{proof}
 
 %%%%%%% Example %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%\subsection{An Example}
-%\includegraphics[width=\textwidth]{example4}
+
+\subsection{An Example}
+The example for this would be terrible. I can come in and discuss it fully if my explanaition was lacking
+at all. Please do not hesitate to ask.
 
 %%%%%%% end Problem 6 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%% end Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
