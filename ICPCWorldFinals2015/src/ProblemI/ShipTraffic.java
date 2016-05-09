@@ -1,10 +1,9 @@
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
-
 /**
  * UVA 1717 ICPC Problem I 2015 World Finals Timelimit = 3.000 seconds
- * Completed testing in:  seconds on
+ * Completed testing in: 1.780 seconds on 2016-05-09 03:42:21
  * To Run type:
  *      javac ShipTraffic.java
  *      java ShipTraffic < pathTo/test.input.txt > printToThis.txt

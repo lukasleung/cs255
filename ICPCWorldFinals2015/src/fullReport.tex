@@ -1333,20 +1333,77 @@ $10^{-3}$. You may assume that there is a time interval with $d$ \textgreater $0
 
 %%%%%%% Mathematical Formulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Mathematical Formulation}
-Given an input of
+Given a set of $N$ ships with their position and their speed as well as a ferry's speed and an interval of time that
+it can begin traveling.
 
 \newpage
 %%%%%%% Algorithm %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Solution}
-The main functionality of this algorithm is to
+To store our important data and ensure sorting is possible, this algorithm uses a helper class called InvalidInterval
+which stores a $start$ time and an $end$ time as well as supports a Comparable of InvalidInterval such that the start times
+of two InvalidIntervals will be compared. These InvalidInterval start and end times are computed utalizing the basic
+fuction $time = \frac{distance}{velocity}$. We treat each east and west bound ship the same simply by multiplying the
+east bound boats starting position by $-1$. Once we have built up our set of InvalidIntervals, we sort them and then
+perform a greedy algorithm on them to determine the largest valid start interval for the ferry (see correcness for
+in depth of how this works).
 
 \begin{algorithm}[H]
 \caption{Main}
 \begin{algorithmic}
     \Procedure{main}{}
         \For{each case}
+            \State $numLanes, laneWidth, shipSpeed, ferrySpeed \gets$ initialized
+            \State $fStart, fEnd, invalidIntervals[] \gets$ initialized
+            \For{$lane \in [1, numLanes]$}
+                \State boolean $eastBound \gets$ initialized; int $numShips \gets$ initialized
+                \For{numShips}
+                    \State $front, back \gets$ initialized
+                    \If{$back \textless 0$}
+                        continue
+                    \EndIf
+                    \State timeForBoatFront = $\frac{front}{shipSpeed}$
+                    \State timeForFerryFront = $\frac{lane\cdot laneWidth}{ferrySpeed}$
+                    \State \textbf{start} = timeForBoatFront - timeForFerryFront
+                    \State restOfBoat = $\frac{length}{shipSpeed} + \frac{width}{ferrySpeed}$
+                    \State \textbf{end} = start + restOfBoat
+                    \If{$end\ \textless\ fStart\ ||\ start\ \textgreater\ fEnd$}
+                        continue;
+                    \EndIf
+                    \State start = Math.max(start, fStart);
+                    \State end = Math.min(end, fEnd);
+                    \State invalidIntervals.add(new InvalidInterval(start, end))
+                \EndFor
+            \EndFor
         \EndFor
+        \State sort(invalidIntervals)
+        \State \Call{determineMaxValidInterval}{invalidIntervals}
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+\caption{Determine Valid Interval}
+\begin{algorithmic}
+    \Procedure{determineMaxValidInterval}{invalidIntervals}
+        \If{noships}
+            print(fEnd - fStart); return
+        \EndIf
+        \State $largestGap \gets$ invalidIntervals[0].getStart() - fStart
+        \State $endTime \gets$ invalidIntervals[0].getEnd()
+        \State $curGap$
+        \For{$curShip \in [1..numShips]$}
+            \If{invalidIntervals[curShip].getStart() \textgreater endTime}
+                \State $curGap \gets$ invalidIntervals[curShip].getStart() - endTime
+                \State $largestGap \gets$ Math.max(largestGap, curGap)
+                \State $endTime \gets$ invalidIntervals[curShip].getEnd()
+            \Else
+                \State endTime = Math.max(endTime, invalidIntervals[curShip].getEnd())
+            \EndIf
+        \EndFor
+        \State $curGap \gets$ fEnd-endTime;
+        \State $largestGap \gets$ Math.max(largestGap, curGap);
+        \State printf("%.8f\\n", largestGap);
     \EndProcedure
 \end{algorithmic}
 \end{algorithm}
@@ -1355,13 +1412,34 @@ The main functionality of this algorithm is to
 %%%%%%% Correctness %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Correctness}
+%%%%%%% COROLLARY 1 %%%%%%%%%%%%%%%%%
+\begin{corollary}
+~ \\ \indent Given both the ship and ferry, for each ship, we can determine an interval of time that the ferry cannot
+go due to this ship.
+\end{corollary}
+
+\begin{proof}
+~ \\ \indent We can determine the time at which eahc ship will be crossing the path of the ferry and therefore also the
+latest time that the ferry can leave before it would collide with this boat and then the earliest time that the ferry
+could leave such that this ship has passed. Therefore we can determine the interval of time that is between this
+and record that.
+\end{proof}
+
 %%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
 \begin{proposition}
-~ \\ \indent We will
+~ \\ \indent Given a set of invalid intervals for the ferry to start at, we can determine the longest gap of time that
+the ferry is able to leave on.
 \end{proposition}
 
 \begin{proof}
-~ \\ \indent First
+~ \\ \indent We do this throug a greedy approach which the main idea is to sort all of the intervals in increasing
+order such that the earliest is first. Then we will essentially lay all of the intervals flat by keeping track of
+any overlap that occurs between the intervals and since they are sorted by start time then this implies that if we
+have a set of intervals $i_1, i_2, i_3$ (already sorted), then if $i_3$ overlaps with $i_1$, then $i_1$ and $i_2$ are
+gauranteed to also overlap. We linearly go through the list keeping track of our last known position as well as our
+largest gap so that way if there is no overlap between the last known position and the start of the next interval,
+we are guaranteed that this is a gap, therefore we compare it to the longest gap that we know thusfar and if it is
+longer, we will know the longest gap. Thus when we go through every interval we are guaranteed to find the largest gap.
 \end{proof}
 
 
@@ -1403,7 +1481,6 @@ have $(N + N\cdot log(N) + N)$
 \end{proof}
 
 %%%%%%% Example %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
 \subsection{An Example}
 Given the input of: \\
 1 100 5 10 0 200 \\
@@ -1416,7 +1493,7 @@ that in the first lane, there are 4 boats are travelling West-bound. The $1^{st}
 position 100 with a length of 100, the $2^{nd}$ located at position 300 with a length of 100, the
 $3^{rd}$ located at posision 700 with a length of 100 and the $4^{th}$ located at position 900 with
 a length of 100.
-
+\newpage
 We note here that none of the ships will be overlapping at any point since they are all in the same
 lane, with 100 units between each of them and are all travelling the same speed. We calculate then
 what time each one will intersect with the line that the ferry is traveling on and find that the

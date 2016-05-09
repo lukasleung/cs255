@@ -1,7 +1,7 @@
 import java.util.Arrays;
 import java.util.Scanner;
 /**
- * UVA 1711 ICPC Problem A 2015 World Finals Timelimit = 3.000 seconds
+ * UVA 1711 ICPC Problem C 2015 World Finals Timelimit = 3.000 seconds
  * Completed testing in: 1.250 seconds on 2016-05-06 04:29:57
  * To Run type:
  *      javac Catering.java
