@@ -30,30 +30,32 @@ public class ShipTraffic {
         public int compareTo(InvalidInterval that) {
             if (this.start > that.getStart()) {
                 return 1;
+            } else if (this.start < that.getStart()) {
+                return -1;
+            } else {
+                return 0;
             }
-            return -1;
         }
     }
     public ShipTraffic() {
         Scanner in = new Scanner(System.in);
-        String[] line;
-        while(in.hasNextLine()) {
-            line = in.nextLine().split("\\s+");
+        while(in.hasNextInt()) {
             // read input
-            int numLanes = Integer.parseInt(line[0]),
-                   width = Integer.parseInt(line[1]);
-            double shipSpeed = Double.parseDouble(line[2]),
-                  ferrySpeed = Double.parseDouble(line[3]);
-            fStart = Integer.parseInt(line[4]);
-            fEnd = Integer.parseInt(line[5]);
+            int numLanes = in.nextInt(),
+                   width = in.nextInt();
+            double shipSpeed = in.nextDouble(),
+                  ferrySpeed = in.nextDouble();
+            fStart = in.nextInt();
+            fEnd = in.nextInt();
             // build our intervals
+//            long init = System.currentTimeMillis();
             LinkedList<InvalidInterval> invalidIntervals = new LinkedList();
             for (int lane = 1; lane <= numLanes; lane++) {
-                line = in.nextLine().split("\\s+");
-                boolean eastBound = line[0].equals("E");
-                for (int i = 2; i < line.length; i += 2) {
-                    int length = Integer.parseInt(line[i]),
-                         front = Integer.parseInt(line[i + 1]);
+                boolean eastBound = in.next().equals("E");
+                int numBoats = in.nextInt();
+                for (int i = 0; i < numBoats; i++) {
+                    int length = in.nextInt(),
+                         front = in.nextInt();
 
                     if (eastBound) { front *= -1; }
                     int back = front + length;
@@ -64,25 +66,32 @@ public class ShipTraffic {
                                  restOfBoat = (length/shipSpeed) + (width/ferrySpeed);
                     double start = timeForBoatFront - timeForFerryFront,
                             end = start + restOfBoat;
-                    boolean wontMakeIt = end < fStart,
-                            alreadyPast = start > fEnd;
-                    if (wontMakeIt || alreadyPast) { continue; }
+                    // wontMakeIt || alreadyPast
+                    if (end < fStart || start > fEnd) { continue; }
 //                    System.out.println("added");
                     start = Math.max(start, fStart);
                     end = Math.min(end, fEnd);
-                    invalidIntervals.add(new InvalidInterval(start, end));
+                    invalidIntervals.addFirst(new InvalidInterval(start, end));
                 }
             }
+//            long stop = System.currentTimeMillis();
+//            System.err.println("Build: " + (stop - init));
+//            init = System.currentTimeMillis();
             determineMaxValidInterval(convert(invalidIntervals));
+//            stop = System.currentTimeMillis();
+//            System.err.println("Find: " + (stop - init));
         }
     }
     // converts from a linked list to an array and sorts it
     private InvalidInterval[] convert(LinkedList<InvalidInterval> convertFrom) {
+//        long init = System.currentTimeMillis();
         InvalidInterval[] converted = new InvalidInterval[convertFrom.size()];
         for (int i = 0; i < converted.length; i++) {
             converted[i] = convertFrom.removeFirst();
         }
         Arrays.sort(converted);
+//        long stop = System.currentTimeMillis();
+//        System.err.println("Convert: " + (stop - init));
         return converted;
     }
     // given a set of invalid intervals determine the largest interval for ferry
