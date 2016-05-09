@@ -748,15 +748,16 @@ each hole.
 %%%%%%% PROPOSITION 2 %%%%%%%%%%%%%%%
 \begin{proposition}
 \label{numq}
-The \underline{time complexity} of this algorithm is \textbf{O(N$\cdot$log(N) + N$\cdot$S$\cdot$log(S))}
+The \underline{time complexity} of this algorithm is \textbf{O(N$\cdot$log(N) + N$\cdot$S)}
 \end{proposition}
 
 \begin{proof}
 This is the case because our initial sorting of the holes takes $N\cdot log(N)$, then within the binary
-search ($S\cdot log(S)$) we do at most (worstcase if every interval contains every hole) $N$ volume
-calculations.
+search ($S\cdot log(100,000)$) where S is number of slices asked to perform and 100,000 is the range that
+we perform our binary search on. Since log(100,000) $\sim$ 16, we can just say that this is O(S) which
+we do at most (worstcase if every interval contains every hole) $N$ volume calculations.
 \begin{center}
-    Giving us a time complexity of \textbf{O(N$\cdot$log(N) + N$\cdot$S$\cdot$log(S))}
+    Giving us a time complexity of \textbf{O(N$\cdot$log(N) + N$\cdot$S)}
 \end{center}
 \end{proof}
 
