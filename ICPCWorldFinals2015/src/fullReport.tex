@@ -1367,32 +1367,38 @@ The main functionality of this algorithm is to
 
 %%%%%%% Analysis %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Analysis}
-For purposes of this problem we will let
+For purposes of this problem we will let $N$ be the total number of ships per test case
 
 %%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
 \begin{proposition}
 \label{numq}
-The \underline{space complexity} of this algorithm is \textbf{O()}
+The \underline{space complexity} of this algorithm is \textbf{O(N)}
 \end{proposition}
 
 \begin{proof}
-~ \\ \indent This is due to the fact that
+~ \\ \indent This is due to the fact that we only store the start and end times for each ship
+in the form of a linked list first and then convert it to an array.
 \begin{center}
-    Giving us a space complexity of \textbf{O()}
+    Giving us a space complexity of \textbf{O(N)}
 \end{center}
 \end{proof}
 
 %%%%%%% PROPOSITION 2 %%%%%%%%%%%%%%%
 \begin{proposition}
 \label{numq}
-The \underline{time complexity} of this algorithm is \textbf{O()}
+The \underline{time complexity} of this algorithm is \textbf{O(N$\cdot$log(N))}
 \end{proposition}
 
 \begin{proof}
-This is the case because
+This is the case because our operations are as follows, for each ship O(N) we compute the start
+and stop times and enter them into a linked list O(1) $\implies$ O(N). Then we convert the linked
+list into an array O(N) and sort them by earliest start time O($N\cdot log(N)$). Then we go through
+each interval for each ship linearly keeping track of our largest gap seen thusfar O(N). Then we
+have $(N + N\cdot log(N) + N)$
+
 
 \begin{center}
-    Giving us a time complexity of \textbf{O()}
+    Giving us a time complexity of \textbf{O(N$\cdot$log(N))}
 \end{center}
 \end{proof}
 
@@ -1403,7 +1409,34 @@ Given the input of: \\
 1 100 5 10 0 200 \\
 W 4 100 100 100 300 100 700 100 900 \\
 
-We begin by
+We begin by understanding what the above numbers mean. We read this as there is 1 lane, each lane
+has a width of 100 m, each ships speed is 5 $\frac{m}{s}$ and the ferry's speed is 10 $\frac{m}{s}$,
+the earliest time our ferry can leave is time 0 and the latest is time 200. The next line tells us
+that in the first lane, there are 4 boats are travelling West-bound. The $1^{st}$ one is located at
+position 100 with a length of 100, the $2^{nd}$ located at position 300 with a length of 100, the
+$3^{rd}$ located at posision 700 with a length of 100 and the $4^{th}$ located at position 900 with
+a length of 100.
+
+We note here that none of the ships will be overlapping at any point since they are all in the same
+lane, with 100 units between each of them and are all travelling the same speed. We calculate then
+what time each one will intersect with the line that the ferry is traveling on and find that the
+intervals that they are crossing to be:
+\begin{center}
+interval 1 = 10.0, 40.0 \\
+interval 2 = 50.0, 80.0 \\
+interval 3 = 130.0, 160.0 \\
+interval 4 = 170.0, 200.0
+\end{center}
+Though unessesary for this problem, we would ordinarily sort these by earliest start time and begin
+by saying our largest window is 10.0 - 0 = \textbf{10.0} and keep track of the farthest endpoint seen thusfar,
+40.0. Then we check to see if our farthest endpoint and the start of interval 2 overlap, they do not
+so we check the gap = 10.0 which is the same so we update our farthset endpoint to be 80.0 and continue.
+Following this we check to see if 80.0 \textgreater start of interval 3, it is not so we check the gap
+which is 130.0 - 80.0 = \textbf{50.0} which is our largest gap thusfar so we record it as well as the farthest
+point 160.0. Then we check our interval 4, not overlapping so we check to see what the gap is there,
+it is 10.0 which is \textless 50.0 so we record it's last position which is 200.0 and continue.  Since
+we have run out of ships, now we check to see if the difference of our end time (200.0) and the last position
+is larger than our current largest gap i.e. 200.0 - 200.0 \textgreater 50.0? No so we return 50.0 as our answer.
 %%%%%%% end Problem I %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%% end Solution %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

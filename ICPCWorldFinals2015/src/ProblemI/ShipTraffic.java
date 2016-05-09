@@ -68,9 +68,9 @@ public class ShipTraffic {
                             end = start + restOfBoat;
                     // wontMakeIt || alreadyPast
                     if (end < fStart || start > fEnd) { continue; }
-//                    System.out.println("added");
                     start = Math.max(start, fStart);
                     end = Math.min(end, fEnd);
+//                    System.out.println("added: " + start + ", " + end);
                     invalidIntervals.addFirst(new InvalidInterval(start, end));
                 }
             }
