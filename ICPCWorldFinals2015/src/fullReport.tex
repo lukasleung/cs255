@@ -160,9 +160,9 @@ of time the stock prices were 19, 12, 13, 11, 20 and 14, then the largest declin
 and fourth price. If the last price had been 10 instead of 14, then the largest decline would have been 10
 between the last two prices. \\
 \indent Fatima has done some previous analyses and has found that the stock price over any period of time can
-be modelled reasonably accurately with the following equation:
+be modeled reasonably accurately with the following equation:
 \begin{center}$price(x) = p \cdot (sin(a\cdot x + b) + cos(c\cdot x + d) + 2)$\end{center}
-where $p,a,b,c,\ and\ d$ are constants.Fatima would like you to write a program to determine the largest
+where $p,a,b,c,\ and\ d$ are constants. Fatima would like you to write a program to determine the largest
 price decline over a given sequence of prices. You have to consider the prices only for integer values of $x$. \\
 
 \noindent \textbf{Input:} \\
@@ -250,7 +250,7 @@ lowest point to be $l = h$ since we are searching for the largest decline $\impl
 occur \underline{after} $h$. Now every time that we see a number $f(x_m) \leq l$, we update
 $l$ and check to see if our $h - l \geq diff$, if so we update diff, else we continue to the
 next point.  If we see a higher point than $h$ we will repeat this process. Therefore we will
-be looking at each subsequent highest correspoing following lowest points $\implies$ we will
+be looking at each subsequent highest corresponding following lowest points $\implies$ we will
 see this largest price decline.
 \end{proof}
 
@@ -279,7 +279,7 @@ The \underline{time complexity} of this algorithm is \textbf{O(N)}
 \end{proposition}
 
 \begin{proof}
-This is the case because our algorithm goes through the points $1, 2, ..., n$ once and only
+This is the case because our algorithm goes throughh the points $1, 2, ..., n$ once and only
 calculates each value one time.
 \begin{center}
     Giving us a time complexity of \textbf{O(N)}
@@ -291,7 +291,7 @@ calculates each value one time.
 \subsection{An Example}
 Given the input of: \underline{42 1 23 4 8 10}, we will read this in as
 $p = 42, a = 1, b = 23, c = 4, d = 8, and\ n = 10$. Then we will initialize our $h = l = f(1)$ and $diff = 0$.
-Then starting with the second point until the 10th we will read through and record the values of what h, l, curDiff,
+Then starting with the second point until the 10th we will read throughh and record the values of what h, l, curDiff,
 and diff are:
 
 \begin{table}[H]
@@ -373,7 +373,7 @@ include the cost of moving the equipment back to the catering company.)
 
 %%%%%%% Mathematical Formulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Mathematical Formulation}
-Given an input of $k$ teams and $n$ jobs that must be fufilled, we are given the order that the jobs occur in
+Given an input of $k$ teams and $n$ jobs that must be fulfilled, we are given the order that the jobs occur in
 chronological order such that $j_1$ occurs before $j_2 ...$before $j_n$. We are also given every cost of moving
 equipment from job $j_i$ to $j_k$ where that job $j_i$ occurs before $j_k$. The task is to determine what the
 minimum moving cost to service all of the jobs is.
@@ -427,16 +427,16 @@ the nodes from the right side, "destination", nodes to the sink to be 0.
 
 Once we have created this graph, we note that it this is a min-cost bipartite graph problem as we seek to
 minimize the cost of getting from the source to the sink while visiting each node (although this is not a
-true bipartite graph this is discussed in the correcness section). To preform this we make a copy of our
-graph to which we will be altering while referening our original (very important) then we will define a
-cost array to store the cost of each node. From here we find our shortest path using dijkstra's algortihm
+true bipartite graph this is discussed in the correctness section). To preform this we make a copy of our
+graph to which we will be altering while referencing our original (very important) then we will define a
+cost array to store the cost of each node. From here we find our shortest path using dijkstra's algorithm
 and reverse all edges along that path found; then we update the cost of each vertex, the flow on edges going
 from our origin nodes to our destination nodes, then the flow on edges going from our destination back to our
 origin nodes. We do this process for each request so that way we do this $n$ times. Finally we will sum the
 total cost of the edges that go from the origin to the destination nodes.
 
 \begin{algorithm}[H]
-\caption{Min Cost Biparthide Matching}
+\caption{Min Cost Bipartite Matching}
 \begin{algorithmic}
     \Procedure{match}{}
         \State $defCopyG, cost \gets$ initialized
@@ -482,7 +482,7 @@ total cost of the edges that go from the origin to the destination nodes.
 \subsection{Correctness}
 %%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
 \begin{proposition}
-~ \\ \indent Solving mincost bipartite matching on our graph construction will give us the correct answer.
+~ \\ \indent Solving min-cost bipartite matching on our graph construction will give us the correct answer.
 \end{proposition}
 
 \begin{proof}
@@ -508,9 +508,9 @@ The \underline{space complexity} of this algorithm is \textbf{O((k+n)$^2$)}
 \end{proposition}
 
 \begin{proof}
-~ \\ \indent This is due to the fact that all of our information is stored in either one dimentional or
+~ \\ \indent This is due to the fact that all of our information is stored in either one dimensional or
 two dimensional integer arrays or a minimum priority queue, each of which has the size comparable to
-our number of nodes. The largest of these therefore is our two dimentional array of size $(numNodes)^2$.
+our number of nodes. The largest of these therefore is our two dimensional array of size $(numNodes)^2$.
 Since our number of nodes is $(k + 2\cdot n + 1)$ this is $(k + 2\cdot n + 1)^2$ s
 \begin{center}
     Giving us a space complexity of \textbf{O((k+n)$^2$)}
@@ -528,9 +528,9 @@ We break the algorithm into a two main cases, our construction of the graph and 
 bipartite algorithm (for purposes of readability we will use $N$ to represent $(k+n)$). We note that since
 this is a bipartite graph it is fully connected (essentially) so we can simplify that $V + E$ in normal
 graph representations is actually $N + N^2$. Therefore we note that the construction of the graph will
-take V+E time which is O($N^2$). The next part is the performance of our min-cose bipartite algorithm which
+take V+E time which is O($N^2$). The next part is the performance of our min-cost bipartite algorithm which
 will go trough for number of jobs (n) + and perform dijkstra's $(E + V\cdot log(V)) \implies (N^2) + N\cdot log(N)$
-, O($N^2$) then we will update costs which each time (4) will at most go through the entire graph once O($N^2$)
+, O($N^2$) then we will update costs which each time (4) will at most go throughh the entire graph once O($N^2$)
 $\implies$ $n\cdot (N^2 + 4\cdot N^2)$ = O($n \cdot N^2$). Comparing the two parts then gets us O($N^2$) +
 O($n \cdot N^2$).
 \begin{center}
@@ -605,7 +605,7 @@ task is to cut it into $s$ slices of equal weight. The slices will be $100 mm$ w
 your job is to determine the thickness of each slice. \\
 
 \noindent \textbf{Input:} \\
-The input  le contains several test cases, each of them as described below: \\
+The input contains several test cases, each of them as described below: \\
 \indent The first line of the input contains two integers $n$ and $s$, where $0 \leq n 10000$ is the number of
 holes in the cheese, and $1 \leq s \leq 100$ is the number of slices to cut. The next $n$ lines each contain four
 positive integers, $r, x, y,\ and\ z$ are the coordinates of the center, all in micrometers. The cheese block
@@ -636,9 +636,9 @@ can determine where to make cuts in a block of cheese 100000 x 100000 x 100000
 what the weight should be of each equally sliced piece and perform a binary search of segments (from the left
 side, $z = 0$) to find the segments which are within $10^{-6}$ of this target weight. We calculate the volumes
 of each block by using spherical segment calculations of all spheres within the range in question. \\
-\indent The only data structure we used was a two dimentional array \textbf{holes$[n][2]$} such that
+\indent The only data structure we used was a two dimensional array \textbf{holes$[n][2]$} such that
 each entry $holes[i][0]$ corresponds to the center $z$ coordinate and $holes[i][1]$ is the radius of hole $i$.
-Asside from this we use the instance variable $v, goal, numHoles, numSlices$ to keep track of the total volume,
+Aside from this we use the instance variable $v, goal, numHoles, numSlices$ to keep track of the total volume,
 the goal weight for evenly cut slices of cheese, the number of holes and the number of slices.
 
 \begin{algorithm}[H]
@@ -709,10 +709,10 @@ can be found here: http://mathworld.wolfram.com/SphericalSegment.html.
 
 \subsection{Correctness}
 \begin{corollary}
-~ \\ \indent It is sufficient for us to simply view the spheres on a 1-dimentional plane because we are
+~ \\ \indent It is sufficient for us to simply view the spheres on a 1-dimensional plane because we are
 ensured that each sphere is fully encapsulated within the block of cheese and that no two spheres are
 overlapping, therefore if we take the band of [a,b], if some potion of sphere $i$ is within this we can
-calcuate the volume displaced using only the portion $(i_a, i_b)$ that overlaps with sphere $i$ and its
+calculate the volume displaced using only the portion $(i_a, i_b)$ that overlaps with sphere $i$ and its
 radius, $i_r$.
 \end{corollary}
 %%%%%%% PROPOSITION 1 %%%%%%%%%%%%%%%
@@ -723,9 +723,9 @@ for cuts in the cheese will give us the correct cuts to make.
 
 \begin{proof}
 ~ \\ \indent We know that binary search is a viable option for when we know the stopping criteria and
-can calcualte or lookup each intermediate stage. Therefore if we perform $s$ binary searches, decreasing
+can calculate or lookup each intermediate stage. Therefore if we perform $s$ binary searches, decreasing
 our range appropriately each time we find a cut, and we know our stopping criteria as $goal$; we can
-calcualte the volume displaced by each portion of a sphere in intemediate ranges $[a,b]$, ultimately
+calculate the volume displaced by each portion of a sphere in intermediate ranges $[a,b]$, ultimately
 giving us the appropriate cut coordinates along the z-axis.
 \end{proof}
 
@@ -757,7 +757,7 @@ The \underline{time complexity} of this algorithm is \textbf{O(N$\cdot$log(N) + 
 This is the case because our initial sorting of the holes takes $N\cdot log(N)$, then within the binary
 search ($S\cdot log(100,000)$) where S is number of slices asked to perform and 100,000 is the range that
 we perform our binary search on. Since log(100,000) $\sim$ 16, we can just say that this is O(S) which
-we do at most (worstcase if every interval contains every hole) $N$ volume calculations.
+we do at most (worst-case if every interval contains every hole) $N$ volume calculations.
 \begin{center}
     Giving us a time complexity of \textbf{O(N$\cdot$log(N) + N$\cdot$S)}
 \end{center}
@@ -932,7 +932,7 @@ in the same order (though there can be different letters in between them).
     \Procedure{initialize}{ }
         \State $N \gets$ number of strings; $sequence[N] \gets$ initialized and filled;
         \State $s_g \gets$ goal string (currently present string)
-        \State \Call{sort}{sequence} by acending order
+        \State \Call{sort}{sequence} by ascending order
         \State Stack$\textless$String$\textgreater$ $sub_1, sub_2 \gets$ initialized;
         \State LinkedList$\textless$String$\textgreater$ $sharedList \gets$ initialized;
     \EndProcedure
@@ -987,7 +987,7 @@ The \underline{space complexity} of this algorithm is \textbf{O(N$\cdot$S)}
 
 \begin{proof}
 ~ \\ \indent This is due to the fact that we store every string in our $sequence[N]$, our two stacks,
-and the queue. Worst case the sum of the sizes of the two stacks and the queue will be $N$ becasue each string
+and the queue. Worst case the sum of the sizes of the two stacks and the queue will be $N$ because each string
 is only present at one at a time. Therefore, since each of these contain every string, it becomes $S\cdot (N + N)$.
 \begin{center}
     Giving us a space complexity of \textbf{O(N$\cdot$S)}
@@ -1059,17 +1059,17 @@ ACMAA
 \noindent \textbf{Background:} \\
 ~\indent How many keystrokes are necessary to type a text message? You may think that it is equal to the
 number of characters in the text, but this is correct only if one keystroke generates one character.
-With pocketsize devices, the possibilities for typing text are often limited. Some devices provide only
-a few buttons, signi cantly fewer than the number of letters in the alphabet. For such devices, several
+With pocket-size devices, the possibilities for typing text are often limited. Some devices provide only
+a few buttons, significantly fewer than the number of letters in the alphabet. For such devices, several
 strokes may be needed to type a single character. One mechanism to deal with these limitations is
 a virtual keyboard displayed on a screen, with a cursor that can be moved from key to key to select
 characters. Four arrow buttons control the movement of the cursor, and when the cursor is positioned
-over an appropriate key, pressing the  fth button selects the corresponding character and appends it
+over an appropriate key, pressing the fifth button selects the corresponding character and appends it
 to the end of the text. To terminate the text, the user must navigate to and select the Enter key. This
 provides users with an arbitrary set of characters and enables them to type text of any length with
-only  ve hardware buttons. In this problem, you are given a virtual keyboard layout and your task
+only five hardware buttons. In this problem, you are given a virtual keyboard layout and your task
 is to determine the minimal number of strokes needed to type a given text, where pressing any of the
-ve hardware buttons constitutes a stroke. The keys are arranged in a rectangular grid, such that each
+five hardware buttons constitutes a stroke. The keys are arranged in a rectangular grid, such that each
 virtual key occupies one or more connected unit squares of the grid. The cursor starts in the upper left
 corner of the keyboard and moves in the four cardinal directions, in such a way that it always skips to
 the next unit square in that direction that belongs to a different key. If there is no such unit square,
@@ -1097,7 +1097,7 @@ the \textbf{Enter} key at the end.
 %%%%%%% Mathematical Formulation %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Mathematical Formulation}
 Given an input of a keyboard of size $RxC$ and a string of length $S$ that can be typed out on the keyboard,
-determine the minimum number of keytsrokes that are required to type in the string that is used which consist
+determine the minimum number of keystrokes that are required to type in the string that is used which consist
 of starting in the top left corner of the keyboard, visiting each letter in the string and pushing each button,
 then moving to and pressing the "$\ast$" button.
 
@@ -1108,7 +1108,7 @@ then moving to and pressing the "$\ast$" button.
 The main functionality of this algorithm is to perform $S+1$ bfs's for each one of the letters $s_1, s_2,...s_S \in s$
 the input string. We move onto the next level once we have found the corresponding goal letter for that level,
 however each level is fully explored unless we have found the terminating key and for each time that we find
-the correspodning key for that level we move up. \\
+the corresponding key for that level we move up. \\
 
 The only data structures we use are the $keyboard[R][C]$ as a character array, the input string $target$,
 $|target| = S$ and the three dimensional $seen[S][R][C]$ to keep track of which keys have already been visited
@@ -1187,7 +1187,7 @@ on the given keyboard.
 
 \begin{proof}
 ~ \\ \indent First use the fact that we can determine the shortest distance from any one key $k_i$ to another $k_j$
-on the keyboard through a bfs originating at $k_i$. Therefore we enact a $S$ depth bfs on the keyboard such that
+on the keyboard throughh a bfs originating at $k_i$. Therefore we enact a $S$ depth bfs on the keyboard such that
 we go from depth $1 \rightarrow 2$ after we find $s_1$ as one of the keys $k_i$ on the first keyboard and start
 searching from key $k_i$ on lever 2 for $s_2$. The entire time however we continue to search on keyboard 1 until
 we either have explored the entire board; if we come across $s_1$ on say $k_l$ we will move up to board 2
@@ -1208,7 +1208,7 @@ The \underline{space complexity} of this algorithm is \textbf{O(S$\cdot$R$\cdot$
 \end{proposition}
 
 \begin{proof}
-~ \\ \indent This is due to the fact that we are storing a three dimentional array or $S$ 2-D boolean array of the
+~ \\ \indent This is due to the fact that we are storing a three dimensional array or $S$ 2-D boolean array of the
 keyboard of size $RxC$
 \begin{center}
     Giving us a space complexity of \textbf{O(S$\cdot$R$\cdot$C)}
@@ -1318,7 +1318,7 @@ $-10^6 \leq p_{ij} \leq 10^6$). The length of ship $j$ in lane $i$ is $l_{ij}$ a
 Ship positions within each lane are relative to the ferry's crossing line. Negative positions are west
 of the crossing line and positive positions are east of it. Ships do not overlap or touch, and are sorted
 in increasing order of their positions. Lanes are ordered by increasing distance from the ferry's starting
-point, which is just south of the  rst lane. There is no space between lanes. The total number of ships
+point, which is just south of the  first lane. There is no space between lanes. The total number of ships
 is at least 1 and at most $10^5$. \\
 
 \noindent \textbf{Output:} \\
@@ -1342,10 +1342,10 @@ it can begin traveling.
 \subsection{Solution}
 To store our important data and ensure sorting is possible, this algorithm uses a helper class called InvalidInterval
 which stores a $start$ time and an $end$ time as well as supports a Comparable of InvalidInterval such that the start times
-of two InvalidIntervals will be compared. These InvalidInterval start and end times are computed utalizing the basic
-fuction $time = \frac{distance}{velocity}$. We treat each east and west bound ship the same simply by multiplying the
+of two InvalidIntervals will be compared. These InvalidInterval start and end times are computed utilizing the basic
+function $time = \frac{distance}{velocity}$. We treat each east and west bound ship the same simply by multiplying the
 east bound boats starting position by $-1$. Once we have built up our set of InvalidIntervals, we sort them and then
-perform a greedy algorithm on them to determine the largest valid start interval for the ferry (see correcness for
+perform a greedy algorithm on them to determine the largest valid start interval for the ferry (see correctness for
 in depth of how this works).
 
 \begin{algorithm}[H]
@@ -1419,7 +1419,7 @@ go due to this ship.
 \end{corollary}
 
 \begin{proof}
-~ \\ \indent We can determine the time at which eahc ship will be crossing the path of the ferry and therefore also the
+~ \\ \indent We can determine the time at which each ship will be crossing the path of the ferry and therefore also the
 latest time that the ferry can leave before it would collide with this boat and then the earliest time that the ferry
 could leave such that this ship has passed. Therefore we can determine the interval of time that is between this
 and record that.
@@ -1432,14 +1432,14 @@ the ferry is able to leave on.
 \end{proposition}
 
 \begin{proof}
-~ \\ \indent We do this throug a greedy approach which the main idea is to sort all of the intervals in increasing
+~ \\ \indent We do this through a greedy approach which the main idea is to sort all of the intervals in increasing
 order such that the earliest is first. Then we will essentially lay all of the intervals flat by keeping track of
 any overlap that occurs between the intervals and since they are sorted by start time then this implies that if we
 have a set of intervals $i_1, i_2, i_3$ (already sorted), then if $i_3$ overlaps with $i_1$, then $i_1$ and $i_2$ are
-gauranteed to also overlap. We linearly go through the list keeping track of our last known position as well as our
+guaranteed to also overlap. We linearly go throughh the list keeping track of our last known position as well as our
 largest gap so that way if there is no overlap between the last known position and the start of the next interval,
-we are guaranteed that this is a gap, therefore we compare it to the longest gap that we know thusfar and if it is
-longer, we will know the longest gap. Thus when we go through every interval we are guaranteed to find the largest gap.
+we are guaranteed that this is a gap, therefore we compare it to the longest gap that we know thus-far and if it is
+longer, we will know the longest gap. Thus when we go throughh every interval we are guaranteed to find the largest gap.
 \end{proof}
 
 
@@ -1470,8 +1470,8 @@ The \underline{time complexity} of this algorithm is \textbf{O(N$\cdot$log(N))}
 \begin{proof}
 This is the case because our operations are as follows, for each ship O(N) we compute the start
 and stop times and enter them into a linked list O(1) $\implies$ O(N). Then we convert the linked
-list into an array O(N) and sort them by earliest start time O($N\cdot log(N)$). Then we go through
-each interval for each ship linearly keeping track of our largest gap seen thusfar O(N). Then we
+list into an array O(N) and sort them by earliest start time O($N\cdot log(N)$). Then we go throughh
+each interval for each ship linearly keeping track of our largest gap seen thus-far O(N). Then we
 have $(N + N\cdot log(N) + N)$
 
 
@@ -1489,13 +1489,13 @@ W 4 100 100 100 300 100 700 100 900 \\
 We begin by understanding what the above numbers mean. We read this as there is 1 lane, each lane
 has a width of 100 m, each ships speed is 5 $\frac{m}{s}$ and the ferry's speed is 10 $\frac{m}{s}$,
 the earliest time our ferry can leave is time 0 and the latest is time 200. The next line tells us
-that in the first lane, there are 4 boats are travelling West-bound. The $1^{st}$ one is located at
+that in the first lane, there are 4 boats are traveling West-bound. The $1^{st}$ one is located at
 position 100 with a length of 100, the $2^{nd}$ located at position 300 with a length of 100, the
-$3^{rd}$ located at posision 700 with a length of 100 and the $4^{th}$ located at position 900 with
+$3^{rd}$ located at position 700 with a length of 100 and the $4^{th}$ located at position 900 with
 a length of 100.
 \newpage
 We note here that none of the ships will be overlapping at any point since they are all in the same
-lane, with 100 units between each of them and are all travelling the same speed. We calculate then
+lane, with 100 units between each of them and are all traveling the same speed. We calculate then
 what time each one will intersect with the line that the ferry is traveling on and find that the
 intervals that they are crossing to be:
 \begin{center}
@@ -1505,11 +1505,11 @@ interval 3 = 130.0, 160.0 \\
 interval 4 = 170.0, 200.0
 \end{center}
 Though unessesary for this problem, we would ordinarily sort these by earliest start time and begin
-by saying our largest window is 10.0 - 0 = \textbf{10.0} and keep track of the farthest endpoint seen thusfar,
+by saying our largest window is 10.0 - 0 = \textbf{10.0} and keep track of the farthest endpoint seen thus-far,
 40.0. Then we check to see if our farthest endpoint and the start of interval 2 overlap, they do not
-so we check the gap = 10.0 which is the same so we update our farthset endpoint to be 80.0 and continue.
+so we check the gap = 10.0 which is the same so we update our farthest endpoint to be 80.0 and continue.
 Following this we check to see if 80.0 \textgreater start of interval 3, it is not so we check the gap
-which is 130.0 - 80.0 = \textbf{50.0} which is our largest gap thusfar so we record it as well as the farthest
+which is 130.0 - 80.0 = \textbf{50.0} which is our largest gap thus-far so we record it as well as the farthest
 point 160.0. Then we check our interval 4, not overlapping so we check to see what the gap is there,
 it is 10.0 which is \textless 50.0 so we record it's last position which is 200.0 and continue.  Since
 we have run out of ships, now we check to see if the difference of our end time (200.0) and the last position
