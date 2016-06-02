@@ -2,6 +2,7 @@
 *~
 
 # TeX
+*.tex
 *.log
 *.aux
 
